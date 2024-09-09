@@ -80,7 +80,7 @@ router.post('/files', (req, res) => {
     res.status(201).send({ created: true, newFiles: readData() });
 });
 
-router.put('/files/rename', (req, res) => {
+router.put('/files/name', (req, res) => {
     if (!req.query.oldPath || !req.query.newPath) return res.status(400).send('Missing old or new file path');
     const oldPath = sanitizeFilePath(req.query.oldPath);
     const newPath = sanitizeFilePath(req.query.newPath);
@@ -111,7 +111,7 @@ router.post('/folders', (req, res) => {
     res.status(201).send({ created: true, newFiles: readData() });
 });
 
-router.put('/folders/rename', (req, res) => {
+router.put('/folders/name', (req, res) => {
     if (!req.query.oldPath || !req.query.newPath) return res.status(400).send('Missing old or new folder path');
     const oldPath = sanitizeFolderPath(req.query.oldPath);
     const newPath = sanitizeFolderPath(req.query.newPath);
