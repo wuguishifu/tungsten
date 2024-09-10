@@ -2,12 +2,12 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const args = require('minimist')(process.argv.slice(2));
 
-const USERS_FILE = process.env.USERS_FILE || './auth.json';
+const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const SALT_ROUNDS = 10;
 
 const readUsers = () => {
-    if (!fs.existsSync(USERS_FILE)) return {};
-    const data = fs.readFileSync(USERS_FILE);
+    if (!fs.existsSync(USERS_FILE_PATH)) return {};
+    const data = fs.readFileSync(USERS_FILE_PATH);
     try {
         return JSON.parse(data);
     } catch {
@@ -21,7 +21,7 @@ const createUser = (username, password) => {
 
     const hash = bcrypt.hashSync(password, SALT_ROUNDS);
     users[username] = { password: hash };
-    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2));
+    fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(users, null, 2));
     process.exit(0);
 }
 

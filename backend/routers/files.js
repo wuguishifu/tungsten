@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // normal directory traversal
-const DATA_PATH = process.env.DATA || 'test-data';
+const DATA_PATH = process.env.DATA;
 
 const router = express.Router();
 

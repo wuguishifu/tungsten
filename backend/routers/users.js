@@ -3,15 +3,15 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const USERS_FILE = process.env.USERS_FILE || './auth.json';
-const JWT_SECRET = process.env.JWT_SECRET || 'secret :O';
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION || 60000;
+const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRATION = +process.env.JWT_EXPIRATION;
 
 const router = express.Router();
 
 const readUsers = () => {
-    if (!fs.existsSync(USERS_FILE)) return {};
-    const data = fs.readFileSync(USERS_FILE);
+    if (!fs.existsSync(USERS_FILE_PATH)) return {};
+    const data = fs.readFileSync(USERS_FILE_PATH);
     return JSON.parse(data);
 }
 
