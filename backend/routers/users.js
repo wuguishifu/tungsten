@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const USERS_FILE = process.env.USERS_FILE || './auth.json';
 const JWT_SECRET = process.env.JWT_SECRET || 'secret :O';
-const JWT_EXPIRATION = process.env.JWT_EXPIRATION || '1h';
+const JWT_EXPIRATION = process.env.JWT_EXPIRATION || 60000;
 
 const router = express.Router();
 
@@ -25,4 +25,15 @@ router.post('/login', async (req, res) => {
     res.send({ token: jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_EXPIRATION }) });
 });
 
-module.exports = router;
+module.exports = {
+    userRouter: router,
+    authorizer: express.Router().use((req, res, next) => {
+        const token = req.headers['authorization'];
+        if (!token) return res.status(403).send('Unauthorized');
+        jwt.verify(token, JWT_SECRET, (error, decoded) => {
+            if (error) return res.status(403).send('Unauthorized');
+            req.user = decoded;
+            next();
+        });
+    }),
+};
