@@ -5,6 +5,19 @@ const { readData, sanitizePath } = require('../helpers/file-utils');
 
 const DATA_PATH = process.env.DATA_PATH;
 
+if (!fs.existsSync(path.join(DATA_PATH, '.tungsten'))) {
+    fs.mkdirSync(path.join(DATA_PATH, '.tungsten'));
+}
+
+if (!fs.existsSync(path.join(DATA_PATH, '.tungsten', 'public.json'))) {
+    fs.writeFileSync(
+        path.join(DATA_PATH, '.tungsten', 'public.json'),
+        JSON.stringify({
+            publicDirectories: {},
+        }, null, 2)
+    );
+}
+
 const router = express.Router();
 
 router.use((req, _, next) => {
@@ -30,7 +43,7 @@ router.get('/', (req, res) => {
 router.put('/', (req, res) => {
     let { filePath } = req.query;
     if (!filePath) return res.status(400).send('Missing file path');
-    filePath = sanitizePath(req.query.filePath);
+    filePath = sanitizePath(filePath);
     if (!filePath) return res.status(400).send('Invalid file path');
     filePath = path.join(req.homeDirectory, filePath);
     const data = req.body;
@@ -45,7 +58,7 @@ router.put('/', (req, res) => {
 router.post('/', (req, res) => {
     let { filePath } = req.body;
     if (!filePath) return res.status(400).send('Missing file path');
-    filePath = sanitizePath(req.body.filePath);
+    filePath = sanitizePath(filePath);
     if (!filePath) return res.status(400).send('Invalid file path');
     filePath = path.join(req.homeDirectory, filePath);
     if (fs.existsSync(filePath)) return res.status(400).send('File already exists');
@@ -59,8 +72,8 @@ router.put('/name', (req, res) => {
     let { oldPath, newPath } = req.query;
     if (!oldPath) return res.status(400).send('Missing old file path');
     if (!newPath) return res.status(400).send('Missing new file path');
-    oldPath = sanitizePath(req.query.oldPath);
-    newPath = sanitizePath(req.query.newPath);
+    oldPath = sanitizePath(oldPath);
+    newPath = sanitizePath(newPath);
     if (!oldPath || !newPath) return res.status(400).send('Invalid file path');
     if (oldPath === newPath) return res.status(400).send('New path cannot be the same as old path');
     oldPath = path.join(req.homeDirectory, oldPath);
@@ -74,7 +87,7 @@ router.put('/name', (req, res) => {
 router.delete('/', (req, res) => {
     let { filePath } = req.query;
     if (!filePath) return res.status(400).send('Missing file path');
-    filePath = sanitizePath(req.query.filePath);
+    filePath = sanitizePath(filePath);
     if (!filePath) return res.status(400).send('Invalid file path');
     filePath = path.join(req.homeDirectory, filePath);
     if (!fs.existsSync(filePath)) return res.status(404).send('File not found');

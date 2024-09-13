@@ -15,7 +15,7 @@ router.use((req, _, next) => {
 router.post('/', (req, res) => {
     const { folderPath } = req.body;
     if (!folderPath) return res.status(400).send('Missing folder path');
-    folderPath = sanitizePath(req.body.folderPath);
+    folderPath = sanitizePath(folderPath);
     if (!folderPath) return res.status(400).send('Invalid folder path');
     folderPath = path.join(req.homeDirectory, folderPath);
     if (fs.existsSync(folderPath)) return res.status(400).send('Folder already exists');
@@ -27,8 +27,8 @@ router.put('/name', (req, res) => {
     let { oldPath, newPath } = req.query;
     if (!oldPath) return res.status(400).send('Missing old folder path');
     if (!newPath) return res.status(400).send('Missing new folder path');
-    oldPath = sanitizePath(req.query.oldPath);
-    newPath = sanitizePath(req.query.newPath);
+    oldPath = sanitizePath(oldPath);
+    newPath = sanitizePath(newPath);
     if (!oldPath || !newPath) return res.status(400).send('Invalid folder path');
     if (oldPath === newPath) return res.status(400).send('New path cannot be the same as old path');
     oldPath = path.join(req.homeDirectory, oldPath);
@@ -42,7 +42,7 @@ router.put('/name', (req, res) => {
 router.delete('/', (req, res) => {
     let { folderPath } = req.query;
     if (!folderPath) return res.status(400).send('Missing folder path');
-    folderPath = sanitizePath(req.query.folderPath);
+    folderPath = sanitizePath(folderPath);
     if (!folderPath) return res.status(400).send('Invalid folder path');
     folderPath = path.join(req.homeDirectory, folderPath);
     if (!fs.existsSync(folderPath)) return res.status(404).send('Folder not found');
@@ -52,4 +52,33 @@ router.delete('/', (req, res) => {
     res.status(200).send({ deleted: true, files: readData(req.homeDirectory) });
 });
 
+router.put('/privacy', (req, res) => {
+    let { folderPath, isPublic } = req.query;
+    if (!folderPath) return res.status(400).send('Missing folder path');
+    folderPath = sanitizePath(folderPath, { normalize: false });
+    if (!folderPath) return res.status(400).send('Invalid folder path');
+    // intentionally not normalizing the path for linux-style paths in the public.json file
+    folderPath = `${req.user.username}/${folderPath}`;
+    setFolderPrivacy(folderPath, isPublic === 'true');
+    return res.status(200).send({ updated: true });
+});
+
 module.exports = router;
+
+function setFolderPrivacy(folderPath, isPublic) {
+    const publicPath = path.join(DATA_PATH, '.tungsten', 'public.json');
+    const data = JSON.parse(fs.readFileSync(publicPath));
+    if (folderPath in data.publicDirectories) {
+        if (isPublic) {
+            data.publicDirectories[folderPath].isPublic = true;
+        } else {
+            delete data.publicDirectories[folderPath].isPublic;
+            if (Object.keys(data.publicDirectories[folderPath]).length === 0) {
+                delete data.publicDirectories[folderPath];
+            }
+        }
+    } else if (isPublic) {
+        data.publicDirectories[folderPath] = { isPublic: true };
+    }
+    fs.writeFileSync(publicPath, JSON.stringify(data, null, 2));
+}
