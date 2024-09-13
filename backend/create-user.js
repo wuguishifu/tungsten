@@ -1,6 +1,10 @@
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const args = require('minimist')(process.argv.slice(2));
+const path = require('path');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: path.join(__dirname, '.env') });
 
 const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const SALT_ROUNDS = 10;
