@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -6,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRATION = +process.env.JWT_EXPIRATION;
+const DATA_PATH = process.env.DATA_PATH;
 
 const router = express.Router();
 
@@ -23,6 +25,9 @@ router.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, users[username].password);
     if (!match) return res.status(401).send('Invalid username or password');
     res.send({ token: jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_EXPIRATION }) });
+    if (!fs.existsSync(path.join(DATA_PATH, username))) {
+        fs.mkdirSync(path.join(DATA_PATH, username), { recursive: true });
+    }
 });
 
 module.exports = {
