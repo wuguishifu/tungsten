@@ -23,7 +23,7 @@
 
 ## Todo
 
-- [ ] Change the file system to be sandboxed to logged in usernames
+- [x] Change the file system to be sandboxed to logged in usernames
   - Currently it's using the DATA_PATH env variable for all files, I want to change this so that if you're logged in your edits are going to be sanboxed into DATA_PATH/$username
-- [ ] Add settings for public/private folders that can be accessed with/without being logged in
+- [x] Add settings for public/private folders that can be accessed with/without being logged in
   - This will behave like a readonly wiki
