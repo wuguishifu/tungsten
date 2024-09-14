@@ -1,5 +1,4 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const http = require('http');
 
 const { userRouter, authorizer } = require('./routers/users');
@@ -13,7 +12,6 @@ const port = 4370;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());
 app.use(express.json());
-app.use(cookieParser());
 
 // public routes
 app.use('/users', userRouter);

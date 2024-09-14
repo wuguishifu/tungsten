@@ -22,7 +22,7 @@ const readUsers = () => {
     if (!fs.existsSync(USERS_FILE_PATH)) return {};
     const data = fs.readFileSync(USERS_FILE_PATH);
     return JSON.parse(data);
-}
+};
 
 const writeUsers = (users) => fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(users, null, 2));
 const generateAccessToken = (username) => jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_TTL });
@@ -41,7 +41,8 @@ router.post('/register', async (req, res) => {
     const accessToken = generateAccessToken(username);
     const refreshToken = generateRefreshToken(username);
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_REFRESH_TTL) })
-    res.status(201).send({ token: accessToken, expiresIn: ms(JWT_TTL) });
+    res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
+    res.status(201).send({ username });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
         fs.mkdirSync(path.join(DATA_PATH, username), { recursive: true });
     }
@@ -58,14 +59,15 @@ router.post('/login', async (req, res) => {
     const accessToken = generateAccessToken(username);
     const refreshToken = generateRefreshToken(username);
     res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_REFRESH_TTL) });
-    res.status(200).send({ token: accessToken, expiresIn: ms(JWT_TTL) });
+    res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
+    res.status(200).send({ username });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
         fs.mkdirSync(path.join(DATA_PATH, username), { recursive: true });
     }
 });
 
 router.post('/refresh', (req, res) => {
-    const refreshToken = req.cookies.refreshToken;
+    const refreshToken = req.headers.authorization;
     if (!refreshToken) return res.status(403).send('Unauthorized');
     jwt.verify(refreshToken, JWT_REFRESH_SECRET, (error, decoded) => {
         if (error) return res.status(403).send('Unauthorized');
@@ -77,7 +79,7 @@ router.post('/refresh', (req, res) => {
 module.exports = {
     userRouter: router,
     authorizer: express.Router().use((req, res, next) => {
-        const token = req.headers['authorization'];
+        const token = req.headers.authorization;
         if (!token) return res.status(403).send('Unauthorized');
         jwt.verify(token, JWT_SECRET, (error, decoded) => {
             if (error) return res.status(403).send('Unauthorized');
