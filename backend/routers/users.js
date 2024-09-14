@@ -25,6 +25,15 @@ const readUsers = () => {
 const writeUsers = (users) => fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(users, null, 2));
 const generateAccessToken = (username) => jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_TTL });
 
+router.get('/', (req, res) => {
+    const token = req.cookies.jwt;
+    if (!token) return res.status(401).send('Unauthorized');
+    jwt.verify(token, JWT_SECRET, (error, decoded) => {
+        if (error) return res.status(403).send('Unauthorized');
+        res.status(200).send({ username: decoded.username });
+    });
+});
+
 router.post('/register', async (req, res) => {
     if (!ENABLE_USER_SIGNUP) return res.status(403).send('User registration is disabled');
     const { username, password } = req.body;
@@ -63,7 +72,7 @@ router.post('/refresh', async (req, res) => {
     const token = req.cookies.jwt;
     if (!token) return res.status(401).send('Unauthorized');
     jwt.verify(token, JWT_SECRET, (error, decoded) => {
-        if (error) return res.status(401).send('Unauthorized');
+        if (error) return res.status(403).send('Unauthorized');
         const accessToken = generateAccessToken(decoded.username);
         res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
         res.status(200).send({ username: decoded.username });
@@ -79,7 +88,7 @@ module.exports = {
     userRouter: router,
     authorizer: express.Router().use((req, res, next) => {
         const token = req.cookies.jwt;
-        if (!token) return res.status(403).send('Unauthorized');
+        if (!token) return res.status(401).send('Unauthorized');
         jwt.verify(token, JWT_SECRET, (error, decoded) => {
             if (error) return res.status(403).send('Unauthorized');
             req.user = decoded;
