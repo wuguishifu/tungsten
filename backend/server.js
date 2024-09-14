@@ -1,14 +1,18 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const http = require('http');
 
 const { userRouter, authorizer } = require('./routers/users');
 const fileRouter = require('./routers/files');
 const folderRouter = require('./routers/folders');
 const publicRouter = require('./routers/public');
-const cookieParser = require('cookie-parser');
 
 const app = express();
-const port = 4370;
+let port = +process.env.PORT ?? 4370;
+if (isNaN(port)) port = 4370;
+
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());

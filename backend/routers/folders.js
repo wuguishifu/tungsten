@@ -53,13 +53,14 @@ router.delete('/', (req, res) => {
 });
 
 router.put('/privacy', (req, res) => {
-    let { folderPath, isPublic } = req.query;
+    let { folderPath } = req.query;
+    const isPublic = req.body.privacy === 'public';
     if (!folderPath) return res.status(400).send('Missing folder path');
     folderPath = sanitizePath(folderPath, { normalize: false });
     if (!folderPath) return res.status(400).send('Invalid folder path');
     // intentionally not normalizing the path for linux-style paths in the public.json file
     folderPath = `${req.user.username}/${folderPath}`;
-    setFolderPrivacy(folderPath, isPublic === 'true');
+    setFolderPrivacy(folderPath, isPublic);
     return res.status(200).send({ updated: true });
 });
 
