@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
     if (!users[username]) return res.status(401).send('Invalid username or password');
     const match = await bcrypt.compare(password, users[username].password);
     if (!match) return res.status(401).send('Invalid username or password');
-    res.send({ token: jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_EXPIRATION }) });
+    res.send({ token: jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_EXPIRATION }), expiresIn: JWT_EXPIRATION });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
         fs.mkdirSync(path.join(DATA_PATH, username), { recursive: true });
     }
