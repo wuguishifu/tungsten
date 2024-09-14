@@ -1,15 +1,13 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
 const bcrypt = require('bcrypt');
+const express = require('express');
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const ms = require('ms');
+const path = require('path');
 
 const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_TTL = process.env.JWT_TTL;
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
-const JWT_REFRESH_TTL = process.env.JWT_REFRESH_TTL;
 const DATA_PATH = process.env.DATA_PATH;
 const IS_HTTPS = process.env.HTTPS;
 const ENABLE_USER_SIGNUP = process.env.ENABLE_USER_SIGNUP;
@@ -26,7 +24,6 @@ const readUsers = () => {
 
 const writeUsers = (users) => fs.writeFileSync(USERS_FILE_PATH, JSON.stringify(users, null, 2));
 const generateAccessToken = (username) => jwt.sign({ username }, JWT_SECRET, { expiresIn: JWT_TTL });
-const generateRefreshToken = (username) => jwt.sign({ username }, JWT_REFRESH_SECRET, { expiresIn: JWT_REFRESH_TTL });
 
 router.post('/register', async (req, res) => {
     if (!ENABLE_USER_SIGNUP) return res.status(403).send('User registration is disabled');
@@ -39,8 +36,6 @@ router.post('/register', async (req, res) => {
     users[username] = { password: hash };
     writeUsers(users);
     const accessToken = generateAccessToken(username);
-    const refreshToken = generateRefreshToken(username);
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_REFRESH_TTL) })
     res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
     res.status(201).send({ username });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
@@ -57,8 +52,6 @@ router.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, users[username].password);
     if (!match) return res.status(401).send('Invalid username or password');
     const accessToken = generateAccessToken(username);
-    const refreshToken = generateRefreshToken(username);
-    res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_REFRESH_TTL) });
     res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
     res.status(200).send({ username });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
@@ -66,20 +59,21 @@ router.post('/login', async (req, res) => {
     }
 });
 
-router.post('/refresh', (req, res) => {
-    const refreshToken = req.headers.authorization;
-    if (!refreshToken) return res.status(403).send('Unauthorized');
-    jwt.verify(refreshToken, JWT_REFRESH_SECRET, (error, decoded) => {
-        if (error) return res.status(403).send('Unauthorized');
-        const newAccessToken = generateAccessToken(decoded.username);
-        res.status(200).send({ token: newAccessToken, expiresIn: JWT_TTL });
+router.post('/refresh', async (req, res) => {
+    const token = req.cookies.jwt;
+    if (!token) return res.status(401).send('Unauthorized');
+    jwt.verify(token, JWT_SECRET, (error, decoded) => {
+        if (error) return res.status(401).send('Unauthorized');
+        const accessToken = generateAccessToken(decoded.username);
+        res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
+        res.status(200).send({ username: decoded.username });
     });
 });
 
 module.exports = {
     userRouter: router,
     authorizer: express.Router().use((req, res, next) => {
-        const token = req.headers.authorization;
+        const token = req.cookies.jwt;
         if (!token) return res.status(403).send('Unauthorized');
         jwt.verify(token, JWT_SECRET, (error, decoded) => {
             if (error) return res.status(403).send('Unauthorized');

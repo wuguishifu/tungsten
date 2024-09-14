@@ -2,12 +2,10 @@ services:
   backend:
     build: ./backend
     ports:
-      - 8000:4370
+      - 4370:4370
     environment:
       JWT_SECRET: ${JWT_SECRET}
-      JWT_TTL: 15s
-      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
-      JWT_REFRESH_TTL: 20m
+      JWT_TTL: 20m
       HTTPS: false
       ENABLE_USER_SIGNUP: true
     volumes:
