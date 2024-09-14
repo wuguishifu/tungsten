@@ -70,6 +70,11 @@ router.post('/refresh', async (req, res) => {
     });
 });
 
+router.post('/logout', (_, res) => {
+    res.clearCookie('jwt');
+    res.status(200).send('OK');
+});
+
 module.exports = {
     userRouter: router,
     authorizer: express.Router().use((req, res, next) => {
