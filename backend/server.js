@@ -1,9 +1,6 @@
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const http = require('http');
-const dotenv = require('dotenv');
-const path = require('path');
-
-dotenv.config({ path: path.join(__dirname, '.env') });
 
 const { userRouter, authorizer } = require('./routers/users');
 const fileRouter = require('./routers/files');
@@ -16,6 +13,7 @@ const port = 4370;
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());
 app.use(express.json());
+app.use(cookieParser());
 
 // public routes
 app.use('/users', userRouter);
@@ -28,3 +26,13 @@ app.use('/folders', folderRouter);
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`Listening on port ${port}`));
+
+process.on('SIGTERM', () => {
+    server.close();
+    process.exit(0);
+});
+
+process.on('SIGINT', () => {
+    server.close();
+    process.exit(0);
+});
