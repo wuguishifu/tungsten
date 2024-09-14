@@ -13,7 +13,7 @@ router.use((req, _, next) => {
 });
 
 router.post('/', (req, res) => {
-    const { folderPath } = req.body;
+    let { folderPath } = req.body;
     if (!folderPath) return res.status(400).send('Missing folder path');
     folderPath = sanitizePath(folderPath);
     if (!folderPath) return res.status(400).send('Invalid folder path');

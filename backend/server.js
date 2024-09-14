@@ -11,7 +11,7 @@ const folderRouter = require('./routers/folders');
 const publicRouter = require('./routers/public');
 
 const app = express();
-const port = 8000;
+const port = 4370;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());

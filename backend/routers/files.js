@@ -6,7 +6,7 @@ const { readData, sanitizePath } = require('../helpers/file-utils');
 const DATA_PATH = process.env.DATA_PATH;
 
 if (!fs.existsSync(path.join(DATA_PATH, '.tungsten'))) {
-    fs.mkdirSync(path.join(DATA_PATH, '.tungsten'));
+    fs.mkdirSync(path.join(DATA_PATH, '.tungsten'), { recursive: true });
 }
 
 if (!fs.existsSync(path.join(DATA_PATH, '.tungsten', 'public.json'))) {
