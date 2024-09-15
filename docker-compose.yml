@@ -9,7 +9,6 @@ services:
       HTTPS: false
       ENABLE_USER_SIGNUP: true
       PORT: 4370
-      CORS_ORIGIN: "*"
     volumes:
       - ./auth.json:/auth.json
       - ./test-data:/data
