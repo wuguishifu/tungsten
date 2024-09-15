@@ -50,10 +50,17 @@ router.put('/', (req, res) => {
     const data = req.body;
     if (!data) return res.status(400).send('Missing data');
     if (typeof data !== 'string') return res.status(400).send('Invalid data');
-    if (!fs.existsSync(filePath)) return res.status(404).send('File not found');
-    if (fs.statSync(filePath).isDirectory()) return res.status(400).send('Cannot write to directory');
-    fs.writeFileSync(filePath, data);
-    res.status(200).send({ updated: true });
+    const exists = fs.existsSync(filePath);
+    if (exists && fs.statSync(filePath).isDirectory()) return res.status(400).send('Cannot write to directory');
+    if (exists) {
+        fs.writeFileSync(filePath, data);
+        res.status(200).send({ updated: true });
+    } else {
+        const dir = path.dirname(filePath);
+        fs.mkdirSync(dir, { recursive: true });
+        fs.writeFileSync(filePath, data);
+        res.status(200).send({ updated: true, files: readData(req.homeDirectory) });
+    }
 });
 
 router.post('/', (req, res) => {

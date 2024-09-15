@@ -1,15 +1,17 @@
 import { getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
-import { DataLeaf, useData } from '@/providers/data-provider';
+import { DataLeaf, DataType, useData } from '@/providers/data-provider';
 import { File, Folder } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
 import AddItem from './add-item';
+import DeleteDialog from './delete-dialog';
 
 type TreeContextProps = {
   selectedFile: string | null;
   selectFile: (path: string) => void;
+  showDeleteDialog: (props: { path: string, type: DataType, name: string }) => void;
 }
 
 const TreeContext = createContext({} as TreeContextProps);
@@ -30,21 +32,36 @@ export default function Tree() {
     navigate(`/${username}/${path}`);
   }, [navigate, username]);
 
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [deleteItem, setDeleteItem] = useState<{ path: string, type: DataType, name: string } | null>(null);
+  const showDeleteDialog = useCallback((props: { path: string, type: DataType, name: string; }) => {
+    setDeleteItem(props);
+    setDeleteDialogVisible(true);
+  }, []);
+
   const value = {
     selectedFile,
     selectFile,
+    showDeleteDialog,
   };
 
   return (
-    <TreeContext.Provider value={value}>
-      {files
-        ? <TreeLeaf
-          leaf={files}
-          root
-        />
-        : null
-      }
-    </TreeContext.Provider>
+    <>
+      <DeleteDialog
+        open={deleteDialogVisible}
+        onOpenChange={setDeleteDialogVisible}
+        {...deleteItem}
+      />
+      <TreeContext.Provider value={value}>
+        {files
+          ? <TreeLeaf
+            leaf={files}
+            root
+          />
+          : null
+        }
+      </TreeContext.Provider>
+    </>
   );
 }
 
@@ -64,6 +81,7 @@ function TreeLeaf(props: TreeLeafProps) {
   const {
     selectedFile,
     selectFile,
+    showDeleteDialog,
   } = useContext(TreeContext);
 
   const [addingItem, setAddingItem] = useState<false | 'file' | 'directory'>(false);
@@ -100,20 +118,34 @@ function TreeLeaf(props: TreeLeafProps) {
             <ContextMenuItem
               autoFocus={false}
               className='select-none'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 setAddingItem('directory');
               }}>
-              new folder
+              new directory
             </ContextMenuItem>
             <ContextMenuItem
               autoFocus={false}
               className='select-none'
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
                 setAddingItem('file');
               }}>
               new file
+            </ContextMenuItem>
+            <ContextMenuItem
+              autoFocus={false}
+              className='select-none text-destructive data-[highlighted]:text-destructive'
+              onClick={e => {
+                e.stopPropagation();
+                showDeleteDialog({
+                  path: leaf.path,
+                  type: leaf.type,
+                  name: leaf.name,
+                });
+              }}
+            >
+              delete
             </ContextMenuItem>
           </ContextMenuContent>
         </ContextMenu>

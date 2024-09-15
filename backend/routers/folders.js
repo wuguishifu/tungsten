@@ -47,7 +47,7 @@ router.delete('/', (req, res) => {
     folderPath = path.join(req.homeDirectory, folderPath);
     if (!fs.existsSync(folderPath)) return res.status(404).send('Folder not found');
     if (!fs.statSync(folderPath).isDirectory()) return res.status(400).send('Cannot delete file');
-    if (fs.readdirSync(folderPath).length > 0) return res.status(400).send('Cannot delete non-empty folder');
+    // if (fs.readdirSync(folderPath).length > 0) return res.status(400).send('Cannot delete non-empty folder');
     fs.rmSync(folderPath, { recursive: true });
     res.status(200).send({ deleted: true, files: readData(req.homeDirectory) });
 });

@@ -1,11 +1,14 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
 
 type DataContextProps = {
   files: DataLeaf | null;
+  setFiles: Dispatch<SetStateAction<DataLeaf | null>>;
   createFile: (path: string) => Promise<void>;
   createDirectory: (path: string) => Promise<void>;
+  deleteFile: (path: string) => Promise<void>;
+  deleteDirectory: (path: string) => Promise<void>;
 }
 
 export type DataLeaf = {
@@ -18,6 +21,8 @@ export type DataLeaf = {
 } | {
   type: 'file';
 });
+
+export type DataType = 'file' | 'directory';
 
 const DataContext = createContext({} as DataContextProps);
 
@@ -91,6 +96,34 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
   }, []);
 
+  const deleteFile = useCallback(async (path: string) => {
+    const response = await fetch(`/api/files?filePath=${path}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.deleted) {
+      setFiles(data.files);
+    }
+  }, []);
+
+  const deleteDirectory = useCallback(async (path: string) => {
+    const response = await fetch(`/api/folders?folderPath=${path}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.deleted) {
+      setFiles(data.files);
+    }
+  }, []);
+
   useEffect(() => {
     if (!username) return;
     loadFiles();
@@ -98,8 +131,11 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
 
   const value = {
     files,
+    setFiles,
     createFile,
     createDirectory,
+    deleteFile,
+    deleteDirectory,
   };
 
   return (

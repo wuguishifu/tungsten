@@ -1,18 +1,14 @@
 import useFile from '@/hooks/use-file';
-import EditorTheme from '@/lib/codemirror-theme';
-import { useSettings } from '@/providers/settings-provider';
-import { markdown } from '@codemirror/lang-markdown';
-import { Vim, vim } from '@replit/codemirror-vim';
-import ReactCodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror';
+import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Settings } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import EditorSettings from '../editor-settings';
 import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import CodeArea from './code-area';
 
 export default function Editor() {
-  const { editorSettings } = useSettings();
   const { '*': filePath } = useParams();
   const {
     loading,
@@ -23,22 +19,6 @@ export default function Editor() {
   } = useFile(filePath);
 
   const editor = useRef<ReactCodeMirrorRef>(null);
-
-  useEffect(() => {
-    Vim.defineEx('write', 'w', onSave);
-
-    function handleKeyDown(event: KeyboardEvent) {
-      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-        event.preventDefault();
-        onSave();
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onSave]);
 
   return (
     <div className='bg-neutral-900 h-full rounded-lg w-full p-4 flex flex-col'>
@@ -61,20 +41,11 @@ export default function Editor() {
       </div>
       <div className='flex-1'>
         {!loading ? (
-          <ReactCodeMirror
-            autoFocus
-            className='h-full mt-2'
-            lang='md'
-            theme='dark'
+          <CodeArea
             ref={editor}
-            placeholder='start typing...'
-            value={file}
-            extensions={[
-              markdown(),
-              EditorTheme,
-              ...(editorSettings.vimEnabled ? [vim()] : []),
-            ]}
-            onChange={value => setFile(value)}
+            file={file ?? ''}
+            setFile={setFile}
+            onSave={onSave}
           />
         ) : (
           <Loading />
