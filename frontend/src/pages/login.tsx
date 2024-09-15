@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import z from 'zod';
 
@@ -20,6 +21,8 @@ type FormSchema = z.infer<typeof formSchema>;
 
 export default function Login() {
   const { login } = useAuth();
+
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -37,10 +40,9 @@ export default function Login() {
   async function onSubmit(values: FormSchema) {
     setLoading(true);
     try {
-      await login(values.username, values.password);
+      const username = await login(values.username, values.password);
       toast.success('Logged in successfully.');
-      // if (next) router.push(next ?? '/');
-      // else router.push('/');
+      navigate(`/${username}`);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

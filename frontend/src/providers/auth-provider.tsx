@@ -4,7 +4,7 @@ type AuthContextProps = {
   username: null | string;
   ready: boolean;
   register: (username: string, password: string) => Promise<void>;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<string>;
   logout: () => Promise<void>;
 };
 
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: Readonly<React.ReactNode>
     refreshAuth();
   }, [refreshAuth]);
 
-  const login = useCallback(async (username: string, password: string) => {
+  const login = useCallback(async (username: string, password: string): Promise<string> => {
     const response = await fetch('/api/users/login', {
       method: 'POST',
       headers: {
@@ -70,6 +70,7 @@ export function AuthProvider({ children }: { children: Readonly<React.ReactNode>
       clearTimeout(authTimeout.current);
     }
     authTimeout.current = setTimeout(refreshAuth, data.tokenExpirationMs - 10000);
+    return data.username;
   }, [refreshAuth]);
 
   const logout = useCallback(async () => {

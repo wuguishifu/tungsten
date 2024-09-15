@@ -1,6 +1,7 @@
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { FilePath, useData } from '@/providers/data-provider';
+import { File, Folder } from 'lucide-react';
 import { createContext, useCallback, useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -107,18 +108,24 @@ function TreeLabel(props: TreeLabelProps) {
   const selected = selectedFile === filePath;
 
   return (
-    <span
-      style={{ paddingLeft: indentation * 16 }}
-      className={cn(
-        'cursor-pointer',
-        selected ? 'font-bold' : 'font-normal',
-      )}
+    <div
+      className='flex flex-row items-center cursor-pointer'
+      style={{ marginLeft: indentation * 16, gap: 4 }}
       onClick={type === 'file'
         ? () => selectFile(filePath!)
         : undefined
       }
     >
-      {formattedName}
-    </span>
+      {type === 'file'
+        ? <File size={16} strokeWidth={2} />
+        : <Folder size={16} strokeWidth={2} />
+      }
+      <span className={cn(
+        'cursor-pointer',
+        selected ? 'font-bold' : 'font-normal',
+      )}>
+        {formattedName}
+      </span>
+    </div>
   );
 }
