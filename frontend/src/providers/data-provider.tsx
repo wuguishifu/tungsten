@@ -3,13 +3,20 @@ import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
 
 type DataContextProps = {
-  files: { [name: string]: string | FilePath } | null;
+  files: DataLeaf | null;
   loadFile: (path: string) => Promise<string>;
 }
 
-export type FilePath = {
-  [name: string]: string | FilePath;
-}
+export type DataLeaf = {
+  name: string;
+  path: string;
+  dirPath: string;
+} & ({
+  type: 'directory';
+  children: DataLeaf[];
+} | {
+  type: 'file';
+});
 
 const DataContext = createContext({} as DataContextProps);
 
@@ -20,7 +27,7 @@ export function useData() {
 export function DataProvider({ children }: { children: Readonly<React.ReactNode> }) {
   const { username } = useAuth();
 
-  const [files, setFiles] = useState<FilePath | null>(null);
+  const [files, setFiles] = useState<DataLeaf | null>(null);
 
   const loadFiles = useCallback(async () => {
     try {

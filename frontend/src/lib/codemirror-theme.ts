@@ -16,7 +16,7 @@ const EditorTheme = Prec.highest(
       border: 'none',
     },
     '.cm-cursor': {
-      borderLeft: '1px solid #f5f5f5',
+      borderLeft: '1px solid #1d4ed8',
     },
     // bottom terminal (vim)
     '.cm-panels, .cm-panels-bottom': {
@@ -28,13 +28,14 @@ const EditorTheme = Prec.highest(
     // vim fatty cursor
     '.cm-fat-cursor': {
       position: 'absolute',
-      background: '#8A5CF5',
+      background: '#1d4ed8',
       border: 'none',
       whiteSpace: 'pre',
+      color: '#FAFAFA !important',
     },
     '&:not(.cm-focused) .cm-fat-cursor': {
       background: 'none',
-      outline: 'solid 1px #8A5CF5',
+      outline: 'solid 1px #1d4ed8',
       color: 'transparent !important',
     },
   }),

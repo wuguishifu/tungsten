@@ -3,9 +3,17 @@ const path = require('path');
 
 function readData(homeDirectory) {
     function r(currentPath) {
+        const relativePath = path.relative(homeDirectory, currentPath);
+        const name = path.basename(currentPath);
+
         const result = {
-            __path: path.relative(homeDirectory, currentPath),
+            type: 'directory',
+            name: name,
+            path: relativePath,
+            dirPath: relativePath,
+            children: [],
         };
+
         const files = fs.readdirSync(currentPath);
 
         files.forEach(file => {
@@ -15,10 +23,17 @@ function readData(homeDirectory) {
 
             if (stat.isDirectory()) {
                 // Recursively add subdirectory
-                result[`${file}/`] = r(filePath);
+                const dir = r(filePath);
+                result.children.push(dir);
             } else {
-                // Add file with the relative path as the value
-                result[file] = relativeFilePath;
+                // Add file
+                const fileObj = {
+                    type: 'file',
+                    name: file,
+                    path: relativeFilePath,
+                    dirPath: relativePath,
+                };
+                result.children.push(fileObj);
             }
         });
 

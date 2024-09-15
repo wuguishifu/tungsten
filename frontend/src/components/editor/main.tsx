@@ -64,7 +64,7 @@ export default function Editor() {
         {!loading ? (
           <ReactCodeMirror
             autoFocus
-            className='h-full'
+            className='h-full mt-2'
             lang='md'
             theme='dark'
             ref={editor}
