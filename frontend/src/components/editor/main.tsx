@@ -12,6 +12,7 @@ import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 
 export default function Editor() {
+  const { editorSettings } = useSettings();
   const { '*': filePath } = useParams();
   const {
     loading,
@@ -22,12 +23,7 @@ export default function Editor() {
     onSave,
   } = useFile(filePath);
 
-  const { editorSettings } = useSettings();
-
   const editor = useRef<ReactCodeMirrorRef>(null);
-
-  useEffect(() => {
-  }, [filename]);
 
   useEffect(() => {
     Vim.defineEx('write', 'w', onSave);
@@ -49,13 +45,17 @@ export default function Editor() {
     <div className='bg-neutral-800 h-full rounded-lg w-full p-4 flex flex-col'>
       <div className='flex flex-row items-center justify-between mt-2'>
         <div className='flex flex-row items-center'>
-          <h1>{filename}.{ext}</h1>
+          <h1 className='text-xl'>{filename}.{ext}</h1>
         </div>
-        <Dialog>
+        <Dialog
+          onOpenChange={(focused) => {
+            if (!focused) editor.current?.view?.contentDOM.focus();
+          }}
+        >
           <DialogTrigger>
             <Settings className='size-4 cursor-pointer' />
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent onCloseAutoFocus={e => e.preventDefault()}>
             <EditorSettings />
           </DialogContent>
         </Dialog>
