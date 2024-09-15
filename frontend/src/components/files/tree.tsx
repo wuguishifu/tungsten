@@ -1,5 +1,4 @@
 import { getName } from '@/lib/file-utils';
-import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { FilePath, useData } from '@/providers/data-provider';
 import { File, Folder } from 'lucide-react';
@@ -124,10 +123,7 @@ function TreeLabel(props: TreeLabelProps) {
         ? <File size={16} strokeWidth={2} />
         : <Folder size={16} strokeWidth={2} />
       }
-      <span className={cn(
-        'cursor-pointer group-hover:text-neutral-100 text-sm',
-        selected ? 'text-neutral-100' : 'text-neutral-400',
-      )}>
+      <span className='cursor-pointer group-hover:text-neutral-100 text-sm group-data-[selected=true]:text-neutral-100 text-neutral-400'>
         {formattedName}
       </span>
     </div>
