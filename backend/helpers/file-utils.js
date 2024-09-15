@@ -3,7 +3,9 @@ const path = require('path');
 
 function readData(homeDirectory) {
     function r(currentPath) {
-        const result = {};
+        const result = {
+            __path: path.relative(homeDirectory, currentPath),
+        };
         const files = fs.readdirSync(currentPath);
 
         files.forEach(file => {
