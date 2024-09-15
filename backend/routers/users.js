@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
     writeUsers(users);
     const accessToken = generateAccessToken(username);
     res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
-    res.status(201).send({ username });
+    res.status(201).send({ username, tokenExpirationMs: ms(JWT_TTL) });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
         fs.mkdirSync(path.join(DATA_PATH, username), { recursive: true });
     }
@@ -62,7 +62,7 @@ router.post('/login', async (req, res) => {
     if (!match) return res.status(401).send('Invalid username or password');
     const accessToken = generateAccessToken(username);
     res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
-    res.status(200).send({ username });
+    res.status(200).send({ username, tokenExpirationMs: ms(JWT_TTL) });
     if (!fs.existsSync(path.join(DATA_PATH, username))) {
         fs.mkdirSync(path.join(DATA_PATH, username), { recursive: true });
     }
@@ -75,7 +75,7 @@ router.post('/refresh', async (req, res) => {
         if (error) return res.status(403).send('Unauthorized');
         const accessToken = generateAccessToken(decoded.username);
         res.cookie('jwt', accessToken, { httpOnly: true, secure: IS_HTTPS, sameSite: 'strict', maxAge: ms(JWT_TTL) });
-        res.status(200).send({ username: decoded.username });
+        res.status(200).send({ username: decoded.username, tokenExpirationMs: ms(JWT_TTL) });
     });
 });
 

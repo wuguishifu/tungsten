@@ -12,21 +12,33 @@ const app = express();
 let port = +process.env.PORT ?? 4370;
 if (isNaN(port)) port = 4370;
 
-app.use(cors({ origin: process.env.CORS_ORIGIN }));
+app.use(cors({
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.text());
 app.use(express.json());
 app.use(cookies());
 
+app.use((req, _, next) => {
+    console.log(`${req.method} ${req.path}`);
+    next();
+});
+
+const api = express.Router();
+
 // public routes
-app.use('/users', userRouter);
-app.use('/public', publicRouter);
+api.use('/users', userRouter);
+api.use('/public', publicRouter);
 
 // protected routes
-app.use(authorizer);
-app.use('/files', fileRouter);
-app.use('/folders', folderRouter);
+api.use(authorizer);
+api.use('/files', fileRouter);
+api.use('/folders', folderRouter);
+
+app.use('/api', api);
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`Listening on port ${port}`));
