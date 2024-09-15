@@ -1,9 +1,9 @@
-import Spinner from './spinner';
+import { ClipLoader } from 'react-spinners';
 
 export default function Loading() {
   return (
     <div className='w-full h-full flex justify-center items-center' >
-      <Spinner className='size-6' />
+      <ClipLoader color='#ABB2BF' />
     </div>
   );
 };

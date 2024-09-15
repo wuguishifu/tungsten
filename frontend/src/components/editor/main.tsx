@@ -1,23 +1,33 @@
 import useFile from '@/hooks/use-file';
 import EditorTheme from '@/lib/codemirror-theme';
 import { useSettings } from '@/providers/settings-provider';
+import { markdown } from '@codemirror/lang-markdown';
 import { Vim, vim } from '@replit/codemirror-vim';
 import ReactCodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror';
+import { Settings } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { Switch } from '../ui/switch';
+import EditorSettings from '../editor-settings';
+import Loading from '../suspense/loading';
+import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 
 export default function Editor() {
   const { '*': filePath } = useParams();
-  const { filename, file, setFile, onSave } = useFile(filePath);
+  const {
+    loading,
+    filename,
+    ext,
+    file,
+    setFile,
+    onSave,
+  } = useFile(filePath);
 
-  const { editorSettings, updateEditorSettings } = useSettings();
+  const { editorSettings } = useSettings();
 
   const editor = useRef<ReactCodeMirrorRef>(null);
 
   useEffect(() => {
-    editor.current?.view?.focus();
-  }, []);
+  }, [filename]);
 
   useEffect(() => {
     Vim.defineEx('write', 'w', onSave);
@@ -38,31 +48,38 @@ export default function Editor() {
   return (
     <div className='bg-neutral-800 h-full rounded-lg w-full p-4 flex flex-col'>
       <div className='flex flex-row items-center justify-between mt-2'>
-        <h1>{filename}</h1>
         <div className='flex flex-row items-center'>
-          <div
-            onClick={() => updateEditorSettings('vimEnabled', !editorSettings.vimEnabled)}
-            className='flex flex-row items-center gap-2 cursor-pointer'
-          >
-            <h3>Vim</h3>
-            <Switch checked={editorSettings.vimEnabled} id='vim-toggle' />
-          </div>
+          <h1>{filename}.{ext}</h1>
         </div>
+        <Dialog>
+          <DialogTrigger>
+            <Settings className='size-4 cursor-pointer' />
+          </DialogTrigger>
+          <DialogContent>
+            <EditorSettings />
+          </DialogContent>
+        </Dialog>
       </div>
       <div className='flex-1'>
-        <ReactCodeMirror
-          className='h-full'
-          lang='md'
-          theme='dark'
-          ref={editor}
-          placeholder='start typing...'
-          value={file}
-          extensions={[
-            EditorTheme,
-            ...(editorSettings.vimEnabled ? [vim()] : []),
-          ]}
-          onChange={value => setFile(value)}
-        />
+        {!loading ? (
+          <ReactCodeMirror
+            autoFocus
+            className='h-full'
+            lang='md'
+            theme='dark'
+            ref={editor}
+            placeholder='start typing...'
+            value={file}
+            extensions={[
+              markdown(),
+              EditorTheme,
+              ...(editorSettings.vimEnabled ? [vim()] : []),
+            ]}
+            onChange={value => setFile(value)}
+          />
+        ) : (
+          <Loading />
+        )}
       </div>
     </div>
   );

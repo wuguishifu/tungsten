@@ -1,3 +1,4 @@
+import { getExtension, getName } from '@/lib/file-utils';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -5,9 +6,13 @@ export default function useFile(path?: string | null) {
   const [file, setFile] = useState<string>();
   const [loading, setLoading] = useState(false);
 
+  const originalFilename = path?.split('/').pop() ?? 'Untitled.md';
+
+  const filename = getName(originalFilename);
+  const ext = getExtension(originalFilename);
+
   async function onSave() {
     if (!path || !file) return;
-    setLoading(true);
     try {
       const { updated } = await saveFile(path, file);
       if (!updated) {
@@ -21,7 +26,6 @@ export default function useFile(path?: string | null) {
         console.log(error);
       }
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -33,10 +37,10 @@ export default function useFile(path?: string | null) {
       .finally(() => setLoading(false));
   }, [path]);
 
-  const filename = path?.split('/').pop();
-
   return {
+    originalFilename,
     filename,
+    ext: ext ?? 'md',
     file,
     loading,
     setFile,
