@@ -5,7 +5,7 @@ import { useAuth } from './auth-provider';
 type DataContextProps = {
   files: DataLeaf | null;
   createFile: (path: string) => Promise<void>;
-  createFolder: (path: string) => Promise<void>;
+  createDirectory: (path: string) => Promise<void>;
 }
 
 export type DataLeaf = {
@@ -51,12 +51,44 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
   }, []);
 
-  const createFolder = useCallback(async (path: string) => {
-    console.log('create foldder', path);
+  const createDirectory = useCallback(async (path: string) => {
+    const response = await fetch('/api/folders', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        folderPath: path,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.created) {
+      setFiles(data.files);
+    }
   }, []);
 
   const createFile = useCallback(async (path: string) => {
-    console.log('create file', path);
+    const response = await fetch('/api/files', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        filePath: path,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.created) {
+      setFiles(data.files);
+    }
   }, []);
 
   useEffect(() => {
@@ -67,7 +99,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   const value = {
     files,
     createFile,
-    createFolder,
+    createDirectory,
   };
 
   return (

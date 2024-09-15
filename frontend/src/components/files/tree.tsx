@@ -120,6 +120,7 @@ function TreeLeaf(props: TreeLeafProps) {
       )}
       {addingItem && (
         <AddItem
+          dirPath={leaf.dirPath}
           itemType={addingItem}
           indentation={leaf.type === 'directory' ? indentation + 1 : indentation}
           stopEditing={() => setAddingItem(false)}

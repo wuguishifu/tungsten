@@ -17,7 +17,6 @@ export default function Editor() {
   const {
     loading,
     filename,
-    ext,
     file,
     setFile,
     onSave,
@@ -45,7 +44,7 @@ export default function Editor() {
     <div className='bg-neutral-900 h-full rounded-lg w-full p-4 flex flex-col'>
       <div className='flex flex-row items-center justify-between mt-2'>
         <div className='flex flex-row items-center'>
-          <h1 className='text-xl'>{filename}.{ext}</h1>
+          <h1 className='text-xl'>{filename}</h1>
         </div>
         <Dialog
           onOpenChange={(focused) => {
