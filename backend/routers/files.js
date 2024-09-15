@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
     let { filePath } = req.query;
     if (filePath) {
         filePath = sanitizePath(filePath);
+        if (!filePath) return res.status(400).send('Invalid file path');
         filePath = path.join(req.homeDirectory, filePath);
         if (!filePath) return res.status(400).send('Invalid file path');
         if (!fs.existsSync(filePath)) return res.status(404).send('File not found');

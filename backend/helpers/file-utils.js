@@ -31,7 +31,7 @@ function sanitizePath(filePath, opts = { normalize: true }) {
     let p = filePath;
     if (opts.normalize) p = path.normalize(filePath);
     if (p.includes('..')) return null;
-    if (!/^[a-zA-Z0-9\/\\-_ .]+$/.test(p)) return null;
+    if (!/^[a-zA-Z0-9\/\\\-_ .]+$/.test(p)) return null;
     return p;
 }
 
