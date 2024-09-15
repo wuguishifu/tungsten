@@ -24,8 +24,7 @@ function readData(homeDirectory) {
     }
 
     // Start reading from the home directory
-    const rootName = path.basename(homeDirectory);
-    return { [`${rootName}/`]: r(homeDirectory) };
+    return r(homeDirectory);
 }
 
 function sanitizePath(filePath, opts = { normalize: true }) {
