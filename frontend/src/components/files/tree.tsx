@@ -89,7 +89,10 @@ function TreeLeaf(props: TreeLeafProps) {
   const formattedName = leaf.type === 'file' ? getName(leaf.name) : leaf.name;
 
   return (
-    <div>
+    <div
+      onContextMenu={e => e.preventDefault()}
+      onClick={e => e.stopPropagation()}
+    >
       {!root && (
         <ContextMenu>
           <ContextMenuTrigger>
@@ -111,19 +114,7 @@ function TreeLeaf(props: TreeLeafProps) {
               </span>
             </div>
           </ContextMenuTrigger>
-          <ContextMenuContent
-            onCloseAutoFocus={e => e.preventDefault()}
-            className='ContextMenuContent'
-          >
-            <ContextMenuItem
-              autoFocus={false}
-              className='select-none'
-              onClick={e => {
-                e.stopPropagation();
-                setAddingItem('directory');
-              }}>
-              new directory
-            </ContextMenuItem>
+          <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
             <ContextMenuItem
               autoFocus={false}
               className='select-none'
@@ -132,6 +123,15 @@ function TreeLeaf(props: TreeLeafProps) {
                 setAddingItem('file');
               }}>
               new file
+            </ContextMenuItem>
+            <ContextMenuItem
+              autoFocus={false}
+              className='select-none'
+              onClick={e => {
+                e.stopPropagation();
+                setAddingItem('directory');
+              }}>
+              new directory
             </ContextMenuItem>
             <ContextMenuItem
               autoFocus={false}

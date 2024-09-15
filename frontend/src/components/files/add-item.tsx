@@ -1,6 +1,8 @@
+import { useAuth } from '@/providers/auth-provider';
 import { useData } from '@/providers/data-provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 type AddItemProps = {
@@ -17,6 +19,9 @@ export default function AddItem(props: AddItemProps) {
     indentation,
     stopEditing,
   } = props;
+
+  const { username } = useAuth();
+  const navigate = useNavigate();
 
   const { createFile, createDirectory } = useData();
 
@@ -67,6 +72,7 @@ export default function AddItem(props: AddItemProps) {
     try {
       if (itemType === 'file') {
         createFile(`${dirPath}/${value}.md`);
+        navigate(`/${username}/${dirPath}/${value}.md`);
       } else {
         createDirectory(`${dirPath}/${value}`);
       }
