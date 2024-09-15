@@ -1,42 +1,21 @@
-import { createBrowserRouter, Navigate, Outlet, RouterProvider, useParams } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
 import Loading from './components/suspense/loading';
 import Login from './pages/login';
 import Notebook from './pages/notebook';
 import { useAuth } from './providers/auth-provider';
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    children: [
-      {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: ':username',
-        children: [
-          {
-            element: <Protected />,
-            children: [
-              {
-                index: true,
-                element: <Notebook />,
-              },
-              {
-                path: '*',
-                element: <Notebook />
-              }
-            ],
-          },
-        ],
-      },
-    ]
-  }
-])
-
 export default function App() {
   return (
-    <RouterProvider router={router} />
+    <Routes>
+      {/* authentication */}
+      <Route path='/login' element={<Login />} />
+      <Route path='/:username'>
+        <Route element={<Protected />}>
+          <Route index element={<Notebook />} />
+          <Route path='*' element={<Notebook />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 

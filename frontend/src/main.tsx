@@ -7,16 +7,19 @@ import { DataProvider } from './providers/data-provider.tsx';
 
 import './index.css';
 import { SettingsProvider } from './providers/settings-provider.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <SettingsProvider>
-      <AuthProvider>
-        <DataProvider>
-          <App />
-        </DataProvider>
-      </AuthProvider>
-    </SettingsProvider>
-    <Toaster />
+    <BrowserRouter>
+      <SettingsProvider>
+        <AuthProvider>
+          <DataProvider>
+            <App />
+          </DataProvider>
+        </AuthProvider>
+      </SettingsProvider>
+      <Toaster />
+    </BrowserRouter>
   </StrictMode>,
 );
