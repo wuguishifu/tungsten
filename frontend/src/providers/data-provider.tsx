@@ -7,8 +7,8 @@ type DataContextProps = {
   setFiles: Dispatch<SetStateAction<DataLeaf | null>>;
   createFile: (path: string) => Promise<void>;
   createDirectory: (path: string) => Promise<void>;
-  deleteFile: (path: string) => Promise<void>;
-  deleteDirectory: (path: string) => Promise<void>;
+  deleteFile: (path: string) => Promise<DataLeaf>;
+  deleteDirectory: (path: string) => Promise<DataLeaf>;
 }
 
 export type DataLeaf = {
@@ -108,6 +108,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     if (data.deleted) {
       setFiles(data.files);
     }
+    return data.files ?? null;
   }, []);
 
   const deleteDirectory = useCallback(async (path: string) => {
@@ -122,6 +123,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     if (data.deleted) {
       setFiles(data.files);
     }
+    return data.files ?? null;
   }, []);
 
   useEffect(() => {

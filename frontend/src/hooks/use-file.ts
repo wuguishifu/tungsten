@@ -12,6 +12,7 @@ export default function useFile(path?: string) {
   const { files, setFiles } = useData();
   const [file, setFile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [dirty, setDirty] = useState(false);
 
   const originalFilename = path?.split('/').pop() ?? 'Untitled.md';
 
@@ -25,6 +26,7 @@ export default function useFile(path?: string) {
         const { updated, files } = await saveFile(path, file);
         if (!updated) throw new Error('The file could not be saved. Please try again.');
         if (files) setFiles(files);
+        setDirty(false);
         toast.success('Saved.');
       } catch (error) {
         console.log(error);
@@ -51,7 +53,6 @@ export default function useFile(path?: string) {
         return acc;
       }, -1);
       const incremental = highest + 1;
-      console.log({ highest, incremental });
       const newFileName = incremental ? `Untitled ${incremental}` : 'Untitled';
 
       try {
@@ -60,6 +61,7 @@ export default function useFile(path?: string) {
         console.log(newFiles);
         navigate(`/${username}/${newFileName}.md`);
         if (newFiles) setFiles(newFiles);
+        setDirty(false);
         toast.success('Saved.');
       } catch (error) {
         console.log(error);
@@ -89,8 +91,12 @@ export default function useFile(path?: string) {
     filename,
     ext: ext ?? 'md',
     file,
+    dirty,
     loading,
-    setFile,
+    setFile: (data: string) => {
+      setFile(data);
+      setDirty(true);
+    },
     onSave,
   } as const;
 }
