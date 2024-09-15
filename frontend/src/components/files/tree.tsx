@@ -1,3 +1,4 @@
+import { getName } from '@/lib/file-utils';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/providers/auth-provider';
 import { FilePath, useData } from '@/providers/data-provider';
@@ -104,13 +105,16 @@ function TreeLabel(props: TreeLabelProps) {
     selectFile,
   } = useContext(TreeContext);
 
-  const formattedName = type === 'directory' ? `${name.slice(0, -1)}` : name;
+  const formattedName = type === 'directory'
+    ? name.slice(0, -1)
+    : getName(name);
   const selected = selectedFile === filePath;
 
   return (
     <div
-      className='flex flex-row items-center cursor-pointer'
-      style={{ marginLeft: indentation * 16, gap: 4 }}
+      data-selected={selected}
+      className='flex flex-row items-center cursor-pointer hover:bg-neutral-600 pr-2 py-1 rounded-sm group data-[selected=true]:bg-neutral-600 mt-0.5'
+      style={{ paddingLeft: indentation * 16 + 8, gap: 4 }}
       onClick={type === 'file'
         ? () => selectFile(filePath!)
         : undefined
@@ -121,8 +125,8 @@ function TreeLabel(props: TreeLabelProps) {
         : <Folder size={16} strokeWidth={2} />
       }
       <span className={cn(
-        'cursor-pointer',
-        selected ? 'font-bold' : 'font-normal',
+        'cursor-pointer group-hover:text-neutral-100 text-sm',
+        selected ? 'text-neutral-100' : 'text-neutral-400',
       )}>
         {formattedName}
       </span>

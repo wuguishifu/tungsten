@@ -6,8 +6,10 @@ export default function Editor() {
   const [file] = useFile(filePath);
 
   return (
-    <pre>
-      {file}
-    </pre>
+    <div className='bg-neutral-800 h-full rounded-lg w-full p-4'>
+      <pre>
+        {file}
+      </pre>
+    </div>
   );
 }
