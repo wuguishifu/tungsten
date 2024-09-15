@@ -4,7 +4,8 @@ import { useAuth } from './auth-provider';
 
 type DataContextProps = {
   files: DataLeaf | null;
-  loadFile: (path: string) => Promise<string>;
+  createFile: (path: string) => Promise<void>;
+  createFolder: (path: string) => Promise<void>;
 }
 
 export type DataLeaf = {
@@ -50,16 +51,12 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
   }, []);
 
-  const loadFile = useCallback(async (path: string): Promise<string> => {
-    console.log(path);
-    const response = await fetch(`/api/files?filePath=${path}`, {
-      credentials: 'include',
-    });
-    if (!response.ok) {
-      throw new Error(await response.text());
-    }
-    const data = await response.text();
-    return data;
+  const createFolder = useCallback(async (path: string) => {
+    console.log('create foldder', path);
+  }, []);
+
+  const createFile = useCallback(async (path: string) => {
+    console.log('create file', path);
   }, []);
 
   useEffect(() => {
@@ -69,7 +66,8 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
 
   const value = {
     files,
-    loadFile,
+    createFile,
+    createFolder,
   };
 
   return (
