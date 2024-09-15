@@ -3,16 +3,23 @@ import Loading from './components/suspense/loading';
 import Login from './pages/login';
 import Notebook from './pages/notebook';
 import { useAuth } from './providers/auth-provider';
+import { EditorProvider } from './providers/editor-provider';
 
 export default function App() {
   return (
     <Routes>
-      {/* authentication */}
-      <Route path='/login' element={<Login />} />
-      <Route path='/:username'>
-        <Route element={<Protected />}>
-          <Route index element={<Notebook />} />
-          <Route path='*' element={<Notebook />} />
+      <Route path='/'>
+        {/* authentication */}
+        <Route path='login' element={<Login />} />
+        <Route path=':username' element={
+          <EditorProvider>
+            <Outlet />
+          </EditorProvider>
+        }>
+          <Route element={<Protected />}>
+            <Route index element={<Notebook />} />
+            <Route path='*' element={<Notebook />} />
+          </Route>
         </Route>
       </Route>
     </Routes>

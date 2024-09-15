@@ -1,29 +1,46 @@
 import { getExtension, getName } from '@/lib/file-utils';
-import { useAuth } from '@/providers/auth-provider';
-import { DataLeaf, useData } from '@/providers/data-provider';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useAuth } from './auth-provider';
+import { DataLeaf, useData } from './data-provider';
 
-export default function useFile(path?: string) {
+type EditorContextProps = {
+  originalFilename: string;
+  filename: string;
+  ext: string | null;
+  file: string | null;
+  dirty: boolean;
+  loading: boolean;
+  setFile: (data: string) => void;
+  onSave: () => Promise<void>;
+}
+
+const EditorContext = createContext({} as EditorContextProps);
+
+export function useEditor() {
+  return useContext(EditorContext);
+}
+
+export function EditorProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const navigate = useNavigate();
   const { username } = useAuth();
-
+  const { '*': filePath } = useParams();
   const { files, setFiles } = useData();
+
   const [file, setFile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dirty, setDirty] = useState(false);
 
-  const originalFilename = path?.split('/').pop() ?? 'Untitled.md';
-
+  const originalFilename = filePath?.split('/').pop() ?? 'Untitled.md';
   const filename = getName(originalFilename);
   const ext = getExtension(originalFilename);
 
   async function onSave() {
     if (!file) return;
-    if (path) {
+    if (filePath) {
       try {
-        const { updated, files } = await saveFile(path, file);
+        const { updated, files } = await saveFile(filePath, file);
         if (!updated) throw new Error('The file could not be saved. Please try again.');
         if (files) setFiles(files);
         setDirty(false);
@@ -75,21 +92,24 @@ export default function useFile(path?: string) {
   }
 
   useEffect(() => {
-    if (!path) return;
+    if (!filePath) return;
     setLoading(true);
-    loadFile(path)
-      .then(data => setFile(data))
+    loadFile(filePath)
+      .then(data => {
+        console.log(data);
+        setFile(data);
+      })
       .catch(error => {
         toast.error(error.message);
         navigate(`/${username}`);
       })
       .finally(() => setLoading(false));
-  }, [path, navigate, username]);
+  }, [filePath, navigate, username]);
 
-  return {
+  const value = {
     originalFilename,
     filename,
-    ext: ext ?? 'md',
+    ext,
     file,
     dirty,
     loading,
@@ -98,7 +118,13 @@ export default function useFile(path?: string) {
       setDirty(true);
     },
     onSave,
-  } as const;
+  };
+
+  return (
+    <EditorContext.Provider value={value}>
+      {children}
+    </EditorContext.Provider>
+  );
 }
 
 async function loadFile(filePath: string): Promise<string> {

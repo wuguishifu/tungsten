@@ -1,23 +1,14 @@
 import EditorTheme from '@/lib/codemirror-theme';
+import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { markdown } from '@codemirror/lang-markdown';
 import { Vim, vim } from '@replit/codemirror-vim';
 import ReactCodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { forwardRef, useEffect } from 'react';
 
-type CodeAreaProps = {
-  file: string;
-  setFile: (file: string) => void;
-  onSave: () => Promise<void>;
-};
-
-const CodeArea = forwardRef((props: CodeAreaProps, ref: React.Ref<ReactCodeMirrorRef>) => {
+const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const { editorSettings } = useSettings();
-  const {
-    file,
-    setFile,
-    onSave,
-  } = props;
+  const { file, setFile, onSave } = useEditor();
 
   useEffect(() => {
     Vim.defineEx('write', 'w', onSave);
@@ -43,7 +34,7 @@ const CodeArea = forwardRef((props: CodeAreaProps, ref: React.Ref<ReactCodeMirro
       lang='md'
       theme='dark'
       placeholder='start typing...'
-      value={file}
+      value={file ?? ''}
       extensions={[
         markdown(),
         EditorTheme,

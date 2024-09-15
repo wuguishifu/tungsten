@@ -1,22 +1,14 @@
-import useFile from '@/hooks/use-file';
+import { useEditor } from '@/providers/editor-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Settings } from 'lucide-react';
 import { useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import EditorSettings from '../editor-settings';
 import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import CodeArea from './code-area';
 
 export default function Editor() {
-  const { '*': filePath } = useParams();
-  const {
-    loading,
-    filename,
-    file,
-    setFile,
-    onSave,
-  } = useFile(filePath);
+  const { filename, loading } = useEditor();
 
   const editor = useRef<ReactCodeMirrorRef>(null);
 
@@ -43,9 +35,6 @@ export default function Editor() {
         {!loading ? (
           <CodeArea
             ref={editor}
-            file={file ?? ''}
-            setFile={setFile}
-            onSave={onSave}
           />
         ) : (
           <Loading />
