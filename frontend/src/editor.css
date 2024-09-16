@@ -87,6 +87,10 @@
   list-style: disc;
 }
 
+.md-preview li {
+  margin: 0.3em 0;
+}
+
 .md-preview ol {
   padding-left: 2em;
   list-style: decimal;
