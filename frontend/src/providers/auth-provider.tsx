@@ -97,6 +97,7 @@ export function AuthProvider({ children }: { children: Readonly<React.ReactNode>
       clearTimeout(authTimeout.current);
     }
     authTimeout.current = setTimeout(refreshAuth, data.tokenExpirationMs - 10000);
+    return data.username;
   }, [refreshAuth]);
 
   const value = {
