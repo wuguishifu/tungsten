@@ -30,7 +30,7 @@ const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
     <div
       className='h-full mt-2'
       onBlur={e => {
-        if (!e.target.contains(e.relatedTarget as Node) && dirty) {
+        if (!e.target.contains(e.relatedTarget as Node) && dirty && editorSettings.saveOnBlur) {
           onSave();
         }
       }}

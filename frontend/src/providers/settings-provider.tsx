@@ -5,8 +5,9 @@ type SettingsContextProps = {
   updateEditorSettings: <T extends keyof EditorSettings>(key: T, value: EditorSettings[T]) => void;
 };
 
-type EditorSettings = {
+export type EditorSettings = {
   vimEnabled?: boolean;
+  saveOnBlur?: boolean;
 }
 
 const SettingsContext = createContext({} as SettingsContextProps);
@@ -18,6 +19,7 @@ export function useSettings() {
 export function SettingsProvider({ children }: { children: Readonly<React.ReactNode> }) {
   const [editorSettings, setEditorSettings] = useState<EditorSettings>({
     vimEnabled: false,
+    saveOnBlur: true,
   });
 
   function updateEditorSettings<T extends keyof EditorSettings>(key: T, value: EditorSettings[T]) {

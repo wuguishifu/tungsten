@@ -2,7 +2,7 @@ import { useEditor } from '@/providers/editor-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Settings } from 'lucide-react';
 import { useRef } from 'react';
-import EditorSettings from '../editor-settings';
+import EditorSettingsView from '../editor-settings';
 import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import CodeArea from './code-area';
@@ -28,7 +28,7 @@ export default function Editor() {
             <Settings className='size-4 cursor-pointer' />
           </DialogTrigger>
           <DialogContent onCloseAutoFocus={e => e.preventDefault()}>
-            <EditorSettings />
+            <EditorSettingsView />
           </DialogContent>
         </Dialog>
       </div>
