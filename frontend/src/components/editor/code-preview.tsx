@@ -11,7 +11,13 @@ export default function CodePreview() {
     langPrefix: 'language-',
     typographer: false,
     quotes: '“”‘’',
+    linkify: true,
   });
+
+  md.renderer.rules.link_open = (tokens, idx) => {
+    const href = tokens[idx].href;
+    return `<a href="${href}" target="_blank" rel="noopener noreferrer">`;
+  }
 
   return (
     <div className='flex-1'>

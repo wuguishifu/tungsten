@@ -11,6 +11,9 @@ const EditorTheme = Prec.highest(
     '&.cm-focused': {
       outline: 'none',
     },
+    '.cm-scroller': {
+      overflow: 'visible',
+    },
     '.cm-gutters': {
       backgroundColor: 'transparent',
       border: 'none',

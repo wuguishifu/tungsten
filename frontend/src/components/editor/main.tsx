@@ -18,10 +18,10 @@ export default function Editor() {
   const editor = useRef<ReactCodeMirrorRef>(null);
 
   return (
-    <div className='h-full w-full flex flex-col scrollable pr-4 gap-4'>
+    <div className='h-full w-full flex flex-col pr-4 gap-4'>
       <div className='flex flex-row items-center justify-between p-4 bg-neutral-900 rounded-md'>
         <div className='flex flex-row items-center relative'>
-          <h1 className='text-xl'>{filename}</h1>
+          <h1 className='text-xl font-bold text-primary'>{filename}</h1>
           {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>
         <div className='flex flex-row items-center gap-4'>
@@ -29,7 +29,7 @@ export default function Editor() {
             className='flex flex-row items-center gap-2 cursor-pointer'
             onClick={() => updateEditorSettings('showPreview', !editorSettings.showPreview)}
           >
-            <h6 className='text-white text-sm'>
+            <h6 className='text-primary text-sm'>
               Preview
             </h6>
             <Switch checked={editorSettings.showPreview} />
@@ -40,7 +40,7 @@ export default function Editor() {
             }}
           >
             <DialogTrigger>
-              <Settings className='size-4 cursor-pointer' />
+              <Settings className='size-4 cursor-pointer text-primary' />
             </DialogTrigger>
             <DialogContent onCloseAutoFocus={e => e.preventDefault()}>
               <EditorSettingsView />
@@ -51,12 +51,12 @@ export default function Editor() {
       {loading ? (
         <Loading />
       ) : (
-        <div className='flex-1 flex gap-4'>
-          <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2'>
+        <div className='flex-1 flex gap-4 overflow-hidden'>
+          <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
             <CodeArea ref={editor} />
           </div>
           {editorSettings.showPreview && (
-            <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2'>
+            <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
               <CodePreview />
             </div>
           )}
