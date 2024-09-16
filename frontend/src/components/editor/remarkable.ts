@@ -1,6 +1,9 @@
-import { Remarkable } from 'remarkable';
+import markdownIt from 'markdown-it';
 
-const md = new Remarkable({
+// @ts-expect-error i have no type declaration file for this package :C
+import mk from '@iktakahiro/markdown-it-katex';
+
+const md = new markdownIt({
   html: true,
   xhtmlOut: false,
   breaks: false,
@@ -10,8 +13,11 @@ const md = new Remarkable({
   linkify: true,
 });
 
+md.use(mk);
+
 md.renderer.rules.link_open = (tokens, idx) => {
-  const href = tokens[idx].href;
+  const hrefIndex = tokens[idx].attrIndex('href');
+  const href = tokens[idx].attrs?.[hrefIndex][1] ?? '#';
   return `<a href="${href}" target="_blank" rel="noopener noreferrer">
       <span class="md-preview-link-text">`;
 }

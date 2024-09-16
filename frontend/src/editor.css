@@ -1,3 +1,20 @@
+.md-preview .katex-html {
+  display: none;
+}
+
+.md-preview .katex-mathml {
+  background-color: #282c34;
+  color: #ABB2BF;
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+}
+
+.md-preview .katex-block {
+  background-color: #282c34;
+  color: #ABB2BF;
+  border-radius: 3px;
+}
+
 .md-preview {
   color: #ABB2BF;
 }
