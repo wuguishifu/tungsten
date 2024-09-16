@@ -8,14 +8,15 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import CodeArea from './code-area';
 
 export default function Editor() {
-  const { filename, loading } = useEditor();
+  const { filename, loading, dirty } = useEditor();
 
   const editor = useRef<ReactCodeMirrorRef>(null);
 
   return (
     <div className='bg-neutral-900 h-full rounded-lg w-full p-4 flex flex-col'>
       <div className='flex flex-row items-center justify-between mt-2'>
-        <div className='flex flex-row items-center'>
+        <div className='flex flex-row items-center relative'>
+          {dirty && <div className='size-1 bg-neutral-500 rounded-full absolute -left-2' />}
           <h1 className='text-xl'>{filename}</h1>
         </div>
         <Dialog

@@ -44,7 +44,6 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
         if (!updated) throw new Error('The file could not be saved. Please try again.');
         if (files) setFiles(files);
         setDirty(false);
-        toast.success('Saved.');
       } catch (error) {
         console.log(error);
         if (error instanceof Error) {
@@ -75,7 +74,6 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       try {
         const { updated, files: newFiles } = await saveFile(`${newFileName}.md`, file);
         if (!updated) throw new Error('The file could not be saved. Please try again.');
-        console.log(newFiles);
         navigate(`/${username}/${newFileName}.md`);
         if (newFiles) setFiles(newFiles);
         setDirty(false);
@@ -96,7 +94,6 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     setLoading(true);
     loadFile(filePath)
       .then(data => {
-        console.log(data);
         setFile(data);
       })
       .catch(error => {

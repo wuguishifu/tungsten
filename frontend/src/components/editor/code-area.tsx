@@ -8,7 +8,7 @@ import { forwardRef, useEffect } from 'react';
 
 const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const { editorSettings } = useSettings();
-  const { file, setFile, onSave } = useEditor();
+  const { file, dirty, setFile, onSave } = useEditor();
 
   useEffect(() => {
     Vim.defineEx('write', 'w', onSave);
@@ -27,21 +27,30 @@ const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   }, [onSave]);
 
   return (
-    <ReactCodeMirror
-      ref={ref}
-      autoFocus
+    <div
       className='h-full mt-2'
-      lang='md'
-      theme='dark'
-      placeholder='start typing...'
-      value={file ?? ''}
-      extensions={[
-        markdown(),
-        EditorTheme,
-        ...(editorSettings.vimEnabled ? [vim()] : []),
-      ]}
-      onChange={value => setFile(value)}
-    />
+      onBlur={e => {
+        if (!e.target.contains(e.relatedTarget as Node) && dirty) {
+          onSave();
+        }
+      }}
+    >
+      <ReactCodeMirror
+        ref={ref}
+        autoFocus
+        className='h-full'
+        lang='md'
+        theme='dark'
+        placeholder='start typing...'
+        value={file ?? ''}
+        extensions={[
+          markdown(),
+          EditorTheme,
+          ...(editorSettings.vimEnabled ? [vim()] : []),
+        ]}
+        onChange={value => setFile(value)}
+      />
+    </div>
   );
 });
 
