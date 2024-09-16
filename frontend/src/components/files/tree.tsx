@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
 import AddItem from './add-item';
 import DeleteDialog from './delete-dialog';
+import RenameItem from './rename-item';
 
 type TreeContextProps = {
   selectedFile: string | null;
@@ -85,6 +86,7 @@ function TreeLeaf(props: TreeLeafProps) {
   } = useContext(TreeContext);
 
   const [addingItem, setAddingItem] = useState<false | 'file' | 'directory'>(false);
+  const [renaming, setRenaming] = useState(false);
 
   const formattedName = leaf.type === 'file' ? getName(leaf.name) : leaf.name;
 
@@ -94,61 +96,80 @@ function TreeLeaf(props: TreeLeafProps) {
       onClick={e => e.stopPropagation()}
     >
       {!root && (
-        <ContextMenu>
-          <ContextMenuTrigger>
-            <div
-              data-selected={selectedFile === leaf.path}
-              className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm group data-[selected=true]:bg-neutral-700 mt-0.5'
-              style={{ paddingLeft: indentation * 16 + 8 }}
-              onClick={leaf.type === 'file'
-                ? () => selectFile(leaf.path)
-                : undefined
-              }
-            >
-              {leaf.type === 'file'
-                ? <File size={16} className={textClassname} />
-                : <Folder size={16} className={textClassname} />
-              }
-              <span className={textClassname}>
-                {formattedName}
-              </span>
-            </div>
-          </ContextMenuTrigger>
-          <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
-            <ContextMenuItem
-              autoFocus={false}
-              className='select-none'
-              onClick={e => {
-                e.stopPropagation();
-                setAddingItem('file');
-              }}>
-              new file
-            </ContextMenuItem>
-            <ContextMenuItem
-              autoFocus={false}
-              className='select-none'
-              onClick={e => {
-                e.stopPropagation();
-                setAddingItem('directory');
-              }}>
-              new directory
-            </ContextMenuItem>
-            <ContextMenuItem
-              autoFocus={false}
-              className='select-none text-destructive data-[highlighted]:text-destructive'
-              onClick={e => {
-                e.stopPropagation();
-                showDeleteDialog({
-                  path: leaf.path,
-                  type: leaf.type,
-                  name: leaf.name,
-                });
-              }}
-            >
-              delete
-            </ContextMenuItem>
-          </ContextMenuContent>
-        </ContextMenu>
+        renaming ? (
+          <RenameItem
+            formattedName={formattedName}
+            leaf={leaf}
+            indentation={indentation}
+            stopEditing={() => setRenaming(false)}
+          />
+        ) : (
+          <ContextMenu>
+            <ContextMenuTrigger>
+              <div
+                data-selected={selectedFile === leaf.path}
+                className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm group data-[selected=true]:bg-neutral-700 mt-0.5'
+                style={{ paddingLeft: indentation * 16 + 8 }}
+                onClick={leaf.type === 'file'
+                  ? () => selectFile(leaf.path)
+                  : undefined
+                }
+              >
+                {leaf.type === 'file'
+                  ? <File size={16} className={textClassname} />
+                  : <Folder size={16} className={textClassname} />
+                }
+                <span className={textClassname}>
+                  {formattedName}
+                </span>
+              </div>
+            </ContextMenuTrigger >
+            <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none'
+                onClick={e => {
+                  e.stopPropagation();
+                  setAddingItem('file');
+                }}>
+                new file
+              </ContextMenuItem>
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none'
+                onClick={e => {
+                  e.stopPropagation();
+                  setAddingItem('directory');
+                }}>
+                new directory
+              </ContextMenuItem>
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none'
+                onClick={e => {
+                  e.stopPropagation();
+                  setRenaming(true);
+                }}
+              >
+                rename
+              </ContextMenuItem>
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none text-destructive data-[highlighted]:text-destructive'
+                onClick={e => {
+                  e.stopPropagation();
+                  showDeleteDialog({
+                    path: leaf.path,
+                    type: leaf.type,
+                    name: leaf.name,
+                  });
+                }}
+              >
+                delete
+              </ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu >
+        )
       )}
       {addingItem && (
         <AddItem

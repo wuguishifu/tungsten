@@ -98,6 +98,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       })
       .catch(error => {
         toast.error(error.message);
+        setFile(null);
         navigate(`/${username}`);
       })
       .finally(() => setLoading(false));

@@ -1,3 +1,4 @@
+import { fileExists } from '@/lib/file-utils';
 import { DataLeaf, DataType, useData } from '@/providers/data-provider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -70,21 +71,3 @@ export default function DeleteDialog(props: DeleteDialogProps) {
     </Dialog>
   );
 }
-
-// shitty o(n) implementation
-function fileExists(path: string, files: DataLeaf) {
-  if (!files) return false;
-
-  function exists(leaf: DataLeaf): boolean {
-    if (leaf.path === path) {
-      return true;
-    }
-    if (leaf.type === 'directory') {
-      return leaf.children.some(exists);
-    }
-    return false
-  }
-
-  return exists(files);
-};
-

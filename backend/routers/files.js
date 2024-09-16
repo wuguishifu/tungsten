@@ -88,6 +88,7 @@ router.put('/name', (req, res) => {
     newPath = path.join(req.homeDirectory, newPath);
     if (!fs.existsSync(oldPath)) return res.status(404).send('File not found');
     if (fs.existsSync(newPath)) return res.status(400).send('File already exists');
+    if (newPath.split('/').length !== oldPath.split('/').length) return res.status(400).send('Cannot change file structure');
     fs.renameSync(oldPath, newPath);
     res.status(200).send({ renamed: true, files: readData(req.homeDirectory) });
 });

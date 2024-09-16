@@ -9,6 +9,8 @@ type DataContextProps = {
   createDirectory: (path: string) => Promise<void>;
   deleteFile: (path: string) => Promise<DataLeaf>;
   deleteDirectory: (path: string) => Promise<DataLeaf>;
+  renameFile: (path: string, newPath: string) => Promise<DataLeaf>;
+  renameDirectory: (path: string, newPath: string) => Promise<DataLeaf>;
 }
 
 export type DataLeaf = {
@@ -126,6 +128,36 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     return data.files ?? null;
   }, []);
 
+  const renameFile = useCallback(async (path: string, newPath: string) => {
+    const response = await fetch(`/api/files/name?oldPath=${path}&newPath=${newPath}`, {
+      method: 'PUT',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.renamed) {
+      setFiles(data.files);
+    }
+    return data.files ?? null;
+  }, []);
+
+  const renameDirectory = useCallback(async (path: string, newPath: string) => {
+    const response = await fetch(`/api/folders/name?oldPath=${path}&newPath=${newPath}`, {
+      method: 'PUT',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.renamed) {
+      setFiles(data.files);
+    }
+    return data.files ?? null;
+  }, []);
+
   useEffect(() => {
     if (!username) return;
     loadFiles();
@@ -138,6 +170,8 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     createDirectory,
     deleteFile,
     deleteDirectory,
+    renameFile,
+    renameDirectory,
   };
 
   return (
