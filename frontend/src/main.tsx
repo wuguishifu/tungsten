@@ -8,6 +8,7 @@ import { DataProvider } from './providers/data-provider.tsx';
 import { SettingsProvider } from './providers/settings-provider.tsx';
 
 import './index.css';
+import './editor.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

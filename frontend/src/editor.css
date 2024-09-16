@@ -1,23 +1,79 @@
-.cm-editor {
+.md-preview {
+  color: #ABB2BF;
+}
+
+.md-preview h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+  font-weight: bold;
+}
+
+.md-preview h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+  font-weight: bold;
+}
+
+.md-preview h3 {
+  font-size: 1.17em;
+  margin: 1em 0;
+  font-weight: bold;
+}
+
+.md-preview h4 {
+  font-size: 1em;
+  margin: 1.33em 0;
+  font-weight: bold;
+}
+
+.md-preview h5 {
+  font-size: 0.83em;
+  margin: 1.67em 0;
+  font-weight: bold;
+}
+
+.md-preview h6 {
+  font-size: 0.67em;
+  margin: 2.33em 0;
+  font-weight: bold;
+}
+
+.md-preview p {
+  margin: 1em 0;
+}
+
+.md-preview code:not(pre > code) {
+  background-color: #282c34;
+  color: #ABB2BF;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+.md-preview pre {
+  background-color: #282c34;
+  color: #ABB2BF;
+  padding: 1em;
+  border-radius: 3px;
+}
+
+.scrollable::-webkit-scrollbar {
   background-color: transparent;
-  height: 100%;
-  outline: none;
-  border: none;
-  color: #f5f5f5;
+  width: 8px;
 }
 
-.cm-cursor {
-  border-left: 1px solid #f5f5f5 !important;
+.scrollable::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
-.ͼo.cm-focused .cm-fat-cursor .CodeMirror-cursor {
-  background-color: var(--nord4);
-  opacity: 0.5;
-  width: 5px;
+.scrollable::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: #404040;
 }
 
-.cm-animate-fat-cursor {
-  background-color: var(--nord4);
-  opacity: 0.5;
-  width: 5px;
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: transparent;
+}
+
+.scrollable {
+  overflow-y: scroll;
 }

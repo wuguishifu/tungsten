@@ -1,46 +1,67 @@
 import { useEditor } from '@/providers/editor-provider';
+import { useSettings } from '@/providers/settings-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Settings } from 'lucide-react';
 import { useRef } from 'react';
 import EditorSettingsView from '../editor-settings';
 import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import { Switch } from '../ui/switch';
 import CodeArea from './code-area';
+import CodePreview from './code-preview';
 
 export default function Editor() {
   const { filename, loading, dirty } = useEditor();
 
+  const { editorSettings, updateEditorSettings } = useSettings();
+
   const editor = useRef<ReactCodeMirrorRef>(null);
 
   return (
-    <div className='bg-neutral-900 h-full rounded-lg w-full p-4 flex flex-col'>
-      <div className='flex flex-row items-center justify-between mt-2'>
+    <div className='h-full w-full flex flex-col scrollable pr-4 gap-4'>
+      <div className='flex flex-row items-center justify-between p-4 bg-neutral-900 rounded-md'>
         <div className='flex flex-row items-center relative'>
-          {dirty && <div className='size-1 bg-neutral-500 rounded-full absolute -left-2' />}
           <h1 className='text-xl'>{filename}</h1>
+          {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>
-        <Dialog
-          onOpenChange={(focused) => {
-            if (!focused) editor.current?.view?.contentDOM.focus();
-          }}
-        >
-          <DialogTrigger>
-            <Settings className='size-4 cursor-pointer' />
-          </DialogTrigger>
-          <DialogContent onCloseAutoFocus={e => e.preventDefault()}>
-            <EditorSettingsView />
-          </DialogContent>
-        </Dialog>
+        <div className='flex flex-row items-center gap-4'>
+          <div
+            className='flex flex-row items-center gap-2 cursor-pointer'
+            onClick={() => updateEditorSettings('showPreview', !editorSettings.showPreview)}
+          >
+            <h6 className='text-white text-sm'>
+              Preview
+            </h6>
+            <Switch checked={editorSettings.showPreview} />
+          </div>
+          <Dialog
+            onOpenChange={(focused) => {
+              if (!focused) editor.current?.view?.contentDOM.focus();
+            }}
+          >
+            <DialogTrigger>
+              <Settings className='size-4 cursor-pointer' />
+            </DialogTrigger>
+            <DialogContent onCloseAutoFocus={e => e.preventDefault()}>
+              <EditorSettingsView />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-      <div className='flex-1'>
-        {!loading ? (
-          <CodeArea
-            ref={editor}
-          />
-        ) : (
-          <Loading />
-        )}
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className='flex-1 flex gap-4'>
+          <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2'>
+            <CodeArea ref={editor} />
+          </div>
+          {editorSettings.showPreview && (
+            <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2'>
+              <CodePreview />
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

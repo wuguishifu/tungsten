@@ -3,7 +3,7 @@ import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { markdown } from '@codemirror/lang-markdown';
 import { Vim, vim } from '@replit/codemirror-vim';
-import ReactCodeMirror, { ReactCodeMirrorRef } from '@uiw/react-codemirror';
+import ReactCodeMirror, { EditorView, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { forwardRef, useEffect } from 'react';
 
 const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
@@ -28,7 +28,7 @@ const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
 
   return (
     <div
-      className='h-full mt-2'
+      className='h-full pt-2'
       onBlur={e => {
         if (!e.target.contains(e.relatedTarget as Node) && dirty && editorSettings.saveOnBlur) {
           onSave();
@@ -47,6 +47,7 @@ const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
           markdown(),
           EditorTheme,
           ...(editorSettings.vimEnabled ? [vim()] : []),
+          EditorView.lineWrapping,
         ]}
         onChange={value => setFile(value)}
       />
