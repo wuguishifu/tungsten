@@ -1,5 +1,5 @@
 import { EditorSettings, useSettings } from '@/providers/settings-provider';
-import { Switch } from './ui/switch';
+import { Switch } from '../ui/switch';
 
 export default function EditorSettingsView() {
   return (

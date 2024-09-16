@@ -66,23 +66,25 @@
 }
 
 .md-preview ul {
-  margin: 1em 0;
   padding-left: 2em;
   list-style: disc;
 }
 
-.md-preview li {
-  margin: 0.5em 0;
-}
-
 .md-preview ol {
-  margin: 1em 0;
   padding-left: 2em;
   list-style: decimal;
 }
 
 .md-preview a {
+  display: inline;
   color: #61afef;
+}
+
+.md-preview-link-text {
+  display: inline;
+}
+
+.md-preview-link-text:hover {
   text-decoration: underline;
   text-underline-offset: 4px;
 }

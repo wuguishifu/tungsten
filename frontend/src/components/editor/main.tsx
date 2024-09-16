@@ -3,12 +3,12 @@ import { useSettings } from '@/providers/settings-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Settings } from 'lucide-react';
 import { useRef } from 'react';
-import EditorSettingsView from '../editor-settings';
 import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Switch } from '../ui/switch';
 import CodeArea from './code-area';
 import CodePreview from './code-preview';
+import EditorSettingsView from './editor-settings';
 
 export default function Editor() {
   const { filename, loading, dirty } = useEditor();
