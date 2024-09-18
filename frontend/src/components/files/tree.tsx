@@ -123,7 +123,7 @@ function TreeLeaf(props: TreeLeafProps) {
                   {formattedName}
                 </span>
               </div>
-            </ContextMenuTrigger >
+            </ContextMenuTrigger>
             <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
               <ContextMenuItem
                 autoFocus={false}
@@ -168,7 +168,7 @@ function TreeLeaf(props: TreeLeafProps) {
                 delete
               </ContextMenuItem>
             </ContextMenuContent>
-          </ContextMenu >
+          </ContextMenu>
         )
       )}
       {addingItem && (

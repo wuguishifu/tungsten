@@ -7,6 +7,7 @@ const { userRouter, authorizer } = require('./routers/users');
 const fileRouter = require('./routers/files');
 const folderRouter = require('./routers/folders');
 const publicRouter = require('./routers/public');
+const deletedRouter = require('./routers/deleted');
 
 const app = express();
 let port = +process.env.PORT ?? 4370;
@@ -37,6 +38,7 @@ api.use('/public', publicRouter);
 api.use(authorizer);
 api.use('/files', fileRouter);
 api.use('/folders', folderRouter);
+api.use('/deleted', deletedRouter);
 
 app.use('/api', api);
 

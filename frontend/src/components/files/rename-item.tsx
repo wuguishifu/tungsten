@@ -42,7 +42,7 @@ export default function RenameItem(props: RenameItemProps) {
       let newPath = value;
       if (leaf.type === 'file') {
         const oldPath = leaf.path;
-        newPath = `${leaf.dirPath}/${value}`;
+        newPath = `${leaf.dirPath}/${value}.md`;
         newFiles = await renameFile(oldPath, newPath);
       } else {
         const oldPath = leaf.path;
@@ -55,7 +55,7 @@ export default function RenameItem(props: RenameItemProps) {
       if (!newFiles || !filePath) return;
       if (!fileExists(filePath, newFiles)) {
         if (leaf.type === 'file') {
-          navigate(`/${username}/${newPath}`);
+          navigate(`/${username}${newPath}`);
         } else {
           navigate(`/${username}`);
         }

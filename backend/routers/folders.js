@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { readData, sanitizePath } = require('../helpers/file-utils');
+const { readData, sanitizePath, findAllChildFiles, generateId } = require('../helpers/file-utils');
 
 const DATA_PATH = process.env.DATA_PATH;
 
@@ -12,8 +12,13 @@ router.use((req, _, next) => {
     next();
 });
 
+const reservedFolderNames = [
+    '.trash',
+];
+
 router.post('/', (req, res) => {
     let { folderPath } = req.body;
+    if (reservedFolderNames.includes(path.basename(folderPath))) return res.status(400).send('Cannot create folder with reserved name');
     if (!folderPath) return res.status(400).send('Missing folder path');
     folderPath = sanitizePath(folderPath);
     if (!folderPath) return res.status(400).send('Invalid folder path');
@@ -48,7 +53,16 @@ router.delete('/', (req, res) => {
     folderPath = path.join(req.homeDirectory, folderPath);
     if (!fs.existsSync(folderPath)) return res.status(404).send('Folder not found');
     if (!fs.statSync(folderPath).isDirectory()) return res.status(400).send('Cannot delete file');
-    // if (fs.readdirSync(folderPath).length > 0) return res.status(400).send('Cannot delete non-empty folder');
+    const trashPath = path.join(req.homeDirectory, '.trash');
+    if (!fs.existsSync(trashPath)) fs.mkdirSync(trashPath, { recursive: true });
+    const files = findAllChildFiles(folderPath);
+    if (files.length > 0) files.forEach(({ fullPath, basename }) => {
+        const parts = basename.split('.');
+        const ext = parts.pop();
+        const base = parts.join('.');
+        const newFileName = `${base}.${ext}.${generateId(8)}`;
+        fs.renameSync(fullPath, path.join(trashPath, newFileName));
+    });
     fs.rmSync(folderPath, { recursive: true });
     res.status(200).send({ deleted: true, files: readData(req.homeDirectory) });
 });

@@ -4,6 +4,7 @@ import { useAuth } from './auth-provider';
 
 type DataContextProps = {
   files: DataLeaf | null;
+  deleted: string[] | null;
   setFiles: Dispatch<SetStateAction<DataLeaf | null>>;
   createFile: (path: string) => Promise<void>;
   createDirectory: (path: string) => Promise<void>;
@@ -11,6 +12,8 @@ type DataContextProps = {
   deleteDirectory: (path: string) => Promise<DataLeaf>;
   renameFile: (path: string, newPath: string) => Promise<DataLeaf>;
   renameDirectory: (path: string, newPath: string) => Promise<DataLeaf>;
+  restoreFile: (name: string) => Promise<string | null>;
+  permanentlyDeleteFile: (name: string) => Promise<void>;
 }
 
 export type DataLeaf = {
@@ -36,6 +39,22 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   const { username } = useAuth();
 
   const [files, setFiles] = useState<DataLeaf | null>(null);
+  const [deleted, setDeleted] = useState<string[] | null>(null);
+
+  const updateFiles = useCallback((files: DataLeaf | null) => {
+    if (files) {
+      if (files.type !== 'directory') throw new Error('Invalid data.');
+      const deletedLeaf = files.children.find((child) => child.name === '.trash');
+      if (deletedLeaf?.type === 'directory') {
+        setDeleted(deletedLeaf.children.map((child) => child.name));
+      }
+      files.children = files.children.filter(child => child.name !== '.trash');
+      setFiles(files);
+    } else {
+      setFiles(null);
+      setDeleted(null);
+    }
+  }, []);
 
   const loadFiles = useCallback(async () => {
     try {
@@ -46,7 +65,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
         throw new Error(await response.text());
       }
       const data = await response.json();
-      setFiles(data.files);
+      updateFiles(data.files);
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -56,7 +75,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
         toast.error('Unknown error.');
       }
     }
-  }, []);
+  }, [updateFiles]);
 
   const createDirectory = useCallback(async (path: string) => {
     const response = await fetch('/api/folders', {
@@ -74,9 +93,9 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
     const data = await response.json();
     if (data.created) {
-      setFiles(data.files);
+      updateFiles(data.files);
     }
-  }, []);
+  }, [updateFiles]);
 
   const createFile = useCallback(async (path: string) => {
     const response = await fetch('/api/files', {
@@ -94,9 +113,9 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
     const data = await response.json();
     if (data.created) {
-      setFiles(data.files);
+      updateFiles(data.files);
     }
-  }, []);
+  }, [updateFiles]);
 
   const deleteFile = useCallback(async (path: string) => {
     const response = await fetch(`/api/files?filePath=${path}`, {
@@ -108,10 +127,10 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
     const data = await response.json();
     if (data.deleted) {
-      setFiles(data.files);
+      updateFiles(data.files);
     }
     return data.files ?? null;
-  }, []);
+  }, [updateFiles]);
 
   const deleteDirectory = useCallback(async (path: string) => {
     const response = await fetch(`/api/folders?folderPath=${path}`, {
@@ -123,10 +142,10 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
     const data = await response.json();
     if (data.deleted) {
-      setFiles(data.files);
+      updateFiles(data.files);
     }
     return data.files ?? null;
-  }, []);
+  }, [updateFiles]);
 
   const renameFile = useCallback(async (path: string, newPath: string) => {
     const response = await fetch(`/api/files/name?oldPath=${path}&newPath=${newPath}`, {
@@ -138,10 +157,10 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
     const data = await response.json();
     if (data.renamed) {
-      setFiles(data.files);
+      updateFiles(data.files);
     }
     return data.files ?? null;
-  }, []);
+  }, [updateFiles]);
 
   const renameDirectory = useCallback(async (path: string, newPath: string) => {
     const response = await fetch(`/api/folders/name?oldPath=${path}&newPath=${newPath}`, {
@@ -153,10 +172,39 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
     const data = await response.json();
     if (data.renamed) {
-      setFiles(data.files);
+      updateFiles(data.files);
     }
     return data.files ?? null;
-  }, []);
+  }, [updateFiles]);
+
+  const restoreFile = useCallback(async (name: string) => {
+    const response = await fetch(`/api/deleted/restore?filePath=${name}`, {
+      method: 'PUT',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.restored) {
+      updateFiles(data.files);
+    }
+    return data.restored ? (name.split('/').pop() ?? null) : null;
+  }, [updateFiles]);
+
+  const permanentlyDeleteFile = useCallback(async (name: string) => {
+    const response = await fetch(`/api/deleted?filePath=${name}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.deleted) {
+      updateFiles(data.files);
+    }
+  }, [updateFiles]);
 
   useEffect(() => {
     if (!username) return;
@@ -165,6 +213,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
 
   const value = {
     files,
+    deleted,
     setFiles,
     createFile,
     createDirectory,
@@ -172,6 +221,8 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     deleteDirectory,
     renameFile,
     renameDirectory,
+    restoreFile,
+    permanentlyDeleteFile,
   };
 
   return (

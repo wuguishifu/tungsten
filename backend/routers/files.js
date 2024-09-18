@@ -1,7 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { readData, sanitizePath } = require('../helpers/file-utils');
+const { readData, sanitizePath, generateId } = require('../helpers/file-utils');
 
 const DATA_PATH = process.env.DATA_PATH;
 
@@ -101,7 +101,15 @@ router.delete('/', (req, res) => {
     filePath = path.join(req.homeDirectory, filePath);
     if (!fs.existsSync(filePath)) return res.status(404).send('File not found');
     if (fs.statSync(filePath).isDirectory()) return res.status(400).send('Cannot delete directory');
-    fs.unlinkSync(filePath);
+    const fileName = path.basename(filePath);
+    const trashPath = path.join(req.homeDirectory, '.trash');
+    if (!fs.existsSync(trashPath)) fs.mkdirSync(trashPath, { recursive: true });
+    const parts = fileName.split('.');
+    const ext = parts.pop();
+    const base = parts.join('.');
+    const newFileName = `${base}.${ext}.${generateId(8)}`;
+    const newPath = path.join(trashPath, newFileName)
+    fs.renameSync(filePath, newPath);
     res.status(200).send({ deleted: true, files: readData(req.homeDirectory) });
 });
 

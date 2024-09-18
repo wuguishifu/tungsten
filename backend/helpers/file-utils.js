@@ -44,15 +44,50 @@ function readData(homeDirectory) {
     return r(homeDirectory);
 }
 
+function findAllChildFiles(dirPath) {
+    const filesArray = [];
+    function r(dir) {
+        const items = fs.readdirSync(dir);
+        items.forEach(i => {
+            const itemPath = path.join(dir, i);
+            if (fs.statSync(itemPath).isDirectory()) {
+                r(itemPath);
+            } else {
+                filesArray.push({
+                    basename: path.basename(itemPath),
+                    fullPath: itemPath,
+                });
+            }
+        });
+    }
+
+    r(dirPath);
+    return filesArray;
+}
+
 function sanitizePath(filePath, opts = { normalize: true }) {
     let p = filePath;
     if (opts.normalize) p = path.normalize(filePath);
     if (p.includes('..')) return null;
-    if (!/^[a-zA-Z0-9\/\\\-_ .]+$/.test(p)) return null;
+    if (!/^[a-zA-Z0-9\/\\\-_ .\(\)]+$/.test(p)) return null;
     return p;
+}
+
+function generateId(length = 6) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
 }
 
 module.exports = {
     readData,
     sanitizePath,
+    findAllChildFiles,
+    generateId,
 };

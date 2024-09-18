@@ -2,6 +2,8 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const args = require('minimist')(process.argv.slice(2));
 
+const { reservedKeywords } = require('./helpers/reserved');
+
 const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const SALT_ROUNDS = 10;
 
@@ -17,7 +19,15 @@ const readUsers = () => {
 
 const createUser = (username, password) => {
     const users = readUsers();
-    if (users[username]) return process.exit(1);
+    if (users[username]) {
+        console.log('User already exists.');
+        return process.exit(1);
+    }
+
+    if (reservedKeywords.includes(username)) {
+        console.log('Invalid username. Check the README.md for a list of reserved keywords.');
+        return process.exit(1);
+    }
 
     const hash = bcrypt.hashSync(password, SALT_ROUNDS);
     users[username] = { password: hash };

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AddItem from './files/add-item';
+import RecentlyDeleted from './files/recently-deleted';
 import Tree from './files/tree';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from './ui/context-menu';
 
@@ -42,6 +43,7 @@ export default function Sidebar() {
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
-    </div >
+      <RecentlyDeleted />
+    </div>
   );
 }

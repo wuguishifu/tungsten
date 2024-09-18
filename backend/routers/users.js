@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const ms = require('ms');
 const path = require('path');
 
+const { reservedKeywords } = require('../helpers/reserved');
+
 const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_TTL = process.env.JWT_TTL;
@@ -30,6 +32,7 @@ router.post('/register', async (req, res) => {
     const { username, password } = req.body;
     if (!username) return res.status(400).send('Missing username');
     if (!password) return res.status(400).send('Missing password');
+    if (reservedKeywords.includes(username)) return res.status(400).send('Invalid username');
     const users = readUsers();
     if (users[username]) return res.status(400).send('User already exists');
     const hash = await bcrypt.hash(password, SALT_ROUNDS);
