@@ -2,29 +2,123 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { getName } from '@/lib/file-utils';
 import { useData } from '@/providers/data-provider';
 import { File } from 'lucide-react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { toast } from 'sonner';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '../ui/dialog';
+import DeleteDialog from './delete-dialog';
+import { buttonVariants } from '../ui/button';
+
+type RecentlyDeletedContextProps = {
+  restoreFile: (name: string) => Promise<void>;
+  showDeleteDialog: (name: string) => void;
+}
+
+const RecentlyDeletedContext = createContext({} as RecentlyDeletedContextProps);
 
 export default function RecentlyDeleted() {
-  const { deleted } = useData();
+  const {
+    deleted,
+    restoreFile: commitRestore,
+    permanentlyDeleteAll,
+  } = useData();
+
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [deleteItem, setDeleteItem] = useState<string | undefined>();
+  const showDeleteDialog = useCallback((name: string) => {
+    setDeleteDialogVisible(true);
+    setDeleteItem(name);
+  }, []);
+
+  const restoreFile = useCallback(async (name: string) => {
+    const newName = await commitRestore(name);
+    if (newName !== name && newName !== null) {
+      toast.success(`Restored ${getName(name)} as ${getName(newName)}.`);
+    } else {
+      toast.success(`Restored ${getName(name)}.`);
+    }
+  }, [commitRestore]);
+
+  const [clearDialogVisible, setClearDialogVisible] = useState(false);
+
+  const value = {
+    restoreFile,
+    showDeleteDialog,
+  }
 
   return (
-    <Accordion type='single' collapsible>
-      <AccordionItem value='item-1' className='border-b-0'>
-        <AccordionTrigger className='mt-auto flex flex-row items-center gap-2 group cursor-pointer'>
-          <span className='group-hover:text-neutral-100 text-sm text-neutral-400'>
-            recently deleted
-          </span>
-        </AccordionTrigger>
-        <AccordionContent className='pb-0'>
-          {!!deleted?.length && (
-            deleted.map(name => (
-              <RecentlyDeletedItem name={name} key={name} />
-            ))
-          )}
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
+    <>
+      <DeleteDialog
+        open={deleteDialogVisible}
+        onOpenChange={setDeleteDialogVisible}
+        isPermanent
+        name={deleteItem}
+        path={deleteItem}
+        type='file'
+      />
+      <Dialog open={clearDialogVisible} onOpenChange={setClearDialogVisible}>
+        <DialogContent>
+          <DialogTitle>
+            are you sure you want to empty the trash?
+          </DialogTitle>
+          <DialogDescription>
+            this cannot be undone.
+          </DialogDescription>
+          <DialogFooter>
+            <DialogClose className={buttonVariants({ variant: 'ghost' })}>
+              cancel
+            </DialogClose>
+            <DialogClose
+              className={buttonVariants({ variant: 'destructive' })}
+              onClick={async () => {
+                await permanentlyDeleteAll();
+                setClearDialogVisible(false);
+              }}
+            >
+              empty trash
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <RecentlyDeletedContext.Provider value={value}>
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-1' className='border-b-0'>
+            <ContextMenu>
+              <ContextMenuTrigger>
+                <AccordionTrigger className='mt-auto flex flex-row items-center gap-2 group cursor-pointer'>
+                  <span className='group-hover:text-neutral-100 text-sm text-neutral-400'>
+                    recently deleted
+                  </span>
+                </AccordionTrigger>
+              </ContextMenuTrigger>
+              <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
+                <ContextMenuItem
+                  autoFocus={false}
+                  className='select-none text-destructive data-[highlighted]:text-destructive'
+                  onClick={async e => {
+                    e.stopPropagation();
+                    setClearDialogVisible(true);
+                  }}
+                >
+                  empty trash
+                </ContextMenuItem>
+              </ContextMenuContent>
+            </ContextMenu>
+            <AccordionContent className='pb-0'>
+              {deleted?.length ? (
+                deleted.map(name => (
+                  <RecentlyDeletedItem name={name} key={name} />
+                ))
+              ) : (
+                <div className='text-neutral-600 text-xs pt-4'>
+                  there's nothing here yet!
+                </div>
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </RecentlyDeletedContext.Provider>
+    </>
   );
 }
 
@@ -37,7 +131,7 @@ function RecentlyDeletedItem(props: RecentlyDeletedItemProps) {
     name,
   } = props;
 
-  const { restoreFile, permanentlyDeleteFile } = useData();
+  const { restoreFile, showDeleteDialog } = useContext(RecentlyDeletedContext);
 
   return (
     <div
@@ -60,12 +154,7 @@ function RecentlyDeletedItem(props: RecentlyDeletedItemProps) {
             className='select-none'
             onClick={async e => {
               e.stopPropagation();
-              const newName = await restoreFile(name);
-              if (newName !== name && newName !== null) {
-                toast.success(`Restored ${getName(name)} as ${getName(newName)}.`);
-              } else {
-                toast.success(`Restored ${getName(name)}.`);
-              }
+              restoreFile(name);
             }}
           >
             restore
@@ -75,16 +164,7 @@ function RecentlyDeletedItem(props: RecentlyDeletedItemProps) {
             className='select-none text-destructive data-[highlighted]:text-destructive'
             onClick={async e => {
               e.stopPropagation();
-              try {
-                await permanentlyDeleteFile(name);
-              } catch (error) {
-                console.error(error);
-                if (error instanceof Error) {
-                  toast.error(error.message);
-                } else {
-                  toast.error('An unknown error occurred.');
-                }
-              }
+              showDeleteDialog(name);
             }}
           >
             permanently delete
@@ -92,5 +172,5 @@ function RecentlyDeletedItem(props: RecentlyDeletedItemProps) {
         </ContextMenuContent>
       </ContextMenu>
     </div>
-  )
+  );
 }

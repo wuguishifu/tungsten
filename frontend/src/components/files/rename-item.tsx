@@ -1,4 +1,3 @@
-import { fileExists } from '@/lib/file-utils';
 import { DataLeaf, useData } from '@/providers/data-provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -38,27 +37,22 @@ export default function RenameItem(props: RenameItemProps) {
     }
 
     try {
-      let newFiles: DataLeaf | null = null;
       let newPath = value;
       if (leaf.type === 'file') {
         const oldPath = leaf.path;
         newPath = `${leaf.dirPath}/${value}.md`;
-        newFiles = await renameFile(oldPath, newPath);
+        await renameFile(oldPath, newPath);
       } else {
         const oldPath = leaf.path;
         const parts = leaf.dirPath.split('/');
         parts.pop();
         newPath = `${parts.join('/')}/${value}`;
-        newFiles = await renameDirectory(oldPath, newPath);
+        await renameDirectory(oldPath, newPath);
       }
 
-      if (!newFiles || !filePath) return;
-      if (!fileExists(filePath, newFiles)) {
-        if (leaf.type === 'file') {
-          navigate(`/${username}${newPath}`);
-        } else {
-          navigate(`/${username}`);
-        }
+      if (!filePath) return;
+      if (leaf.type === 'file' && filePath === leaf.path) {
+        return navigate(`/${username}`)
       }
 
       stopEditing();

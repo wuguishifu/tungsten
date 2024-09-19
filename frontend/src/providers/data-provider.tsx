@@ -14,6 +14,7 @@ type DataContextProps = {
   renameDirectory: (path: string, newPath: string) => Promise<DataLeaf>;
   restoreFile: (name: string) => Promise<string | null>;
   permanentlyDeleteFile: (name: string) => Promise<void>;
+  permanentlyDeleteAll: () => Promise<void>;
 }
 
 export type DataLeaf = {
@@ -206,6 +207,20 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
   }, [updateFiles]);
 
+  const permanentlyDeleteAll = useCallback(async () => {
+    const response = await fetch('/api/deleted/all', {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.deleted) {
+      updateFiles(data.files);
+    }
+  }, [updateFiles]);
+
   useEffect(() => {
     if (!username) return;
     loadFiles();
@@ -223,6 +238,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     renameDirectory,
     restoreFile,
     permanentlyDeleteFile,
+    permanentlyDeleteAll,
   };
 
   return (

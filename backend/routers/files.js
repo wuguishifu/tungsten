@@ -107,9 +107,15 @@ router.delete('/', (req, res) => {
     const parts = fileName.split('.');
     const ext = parts.pop();
     const base = parts.join('.');
-    const newFileName = `${base}.${ext}.${generateId(8)}`;
-    const newPath = path.join(trashPath, newFileName)
-    fs.renameSync(filePath, newPath);
+    let newFilePath = path.join(trashPath, `${base}.${ext}`);
+    if (fs.existsSync(newFilePath)) {
+        let i = 1;
+        while (fs.existsSync(newFilePath)) {
+            newFilePath = path.join(trashPath, `${base}.${ext}.${i}`);
+            i++;
+        }
+    }
+    fs.renameSync(filePath, newFilePath);
     res.status(200).send({ deleted: true, files: readData(req.homeDirectory) });
 });
 

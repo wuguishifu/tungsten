@@ -90,7 +90,10 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   }
 
   useEffect(() => {
-    if (!filePath) return;
+    if (!filePath) {
+      setFile(null);
+      return;
+    };
     setLoading(true);
     loadFile(filePath)
       .then(data => {

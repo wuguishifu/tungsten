@@ -11,18 +11,20 @@ type DeleteDialogProps = {
   name?: string;
   type?: DataType;
   path?: string;
+  isPermanent?: boolean;
 };
 
 export default function DeleteDialog(props: DeleteDialogProps) {
   const {
     open,
-    onOpenChange,
     name,
     type,
     path,
+    isPermanent = false,
+    onOpenChange,
   } = props;
 
-  const { deleteFile, deleteDirectory } = useData();
+  const { deleteFile, deleteDirectory, permanentlyDeleteFile } = useData();
   const { '*': filepath, username } = useParams();
   const navigate = useNavigate();
 
@@ -30,14 +32,20 @@ export default function DeleteDialog(props: DeleteDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogTitle>
-          Are you sure you want to delete the {type} "{name}"?
+          are you sure you want to{isPermanent ? ' permanently ' : ' '}delete the {type} "{name}"?
         </DialogTitle>
-        <DialogDescription>
-          This cannot be undone.
-        </DialogDescription>
+        {isPermanent ? (
+          <DialogDescription>
+            this cannot be undone.
+          </DialogDescription>
+        ) : (
+          <DialogDescription>
+            you can view files you've deleted under "recently deleted."
+          </DialogDescription>
+        )}
         <DialogFooter>
           <DialogClose className={buttonVariants({ variant: 'ghost' })}>
-            Cancel
+            cancel
           </DialogClose>
           <DialogClose
             className={buttonVariants({ variant: 'destructive' })}
@@ -46,7 +54,11 @@ export default function DeleteDialog(props: DeleteDialogProps) {
               try {
                 let newFiles: DataLeaf | null = null;
                 if (type === 'file') {
-                  newFiles = await deleteFile(path);
+                  if (isPermanent) {
+                    await permanentlyDeleteFile(path);
+                  } else {
+                    newFiles = await deleteFile(path);
+                  }
                 } else {
                   newFiles = await deleteDirectory(path);
                 }
@@ -64,7 +76,7 @@ export default function DeleteDialog(props: DeleteDialogProps) {
               }
             }}
           >
-            Delete
+            delete
           </DialogClose>
         </DialogFooter>
       </DialogContent>
