@@ -85,8 +85,8 @@ export default function RecentlyDeleted() {
           <AccordionItem value='item-1' className='border-b-0'>
             <ContextMenu>
               <ContextMenuTrigger>
-                <AccordionTrigger className='mt-auto flex flex-row items-center gap-2 group cursor-pointer'>
-                  <span className='group-hover:text-neutral-100 text-sm text-neutral-400'>
+                <AccordionTrigger className='mt-auto flex flex-row items-center gap-2 cursor-pointer hover:text-neutral-100 text-neutral-400 text-sm'>
+                  <span>
                     recently deleted
                   </span>
                 </AccordionTrigger>

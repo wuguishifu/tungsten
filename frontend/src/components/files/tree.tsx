@@ -17,8 +17,6 @@ type TreeContextProps = {
 
 const TreeContext = createContext({} as TreeContextProps);
 
-const textClassname = 'group-hover:text-neutral-100 text-sm group-data-[selected=true]:text-neutral-100 text-neutral-400';
-
 export default function Tree() {
   const { files } = useData();
   const { username } = useAuth();
@@ -108,7 +106,7 @@ function TreeLeaf(props: TreeLeafProps) {
             <ContextMenuTrigger>
               <div
                 data-selected={selectedFile === leaf.path}
-                className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm group data-[selected=true]:bg-neutral-700 mt-0.5'
+                className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm data-[selected=true]:bg-neutral-700 mt-0.5 hover:text-neutral-100 text-sm data-[selected=true]:text-neutral-100 text-neutral-400'
                 style={{ paddingLeft: indentation * 16 + 8 }}
                 onClick={leaf.type === 'file'
                   ? () => selectFile(leaf.path)
@@ -116,10 +114,10 @@ function TreeLeaf(props: TreeLeafProps) {
                 }
               >
                 {leaf.type === 'file'
-                  ? <File size={16} className={textClassname} />
-                  : <Folder size={16} className={textClassname} />
+                  ? <File size={16} />
+                  : <Folder size={16} />
                 }
-                <span className={textClassname}>
+                <span>
                   {formattedName}
                 </span>
               </div>
