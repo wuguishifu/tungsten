@@ -45,6 +45,24 @@ router.put('/name', (req, res) => {
     res.status(200).send({ renamed: true, files: readData(req.homeDirectory) });
 });
 
+router.post('/move', (req, res) => {
+    let { oldPath, newPath } = req.body;
+    if (!oldPath) return res.status(400).send('Missing old folder path');
+    if (!newPath) return res.status(400).send('Missing new folder path');
+    oldPath = sanitizePath(oldPath);
+    newPath = sanitizePath(newPath);
+    if (!oldPath || !newPath) return res.status(400).send('Invalid folder path');
+    if (oldPath === newPath) return res.status(400).send('New path cannot be the same as old path');
+    oldPath = path.join(req.homeDirectory, oldPath);
+    newPath = path.join(req.homeDirectory, newPath);
+    if (!fs.existsSync(oldPath)) return res.status(404).send('Folder not found');
+    if (fs.existsSync(newPath)) return res.status(400).send('Folder already exists');
+    const dir = path.dirname(newPath);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.renameSync(oldPath, newPath);
+    res.status(200).send({ moved: true, files: readData(req.homeDirectory) });
+});
+
 router.delete('/', (req, res) => {
     let { folderPath } = req.query;
     if (!folderPath) return res.status(400).send('Missing folder path');

@@ -1,4 +1,4 @@
 export enum ItemTypes {
   FILE = 'file',
-  FOLDER = 'folder',
+  DIRECTORY = 'directory',
 };

@@ -8,10 +8,12 @@ type DataContextProps = {
   setFiles: Dispatch<SetStateAction<DataLeaf | null>>;
   createFile: (path: string) => Promise<void>;
   createDirectory: (path: string) => Promise<void>;
-  deleteFile: (path: string) => Promise<DataLeaf>;
-  deleteDirectory: (path: string) => Promise<DataLeaf>;
   renameFile: (path: string, newPath: string) => Promise<DataLeaf>;
   renameDirectory: (path: string, newPath: string) => Promise<DataLeaf>;
+  moveFile: (oldPath: string, newPath: string) => Promise<void>;
+  moveDirectory: (oldPath: string, newPath: string) => Promise<void>;
+  deleteFile: (path: string) => Promise<DataLeaf>;
+  deleteDirectory: (path: string) => Promise<DataLeaf>;
   restoreFile: (name: string) => Promise<string | null>;
   permanentlyDeleteFile: (name: string) => Promise<void>;
   permanentlyDeleteAll: () => Promise<void>;
@@ -221,6 +223,48 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     }
   }, [updateFiles]);
 
+  const moveFile = useCallback(async (oldPath: string, newPath: string) => {
+    const response = await fetch('/api/files/move', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        oldPath,
+        newPath,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.moved) {
+      updateFiles(data.files);
+    }
+  }, [updateFiles]);
+
+  const moveDirectory = useCallback(async (oldPath: string, newPath: string) => {
+    const response = await fetch('/api/folders/move', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        oldPath,
+        newPath,
+      }),
+    });
+    if (!response.ok) {
+      throw new Error(await response.text());
+    }
+    const data = await response.json();
+    if (data.moved) {
+      updateFiles(data.files);
+    }
+  }, [updateFiles]);
+
   useEffect(() => {
     if (!username) return;
     loadFiles();
@@ -232,10 +276,12 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
     setFiles,
     createFile,
     createDirectory,
-    deleteFile,
-    deleteDirectory,
     renameFile,
     renameDirectory,
+    moveFile,
+    moveDirectory,
+    deleteFile,
+    deleteDirectory,
     restoreFile,
     permanentlyDeleteFile,
     permanentlyDeleteAll,
