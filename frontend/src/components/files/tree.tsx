@@ -42,7 +42,7 @@ export default function Tree() {
     setDeleteDialogVisible(true);
   }, []);
 
-  const moveItem = (props: { originalItem: DataLeaf, toDir: DataLeaf }) => {
+  const moveItem = useCallback((props: { originalItem: DataLeaf, toDir: DataLeaf }) => {
     const { originalItem, toDir: _toDir } = props;
     const toDir = { ..._toDir };
     if (toDir.type === 'file') return;
@@ -78,7 +78,7 @@ export default function Tree() {
         toast.error('An unknown error occurred.');
       }
     }
-  };
+  }, [username, selectedFile, moveFile, moveDirectory, navigate]);
 
   const value = {
     selectedFile,
