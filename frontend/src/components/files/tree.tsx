@@ -2,21 +2,23 @@ import { ItemTypes } from '@/lib/drag';
 import { fileExists, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf, DataType, useData } from '@/providers/data-provider';
-import { File, Folder } from 'lucide-react';
+import { File, FilePlus, Folder, FolderInput, FolderPlus, Pencil, Trash2 } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '../ui/context-menu';
 import AddItem from './add-item';
 import DeleteDialog from './delete-dialog';
+import MoveItemDialog from './move-item';
 import RenameItem from './rename-item';
 
 type TreeContextProps = {
   selectedFile: string | null;
   selectFile: (path: string) => void;
   showDeleteDialog: (props: { path: string, type: DataType, name: string }) => void;
-  moveItem: (props: { originalItem: DataLeaf, toDir: DataLeaf }) => void;
+  moveItem: (props: { originalItem: DataLeaf, toDir: DataLeaf }) => Promise<boolean>;
+  showMoveDialog: (item: DataLeaf) => void;
 }
 
 const TreeContext = createContext({} as TreeContextProps);
@@ -42,10 +44,17 @@ export default function Tree() {
     setDeleteDialogVisible(true);
   }, []);
 
-  const moveItem = useCallback((props: { originalItem: DataLeaf, toDir: DataLeaf }) => {
+  const [moveDialogVisible, setMoveDialogVisible] = useState(false);
+  const [selectedMoveItem, setSelectedMoveItem] = useState<DataLeaf | null>(null);
+  const showMoveDialog = useCallback((item: DataLeaf) => {
+    setSelectedMoveItem(item);
+    setMoveDialogVisible(true);
+  }, []);
+
+  const moveItem = useCallback(async (props: { originalItem: DataLeaf, toDir: DataLeaf }): Promise<boolean> => {
     const { originalItem, toDir: _toDir } = props;
     const toDir = { ..._toDir };
-    if (toDir.type === 'file') return;
+    if (toDir.type === 'file') return false;
     toDir.children = toDir.children.map(child => {
       const newChild = { ...child };
       if (newChild.type === 'directory') {
@@ -55,21 +64,23 @@ export default function Tree() {
     });
     const newPath = `${toDir.dirPath}/${originalItem.name}`;
     if (toDir.children.some(child => child.path === newPath)) {
-      return toast.error('An item with the same name already exists in the destination directory.');
+      toast.error('An item with the same name already exists in the destination directory.');
+      return false;
     }
     try {
       if (originalItem.type === 'file') {
-        moveFile(originalItem.path, newPath);
+        await moveFile(originalItem.path, newPath);
         if (selectedFile === originalItem.path) {
           navigate(`/${username}/${newPath}`.replace(/\/\//g, '/'));
         }
       } else {
-        moveDirectory(originalItem.path, newPath);
-        if (!selectedFile) return;
+        await moveDirectory(originalItem.path, newPath);
+        if (!selectedFile) return true;
         if (fileExists(selectedFile, originalItem)) {
           navigate(`/${username}`);
         }
       }
+      return true;
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
@@ -77,6 +88,7 @@ export default function Tree() {
       } else {
         toast.error('An unknown error occurred.');
       }
+      return false;
     }
   }, [username, selectedFile, moveFile, moveDirectory, navigate]);
 
@@ -85,6 +97,7 @@ export default function Tree() {
     selectFile,
     showDeleteDialog,
     moveItem,
+    showMoveDialog,
   };
 
   return (
@@ -93,6 +106,12 @@ export default function Tree() {
         open={deleteDialogVisible}
         onOpenChange={setDeleteDialogVisible}
         {...deleteItem}
+      />
+      <MoveItemDialog
+        open={moveDialogVisible}
+        onOpenChange={setMoveDialogVisible}
+        item={selectedMoveItem}
+        moveItem={moveItem}
       />
       <TreeContext.Provider value={value}>
         {files
@@ -125,6 +144,7 @@ function TreeLeaf(props: TreeLeafProps) {
     selectFile,
     showDeleteDialog,
     moveItem,
+    showMoveDialog,
   } = useContext(TreeContext);
 
   const [addingItem, setAddingItem] = useState<false | 'file' | 'directory'>(false);
@@ -173,7 +193,8 @@ function TreeLeaf(props: TreeLeafProps) {
   return (
     <div
       data-highlighted={isOver && canDrop}
-      className='data-[highlighted=true]:bg-blue-400/15 rounded-lg'
+      data-root={root}
+      className='data-[highlighted=true]:bg-blue-400/15 rounded-lg data-[root=true]:h-full'
       ref={attachDropRef}
       onContextMenu={e => e.preventDefault()}
       onClick={e => e.stopPropagation()}
@@ -214,9 +235,39 @@ function TreeLeaf(props: TreeLeafProps) {
                 className='select-none'
                 onClick={e => {
                   e.stopPropagation();
+                  setRenaming(true);
+                }}
+              >
+                <Pencil size={16} strokeWidth={2} />
+                <span className='ml-2'>
+                  rename
+                </span>
+              </ContextMenuItem>
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none'
+                onClick={e => {
+                  e.stopPropagation();
+                  showMoveDialog(leaf);
+                }}
+              >
+                <FolderInput size={16} strokeWidth={2} />
+                <span className='ml-2'>
+                  move
+                </span>
+              </ContextMenuItem>
+              <ContextMenuSeparator />
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none'
+                onClick={e => {
+                  e.stopPropagation();
                   setAddingItem('file');
                 }}>
-                new file
+                <FilePlus size={16} strokeWidth={2} />
+                <span className='ml-2'>
+                  new file
+                </span>
               </ContextMenuItem>
               <ContextMenuItem
                 autoFocus={false}
@@ -225,18 +276,12 @@ function TreeLeaf(props: TreeLeafProps) {
                   e.stopPropagation();
                   setAddingItem('directory');
                 }}>
-                new directory
+                <FolderPlus size={16} strokeWidth={2} />
+                <span className='ml-2'>
+                  new directory
+                </span>
               </ContextMenuItem>
-              <ContextMenuItem
-                autoFocus={false}
-                className='select-none'
-                onClick={e => {
-                  e.stopPropagation();
-                  setRenaming(true);
-                }}
-              >
-                rename
-              </ContextMenuItem>
+              <ContextMenuSeparator />
               <ContextMenuItem
                 autoFocus={false}
                 className='select-none text-destructive data-[highlighted]:text-destructive'
@@ -249,7 +294,10 @@ function TreeLeaf(props: TreeLeafProps) {
                   });
                 }}
               >
-                delete
+                <Trash2 size={16} strokeWidth={2} />
+                <span className='ml-2'>
+                  delete
+                </span>
               </ContextMenuItem>
             </ContextMenuContent>
           </ContextMenu>

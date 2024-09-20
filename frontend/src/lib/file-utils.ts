@@ -32,3 +32,25 @@ export function fileExists(path: string, files: DataLeaf) {
 
   return exists(files);
 };
+
+// o(n)
+export function getDataLeaf(path: string, root: DataLeaf): DataLeaf | null {
+  if (!root) return null;
+
+  function getLeaf(leaf: DataLeaf): DataLeaf | null {
+    if (leaf.path === path) {
+      return leaf;
+    }
+    if (leaf.type === 'directory') {
+      for (const child of leaf.children) {
+        const found = getLeaf(child);
+        if (found) {
+          return found;
+        }
+      }
+    }
+    return null;
+  }
+
+  return getLeaf(root);
+}
