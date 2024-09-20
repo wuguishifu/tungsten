@@ -1,5 +1,5 @@
 import { ItemTypes } from '@/lib/drag';
-import { getName } from '@/lib/file-utils';
+import { fileExists, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf, DataType, useData } from '@/providers/data-provider';
 import { File, Folder } from 'lucide-react';
@@ -32,7 +32,7 @@ export default function Tree() {
   } = useParams();
 
   const selectFile = useCallback((path: string) => {
-    navigate(`/${username}/${path}`);
+    navigate(`/${username}/${path}`.replace(/\/\//g, '/'));
   }, [navigate, username]);
 
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
@@ -60,13 +60,15 @@ export default function Tree() {
     try {
       if (originalItem.type === 'file') {
         moveFile(originalItem.path, newPath);
+        if (selectedFile === originalItem.path) {
+          navigate(`/${username}/${newPath}`.replace(/\/\//g, '/'));
+        }
       } else {
         moveDirectory(originalItem.path, newPath);
-      }
-      // TODO: fix this
-      console.log({ selectedFile, originalPath: originalItem.path });
-      if (selectedFile === originalItem.path) {
-        navigate(`/${username}`)
+        if (!selectedFile) return;
+        if (fileExists(selectedFile, originalItem)) {
+          navigate(`/${username}`);
+        }
       }
     } catch (error) {
       console.error(error);
@@ -138,7 +140,7 @@ function TreeLeaf(props: TreeLeafProps) {
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
-  }));
+  }), [leaf]);
 
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: [
@@ -160,7 +162,7 @@ function TreeLeaf(props: TreeLeafProps) {
       isOver: (!!monitor.isOver({ shallow: true }) && !isDragging),
       canDrop: !!monitor.canDrop(),
     }),
-  }));
+  }), [moveItem, leaf, isDragging]);
 
   function attachDropRef(element: HTMLDivElement | null) {
     if (element && leaf.type === 'directory') {

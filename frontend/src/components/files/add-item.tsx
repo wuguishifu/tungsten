@@ -72,7 +72,7 @@ export default function AddItem(props: AddItemProps) {
     try {
       if (itemType === 'file') {
         createFile(`${dirPath}/${value}.md`);
-        navigate(`/${username}/${dirPath}/${value}.md`);
+        navigate(`/${username}/${dirPath}/${value}.md`.replace(/\/\//g, '/'));
       } else {
         createDirectory(`${dirPath}/${value}`);
       }
