@@ -1,3 +1,4 @@
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/providers/auth-provider';
 import { Link } from 'react-router-dom';
 import { Button, buttonVariants } from './ui/button';
@@ -10,20 +11,29 @@ export default function Navbar() {
       <Link to='/' className='flex flex-row items-center gap-2'>
         <img src='/logo.svg' alt='tungsten' className='h-8 w-8' />
         <h1 className='text-brand text-xl'>
-          Tungsten
+          tungsten
         </h1>
       </Link>
       <div className='ml-auto flex flex-row items-center gap-2'>
         {username && (
           <Link to={`/${username}`} className={buttonVariants({ variant: 'ghost' })}>
-            Notebook
+            notebook
           </Link>
         )}
         <div>
           {username ? (
-            <Button variant='ghost' onClick={logout}>
-              Log Out
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild className='outline-none'>
+                <Button variant='ghost'>
+                  {username}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent onCloseAutoFocus={e => e.preventDefault()}>
+                <DropdownMenuItem onClick={logout} className='text-destructive data-[highlighted]:text-destructive'>
+                  log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <Link to='/login' className={buttonVariants({ variant: 'ghost' })}>
               Login
