@@ -61,7 +61,7 @@ export default function AddItem(props: AddItemProps) {
     return () => cancelAnimationFrame(id);
   }, []);
 
-  function onSubmit(event: React.FormEvent) {
+  async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     if (value.trim() === '') {
@@ -71,10 +71,10 @@ export default function AddItem(props: AddItemProps) {
 
     try {
       if (itemType === 'file') {
-        createFile(`${dirPath}/${value}.md`);
+        await createFile(`${dirPath}/${value}.md`);
         navigate(`/${username}/${dirPath}/${value}.md`.replace(/\/\//g, '/'));
       } else {
-        createDirectory(`${dirPath}/${value}`);
+        await createDirectory(`${dirPath}/${value}`);
       }
     } catch (error) {
       console.error(error);

@@ -12,6 +12,7 @@ import AddItem from './add-item';
 import DeleteDialog from './delete-dialog';
 import MoveItemDialog from './move-item';
 import RenameItem from './rename-item';
+import RootAddItem from './root-add-item';
 
 type TreeContextProps = {
   selectedFile: string | null;
@@ -115,11 +116,8 @@ export default function Tree() {
       />
       <TreeContext.Provider value={value}>
         {files
-          ? <TreeLeaf
-            leaf={files}
-            root
-          />
-          : null
+          ? <TreeLeaf leaf={files} root />
+          : <div className='flex-1' />
         }
       </TreeContext.Provider>
     </>
@@ -194,7 +192,7 @@ function TreeLeaf(props: TreeLeafProps) {
     <div
       data-highlighted={isOver && canDrop}
       data-root={root}
-      className='data-[highlighted=true]:bg-blue-400/15 rounded-lg data-[root=true]:h-full'
+      className='data-[highlighted=true]:bg-blue-400/15 rounded-lg data-[root=true]:h-full data-[root=true]:flex data-[root=true]:flex-col'
       ref={attachDropRef}
       onContextMenu={e => e.preventDefault()}
       onClick={e => e.stopPropagation()}
@@ -307,7 +305,7 @@ function TreeLeaf(props: TreeLeafProps) {
         <AddItem
           dirPath={leaf.dirPath}
           itemType={addingItem}
-          indentation={leaf.type === 'directory' ? indentation + 1 : indentation}
+          indentation={(leaf.type === 'directory' && !root) ? indentation + 1 : indentation}
           stopEditing={() => setAddingItem(false)}
         />
       )}
@@ -326,6 +324,7 @@ function TreeLeaf(props: TreeLeafProps) {
             />
           ))
       )}
+      {root && <RootAddItem />}
     </div>
   );
 }
