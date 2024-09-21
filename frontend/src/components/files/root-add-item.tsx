@@ -1,10 +1,11 @@
-import { DataType } from '@/providers/data-provider';
-import { useState } from 'react';
+import { RootAddItemContext } from '@/providers/root-add-item-context';
+import { FilePlus, FolderPlus } from 'lucide-react';
+import { useContext } from 'react';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
 import AddItem from './add-item';
 
 export default function RootAddItem() {
-  const [addingItem, setAddingItem] = useState<DataType | false>(false);
+  const { addingItem, setAddingItem } = useContext(RootAddItemContext)
 
   return (
     <>
@@ -27,7 +28,10 @@ export default function RootAddItem() {
               setAddingItem('file');
             }}
           >
-            new file
+            <FilePlus size={16} strokeWidth={2} />
+            <span className='ml-2'>
+              new file
+            </span>
           </ContextMenuItem>
           <ContextMenuItem
             autoFocus={false}
@@ -37,7 +41,10 @@ export default function RootAddItem() {
               setAddingItem('directory');
             }}
           >
-            new directory
+            <FolderPlus size={16} strokeWidth={2} />
+            <span className='ml-2'>
+              new directory
+            </span>
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
