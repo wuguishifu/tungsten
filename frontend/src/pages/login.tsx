@@ -55,7 +55,7 @@ export default function Login() {
   }
 
   return (
-    <main className='w-full h-full flex items-center justify-center border'>
+    <main className='w-full h-full flex items-center justify-center'>
       <div className='w-[400px] h-[600px] rounded-xl overflow-hidden items-center shadow-sm border flex flex-col justify-center'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='w-[310px] flex flex-col gap-4'>

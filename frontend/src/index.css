@@ -18,6 +18,7 @@
 
 @layer base {
   :root {
+    --brand: 253 92% 58%;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -46,6 +47,7 @@
   }
 
   .dark {
+    --brand: 253 92% 58%;
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
     --card: 0 0% 3.9%;

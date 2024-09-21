@@ -1,4 +1,5 @@
 import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom';
+import Navbar from './components/navbar';
 import Loading from './components/suspense/loading';
 import Login from './pages/login';
 import Notebook from './pages/notebook';
@@ -9,7 +10,7 @@ import { EditorProvider } from './providers/editor-provider';
 export default function App() {
   return (
     <Routes>
-      <Route path='/'>
+      <Route path='/' element={<BigBoyWrapper />}>
         {/* authentication */}
         <Route path='login' element={<Login />} />
         <Route path='register' element={<Register />} />
@@ -35,4 +36,13 @@ function Protected() {
   if (!ready) return <Loading />;
   if (u !== username) return <Navigate to='/login' replace />;
   return <Outlet />;
+}
+
+function BigBoyWrapper() {
+  return (
+    <div className='h-screen flex flex-col'>
+      <Navbar />
+      <Outlet />
+    </div>
+  );
 }
