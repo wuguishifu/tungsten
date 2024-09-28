@@ -1,3 +1,4 @@
+import endpoints, { withQueryParams } from '@/lib/endpoints';
 import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from '../auth-provider';
@@ -66,7 +67,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
 
   const loadFiles = useCallback(async () => {
     try {
-      const response = await fetch('/api/files', {
+      const response = await fetch(endpoints.files.index, {
         credentials: 'include',
       });
       if (!response.ok) {
@@ -86,7 +87,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const createDirectory = useCallback(async (path: string) => {
-    const response = await fetch('/api/folders', {
+    const response = await fetch(endpoints.folders.index, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -106,7 +107,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const createFile = useCallback(async (path: string) => {
-    const response = await fetch('/api/files', {
+    const response = await fetch(endpoints.files.index, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -126,7 +127,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const deleteFile = useCallback(async (path: string) => {
-    const response = await fetch(`/api/files?filePath=${path}`, {
+    const response = await fetch(withQueryParams(endpoints.files.index, { filePath: path }), {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -141,7 +142,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const deleteDirectory = useCallback(async (path: string) => {
-    const response = await fetch(`/api/folders?folderPath=${path}`, {
+    const response = await fetch(withQueryParams(endpoints.folders.index, { folderPath: path }), {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -156,7 +157,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const renameFile = useCallback(async (path: string, newPath: string) => {
-    const response = await fetch(`/api/files/name?oldPath=${path}&newPath=${newPath}`, {
+    const response = await fetch(withQueryParams(endpoints.files.name, { oldPath: path, newPath }), {
       method: 'PUT',
       credentials: 'include',
     });
@@ -171,7 +172,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const renameDirectory = useCallback(async (path: string, newPath: string) => {
-    const response = await fetch(`/api/folders/name?oldPath=${path}&newPath=${newPath}`, {
+    const response = await fetch(withQueryParams(endpoints.folders.name, { oldPath: path, newPath }), {
       method: 'PUT',
       credentials: 'include',
     });
@@ -186,7 +187,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const restoreFile = useCallback(async (name: string) => {
-    const response = await fetch(`/api/deleted/restore?filePath=${name}`, {
+    const response = await fetch(withQueryParams(endpoints.deleted.restore, { filePath: name }), {
       method: 'PUT',
       credentials: 'include',
     });
@@ -201,7 +202,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const permanentlyDeleteFile = useCallback(async (name: string) => {
-    const response = await fetch(`/api/deleted?filePath=${name}`, {
+    const response = await fetch(withQueryParams(endpoints.deleted.index, { filePath: name }), {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -215,7 +216,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const permanentlyDeleteAll = useCallback(async () => {
-    const response = await fetch('/api/deleted/all', {
+    const response = await fetch(endpoints.deleted.all, {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -229,7 +230,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const moveFile = useCallback(async (oldPath: string, newPath: string) => {
-    const response = await fetch('/api/files/move', {
+    const response = await fetch(endpoints.files.move, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -250,7 +251,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   }, [updateFiles]);
 
   const moveDirectory = useCallback(async (oldPath: string, newPath: string) => {
-    const response = await fetch('/api/folders/move', {
+    const response = await fetch(endpoints.folders.move, {
       method: 'POST',
       credentials: 'include',
       headers: {

@@ -1,3 +1,4 @@
+import endpoints from '@/lib/endpoints';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 type AuthContextProps = {
@@ -22,7 +23,7 @@ export function AuthProvider({ children }: { children: Readonly<React.ReactNode>
 
   const refreshAuth = useCallback(async () => {
     try {
-      const response = await fetch('/api/users/refresh', {
+      const response = await fetch(endpoints.users.refresh, {
         method: 'POST',
         credentials: 'include',
       });
@@ -53,7 +54,7 @@ export function AuthProvider({ children }: { children: Readonly<React.ReactNode>
   }, [refreshAuth]);
 
   const login = useCallback(async (username: string, password: string): Promise<string> => {
-    const response = await fetch('/api/users/login', {
+    const response = await fetch(endpoints.users.login, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -74,12 +75,14 @@ export function AuthProvider({ children }: { children: Readonly<React.ReactNode>
   }, [refreshAuth]);
 
   const logout = useCallback(async () => {
-    await fetch('/api/users/logout', { method: 'POST' });
+    await fetch(endpoints.users.logout, {
+      method: 'POST',
+    });
     setUsername(null);
   }, []);
 
   const register = useCallback(async (username: string, password: string) => {
-    const response = await fetch('/api/users/register', {
+    const response = await fetch(endpoints.users.register, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+import endpoints, { withQueryParams } from '@/lib/endpoints';
 import { getExtension, getName } from '@/lib/file-utils';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -129,7 +130,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
 }
 
 async function loadFile(filePath: string): Promise<string> {
-  const response = await fetch(`/api/files?filePath=${filePath}`, {
+  const response = await fetch(withQueryParams(endpoints.files.index, { filePath }), {
     credentials: 'include',
   });
   const data = await response.text();
@@ -138,7 +139,7 @@ async function loadFile(filePath: string): Promise<string> {
 }
 
 async function saveFile(filePath: string, data: string): Promise<{ updated: boolean, files?: DataLeaf | null }> {
-  const response = await fetch(`/api/files?filePath=${filePath}`, {
+  const response = await fetch(withQueryParams(endpoints.files.index, { filePath }), {
     method: 'PUT',
     credentials: 'include',
     headers: {

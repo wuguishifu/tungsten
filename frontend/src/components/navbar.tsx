@@ -20,26 +20,29 @@ export default function Navbar() {
             notebook
           </Link>
         )}
-        <div>
-          {username ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild className='outline-none'>
-                <Button variant='ghost'>
-                  {username}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent onCloseAutoFocus={e => e.preventDefault()}>
-                <DropdownMenuItem onClick={logout} className='text-destructive data-[highlighted]:text-destructive'>
-                  log out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
+        {username ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className='outline-none'>
+              <Button variant='ghost'>
+                {username}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent onCloseAutoFocus={e => e.preventDefault()}>
+              <DropdownMenuItem onClick={logout} className='text-destructive data-[highlighted]:text-destructive'>
+                log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <>
             <Link to='/login' className={buttonVariants({ variant: 'ghost' })}>
               Login
             </Link>
-          )}
-        </div>
+            <Link to='/register' className={buttonVariants({ variant: 'ghost' })}>
+              Register
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   );
