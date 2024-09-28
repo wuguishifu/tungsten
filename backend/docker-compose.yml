@@ -4,10 +4,11 @@ services:
     ports:
       - 4370:4370
     environment:
+      NODE_ENV: development
       JWT_SECRET: ${JWT_SECRET}
       JWT_TTL: 20m
       HTTPS: false
       ENABLE_USER_SIGNUP: true
     volumes:
-      - ./auth.json:/auth.json
-      - ./test-data:/data
+      - ./../auth.json:/auth.json
+      - ./../test-data:/data

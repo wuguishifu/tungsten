@@ -1,5 +1,6 @@
 const express = require('express');
 const cookies = require('cookie-parser');
+const path = require('path');
 const cors = require('cors');
 const http = require('http');
 
@@ -10,10 +11,14 @@ const publicRouter = require('./routers/public');
 const deletedRouter = require('./routers/deleted');
 
 const app = express();
-let port = +process.env.PORT ?? 4370;
-if (isNaN(port)) port = 4370;
+const port = 4370;
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'public')));
+}
 
 app.use(cors({
+    origin: 'http://localhost:4370',
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
 }));
@@ -41,6 +46,12 @@ api.use('/folders', folderRouter);
 api.use('/deleted', deletedRouter);
 
 app.use('/api', api);
+
+if (process.env.NODE_ENV === 'production') {
+    app.get('*', (_, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    });
+}
 
 const server = http.createServer(app);
 server.listen(port, () => console.log(`Listening on port ${port}`));

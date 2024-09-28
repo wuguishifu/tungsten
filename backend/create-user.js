@@ -1,5 +1,5 @@
 const fs = require('fs');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const args = require('minimist')(process.argv.slice(2));
 
 const { reservedKeywords } = require('./helpers/reserved');
