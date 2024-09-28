@@ -1,4 +1,4 @@
-import { DataLeaf, useData } from '@/providers/data-provider';
+import { DataLeaf, useData } from '@/providers/data/provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

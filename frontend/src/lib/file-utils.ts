@@ -1,4 +1,4 @@
-import { DataLeaf } from '@/providers/data-provider';
+import { DataLeaf } from '@/providers/data/provider';
 
 export function getName(filename: string): string {
   const lastDotIndex = filename.lastIndexOf('.');

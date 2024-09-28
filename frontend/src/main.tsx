@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import Toaster from './components/toaster.tsx';
 import { AuthProvider } from './providers/auth-provider.tsx';
-import { DataProvider } from './providers/data-provider.tsx';
+import { DataProvider } from './providers/data/provider.tsx';
 import { SettingsProvider } from './providers/settings-provider.tsx';
 
 import './editor.css';

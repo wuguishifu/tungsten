@@ -1,10 +1,14 @@
 import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { useAuth } from './auth-provider';
+import { useAuth } from '../auth-provider';
+import useCollapsed from './use-collapsed';
 
 type DataContextProps = {
   files: DataLeaf | null;
   deleted: string[] | null;
+  collapsed: Set<string>;
+  collapse: (path: string) => void;
+  expand: (path: string) => void;
   setFiles: Dispatch<SetStateAction<DataLeaf | null>>;
   createFile: (path: string) => Promise<void>;
   createDirectory: (path: string) => Promise<void>;
@@ -43,6 +47,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
 
   const [files, setFiles] = useState<DataLeaf | null>(null);
   const [deleted, setDeleted] = useState<string[] | null>(null);
+  const { collapsed, collapse, expand } = useCollapsed();
 
   const updateFiles = useCallback((files: DataLeaf | null) => {
     if (files) {
@@ -273,6 +278,9 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   const value = {
     files,
     deleted,
+    collapsed,
+    collapse,
+    expand,
     setFiles,
     createFile,
     createDirectory,

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { DataType } from './data-provider';
+import { DataType } from './data/provider';
 
 type RootAddItemContextProps = {
   addingItem: DataType | false;

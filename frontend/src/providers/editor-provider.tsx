@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
-import { DataLeaf, useData } from './data-provider';
+import { DataLeaf, useData } from './data/provider';
 
 type EditorContextProps = {
   originalFilename: string;

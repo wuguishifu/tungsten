@@ -1,5 +1,5 @@
 import { useAuth } from '@/providers/auth-provider';
-import { useData } from '@/providers/data-provider';
+import { useData } from '@/providers/data/provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';

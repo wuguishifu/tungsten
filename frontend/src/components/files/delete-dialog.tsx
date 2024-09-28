@@ -1,5 +1,5 @@
 import { fileExists } from '@/lib/file-utils';
-import { DataLeaf, DataType, useData } from '@/providers/data-provider';
+import { DataLeaf, DataType, useData } from '@/providers/data/provider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { buttonVariants } from '../ui/button';

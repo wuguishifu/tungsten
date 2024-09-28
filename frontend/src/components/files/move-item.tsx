@@ -1,5 +1,5 @@
 import { fileExists, getDataLeaf, getName } from '@/lib/file-utils';
-import { DataLeaf, useData } from '@/providers/data-provider';
+import { DataLeaf, useData } from '@/providers/data/provider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';

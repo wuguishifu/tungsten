@@ -1,13 +1,13 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { getName } from '@/lib/file-utils';
-import { useData } from '@/providers/data-provider';
+import { useData } from '@/providers/data/provider';
 import { File } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { toast } from 'sonner';
-import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '../ui/dialog';
-import DeleteDialog from './delete-dialog';
 import { buttonVariants } from '../ui/button';
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '../ui/dialog';
+import DeleteDialog from './delete-dialog';
 
 type RecentlyDeletedContextProps = {
   restoreFile: (name: string) => Promise<void>;

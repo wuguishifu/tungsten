@@ -1,4 +1,4 @@
-import { DataType } from '@/providers/data-provider';
+import { DataType } from '@/providers/data/provider';
 import { RootAddItemContext } from '@/providers/root-add-item-context';
 import { FilePlus, FolderPlus } from 'lucide-react';
 import { useState } from 'react';

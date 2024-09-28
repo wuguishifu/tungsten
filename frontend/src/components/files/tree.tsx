@@ -1,8 +1,8 @@
 import { ItemTypes } from '@/lib/drag';
 import { fileExists, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
-import { DataLeaf, DataType, useData } from '@/providers/data-provider';
-import { File, FilePlus, Folder, FolderInput, FolderPlus, Pencil, Trash2 } from 'lucide-react';
+import { DataLeaf, DataType, useData } from '@/providers/data/provider';
+import { ChevronDown, ChevronRight, File, FilePlus, FolderClosed, FolderInput, FolderMinus, FolderOpen, FolderPlus, Pencil, Trash2 } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -145,6 +145,12 @@ function TreeLeaf(props: TreeLeafProps) {
     showMoveDialog,
   } = useContext(TreeContext);
 
+  const {
+    collapsed,
+    collapse,
+    expand,
+  } = useData();
+
   const [addingItem, setAddingItem] = useState<false | 'file' | 'directory'>(false);
   const [renaming, setRenaming] = useState(false);
 
@@ -188,6 +194,8 @@ function TreeLeaf(props: TreeLeafProps) {
     }
   }
 
+  const isCollapsed = collapsed.has(leaf.path);
+
   return (
     <div
       data-highlighted={isOver && canDrop}
@@ -215,16 +223,31 @@ function TreeLeaf(props: TreeLeafProps) {
                 style={{ paddingLeft: indentation * 16 + 8 }}
                 onClick={leaf.type === 'file'
                   ? () => selectFile(leaf.path)
-                  : undefined
+                  : () => {
+                    if (isCollapsed) {
+                      expand(leaf.path);
+                    } else {
+                      collapse(leaf.path);
+                    }
+                  }
                 }
               >
                 {leaf.type === 'file'
                   ? <File size={16} />
-                  : <Folder size={16} />
+                  : (
+                    isCollapsed
+                      ? <FolderClosed size={16} />
+                      : <FolderOpen size={16} />
+                  )
                 }
                 <span>
                   {formattedName}
                 </span>
+                {leaf.type === 'directory' && (
+                  isCollapsed
+                    ? <ChevronRight size={16} />
+                    : <ChevronDown size={16} />
+                )}
               </div>
             </ContextMenuTrigger>
             <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
@@ -254,6 +277,28 @@ function TreeLeaf(props: TreeLeafProps) {
                   move
                 </span>
               </ContextMenuItem>
+              {leaf.type === 'directory' && (
+                <ContextMenuItem
+                  autoFocus={false}
+                  className='select-none'
+                  onClick={e => {
+                    e.stopPropagation();
+                    if (isCollapsed) {
+                      expand(leaf.path);
+                    } else {
+                      collapse(leaf.path);
+                    }
+                  }}
+                >
+                  {collapsed.has(leaf.path)
+                    ? <FolderPlus size={16} strokeWidth={2} />
+                    : <FolderMinus size={16} strokeWidth={2} />
+                  }
+                  <span className='ml-2'>
+                    {isCollapsed ? 'expand' : 'collapse'}
+                  </span>
+                </ContextMenuItem>
+              )}
               <ContextMenuSeparator />
               <ContextMenuItem
                 autoFocus={false}
@@ -309,7 +354,7 @@ function TreeLeaf(props: TreeLeafProps) {
           stopEditing={() => setAddingItem(false)}
         />
       )}
-      {(leaf.type === 'directory') && (
+      {(leaf.type === 'directory' && !isCollapsed) && (
         leaf.children
           .sort((a, b) => {
             if (a.type === 'directory' && b.type === 'file') return -1;
