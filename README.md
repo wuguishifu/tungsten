@@ -2,6 +2,8 @@
 
 Tungsten is a very lightweight and simple self-hostable note taking app. It's designed to store information without the use of a database, meaning you can very easily import/export notes.
 
+> View the changelog [here](https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md)
+
 ## Basic details
 
 - Notes are saved to the filesystem in the docker container. It is strongly advised that you mount a volume onto the container (see more information in [Setup Instructions](#setup-instructions) and [Data Storage](#data-storage)).
@@ -34,12 +36,10 @@ services:
       - 4370:4370
 ```
 
-Here are some quick links.
+> Here are some quick links.
 
-[Environmental Variables](#environmental-variables)
-
-[Data Storage](#data-storage)
-
+[Environmental Variables](#environmental-variables)<br>
+[Data Storage](#data-storage)<br>
 [Authentication](#authentication)
 
 ### Environmental Variables

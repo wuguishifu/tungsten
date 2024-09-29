@@ -110,6 +110,22 @@
   text-underline-offset: 4px;
 }
 
+.named-fence-block {
+  position: relative;
+  padding-top: 2em !important;
+}
+
+.named-fence-filename {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 0 4px;
+  font-weight: bold;
+  color: #282c34;
+  background: #abb2bf;
+  opacity: 0.6;
+}
+
 .scrollable::-webkit-scrollbar {
   background-color: transparent;
   width: 8px;
