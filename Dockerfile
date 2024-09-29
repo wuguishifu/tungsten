@@ -1,6 +1,5 @@
 # build frontend
 FROM node:18-alpine AS build-frontend
-LABEL org.opencontainers.image.description="All-in-one docker container for Tungsten (https://github.com/wuguishifu/tungsten). Built by Bo Bramer (@wuguishifu)"
 
 WORKDIR /app/frontend
 COPY frontend/package*.json ./

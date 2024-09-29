@@ -5,11 +5,10 @@
 
 ## Version 1.1.0 (2024-09-29)
 
-[Docker Image]()
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281214000?tag=1.1.0)
 
 This minor update includes:
 
-- Opencontainers image description
 - Tags
 - Named code blocks
 - Syntax highlighting in code blocks
