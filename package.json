@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "highlight.js": "^11.10.0",
-    "markdown-it-label": "^2.0.2"
-  }
-}
