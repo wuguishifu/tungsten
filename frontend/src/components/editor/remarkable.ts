@@ -1,3 +1,4 @@
+import hljs from 'highlight.js';
 import markdownIt from 'markdown-it';
 import MarkdownItLabel from 'markdown-it-label';
 import NamedCodeBlocks from 'markdown-it-named-code-blocks';
@@ -13,6 +14,17 @@ const md = new markdownIt({
   typographer: false,
   quotes: '“”‘’',
   linkify: true,
+  highlight: (str, lang) => {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        const val = hljs.highlight(str, { language: lang }).value;
+        console.log(val)
+        return val;
+        // eslint-disable-next-line no-empty
+      } catch { }
+    }
+    return '';
+  }
 });
 
 md.use(mk);

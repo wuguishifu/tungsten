@@ -27,6 +27,15 @@ export default function Editor() {
         <div className='flex flex-row items-center gap-4'>
           <div
             className='flex flex-row items-center gap-2 cursor-pointer'
+            onClick={() => updateEditorSettings('showEditor', !editorSettings.showEditor)}
+          >
+            <h6 className='text-primary text-sm'>
+              Editor
+            </h6>
+            <Switch checked={editorSettings.showEditor} />
+          </div>
+          <div
+            className='flex flex-row items-center gap-2 cursor-pointer'
             onClick={() => updateEditorSettings('showPreview', !editorSettings.showPreview)}
           >
             <h6 className='text-primary text-sm'>
@@ -52,9 +61,11 @@ export default function Editor() {
         <Loading />
       ) : (
         <div className='flex-1 flex gap-4 overflow-hidden'>
-          <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
-            <CodeArea ref={editor} />
-          </div>
+          {editorSettings.showEditor && (
+            <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
+              <CodeArea ref={editor} />
+            </div>
+          )}
           {editorSettings.showPreview && (
             <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
               <CodePreview />

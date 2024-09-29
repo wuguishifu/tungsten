@@ -10,6 +10,7 @@ import { DataProvider } from './providers/data/provider.tsx';
 import { SettingsProvider } from './providers/settings-provider.tsx';
 
 import './editor.css';
+import './highlight.css';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(

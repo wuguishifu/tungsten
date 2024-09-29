@@ -9,6 +9,7 @@ export type EditorSettings = {
   vimEnabled?: boolean;
   saveOnBlur?: boolean;
   showPreview?: boolean;
+  showEditor?: boolean;
 }
 
 const SettingsContext = createContext({} as SettingsContextProps);
@@ -22,6 +23,7 @@ export function SettingsProvider({ children }: { children: Readonly<React.ReactN
     vimEnabled: false,
     saveOnBlur: true,
     showPreview: true,
+    showEditor: true,
   });
 
   function updateEditorSettings<T extends keyof EditorSettings>(key: T, value: EditorSettings[T]) {

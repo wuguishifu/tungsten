@@ -5,13 +5,15 @@
 
 ## Version 1.1.0 (2024-09-29)
 
-[Docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281106134?tag=1.0.1)
-
 This minor update includes:
 
 - Opencontainers image description
-- Named code blocks
 - Tags
+- Named code blocks
+- Syntax highlighting in code blocks
+- Ability to hide/show the editor*
+
+\*This may cause the editor to be hidden by default if you update from a previous version because of a limitation with cookies. I'm going to fix this in the future so that new settings that should be default on won't be defaulted to off.
 
 ## Version 1.0.1 (2024-09-29)
 
