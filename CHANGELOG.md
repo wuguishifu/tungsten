@@ -11,6 +11,7 @@ This minor update includes:
 
 - Opencontainers image description
 - Named code blocks
+- Tags
 
 ## Version 1.0.1 (2024-09-29)
 
