@@ -126,6 +126,12 @@
   opacity: 0.6;
 }
 
+.mdi-label {
+  padding: 0.1em 0.2em;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
 .scrollable::-webkit-scrollbar {
   background-color: transparent;
   width: 8px;

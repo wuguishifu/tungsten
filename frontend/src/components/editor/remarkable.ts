@@ -1,4 +1,6 @@
 import markdownIt from 'markdown-it';
+import MarkdownItLabel from 'markdown-it-label';
+import NamedCodeBlocks from 'markdown-it-named-code-blocks';
 
 // @ts-expect-error i have no type declaration file for this package :C
 import mk from '@iktakahiro/markdown-it-katex';
@@ -14,6 +16,8 @@ const md = new markdownIt({
 });
 
 md.use(mk);
+md.use(NamedCodeBlocks)
+md.use(MarkdownItLabel);
 
 md.renderer.rules.link_open = (tokens, idx) => {
   const hrefIndex = tokens[idx].attrIndex('href');
