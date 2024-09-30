@@ -1,7 +1,15 @@
 # Change Log
 
-[jump to latest](#version-110-2024-09-29)<br>
-[jump to stable](#version-110-2024-09-29)
+[jump to latest](#version-111-2024-09-29)<br>
+[jump to stable](#version-111-2024-09-29)
+
+## Version 1.1.1 (2024-09-29)
+
+[Docker Image]()
+
+This patch includes:
+
+- Any `.git` folders are no longer included in the file structure in the frontend. If you want to back up your files with git (in a user's directory), you will no longer see the git folder.
 
 ## Version 1.1.0 (2024-09-29)
 

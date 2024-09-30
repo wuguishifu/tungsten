@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+const defaultExcludedDirs = [
+    '.git',
+];
+
 function readData(homeDirectory) {
     function r(currentPath) {
         const relativePath = path.relative(homeDirectory, currentPath);
@@ -23,6 +27,9 @@ function readData(homeDirectory) {
 
             if (stat.isDirectory()) {
                 // Recursively add subdirectory
+                if (defaultExcludedDirs.includes(file)) {
+                    return;
+                }
                 const dir = r(filePath);
                 result.children.push(dir);
             } else {
