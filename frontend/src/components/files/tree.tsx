@@ -219,7 +219,7 @@ function TreeLeaf(props: TreeLeafProps) {
               <div
                 ref={drag}
                 data-selected={selectedFile === leaf.path}
-                className='flex flex-row items-start cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm data-[selected=true]:bg-neutral-700 mt-0.5 hover:text-neutral-100 text-sm data-[selected=true]:text-neutral-100 text-neutral-400 max-w-64'
+                className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm data-[selected=true]:bg-neutral-700 mt-0.5 hover:text-neutral-100 text-sm data-[selected=true]:text-neutral-100 text-neutral-400 max-w-64'
                 style={{ paddingLeft: indentation * 16 + 8 }}
                 onClick={leaf.type === 'file'
                   ? () => selectFile(leaf.path)
