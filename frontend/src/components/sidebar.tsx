@@ -10,9 +10,11 @@ export default function Sidebar() {
   const [addingItem, setAddingItem] = useState<DataType | false>(false);
 
   return (
-    <div className='w-72 bg-neutral-900 px-2 py-4 h-full rounded-lg flex flex-col'>
+    <div className='w-96 max-w-96 bg-neutral-900 px-2 py-4 h-full rounded-lg flex flex-col'>
       <RootAddItemContext.Provider value={{ addingItem, setAddingItem }}>
-        <Tree />
+        <div className='flex-1 scrollable overflow-x-hidden'>
+          <Tree />
+        </div>
       </RootAddItemContext.Provider>
       <div
         className='space-y-2 pt-2'

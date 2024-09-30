@@ -2,7 +2,7 @@ import { ItemTypes } from '@/lib/drag';
 import { fileExists, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf, DataType, useData } from '@/providers/data/provider';
-import { ChevronDown, ChevronRight, File, FilePlus, FolderClosed, FolderInput, FolderMinus, FolderOpen, FolderPlus, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, FilePlus, FolderInput, FolderMinus, FolderPlus, Pencil, Trash2 } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -219,7 +219,7 @@ function TreeLeaf(props: TreeLeafProps) {
               <div
                 ref={drag}
                 data-selected={selectedFile === leaf.path}
-                className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm data-[selected=true]:bg-neutral-700 mt-0.5 hover:text-neutral-100 text-sm data-[selected=true]:text-neutral-100 text-neutral-400'
+                className='flex flex-row items-start cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm data-[selected=true]:bg-neutral-700 mt-0.5 hover:text-neutral-100 text-sm data-[selected=true]:text-neutral-100 text-neutral-400 max-w-64'
                 style={{ paddingLeft: indentation * 16 + 8 }}
                 onClick={leaf.type === 'file'
                   ? () => selectFile(leaf.path)
@@ -232,22 +232,17 @@ function TreeLeaf(props: TreeLeafProps) {
                   }
                 }
               >
-                {leaf.type === 'file'
-                  ? <File size={16} />
-                  : (
-                    isCollapsed
-                      ? <FolderClosed size={16} />
-                      : <FolderOpen size={16} />
-                  )
-                }
-                <span>
-                  {formattedName}
-                </span>
                 {leaf.type === 'directory' && (
                   isCollapsed
-                    ? <ChevronRight size={16} />
-                    : <ChevronDown size={16} />
+                    ? <ChevronRight size={16} className='min-w-4 min-h-4' />
+                    : <ChevronDown size={16} className='min-w-4 min-h-4' />
                 )}
+                <p
+                  className='data-[type=file]:pl-4 truncate'
+                  data-type={leaf.type}
+                >
+                  {formattedName}
+                </p>
               </div>
             </ContextMenuTrigger>
             <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>
