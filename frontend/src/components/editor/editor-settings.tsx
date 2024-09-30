@@ -22,6 +22,14 @@ export default function EditorSettingsView() {
             </>
           )}
         </SettingRow>
+        <SettingRow accessorKey='showEditor'>
+          {({ enabled }) => (
+            <>
+              <Switch checked={enabled} />
+              <h6 className='text-primary text-sm'>Show Editor</h6>
+            </>
+          )}
+        </SettingRow>
         <SettingRow accessorKey='showPreview'>
           {({ enabled }) => (
             <>
