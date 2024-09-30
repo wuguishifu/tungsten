@@ -1,11 +1,11 @@
 # Change Log
 
-[jump to latest](#version-111-2024-09-29)<br>
-[jump to stable](#version-111-2024-09-29)
+[jump to latest](#version-112-2024-09-29)<br>
+[jump to stable](#version-112-2024-09-29)
 
 ## Version 1.1.2 (2024-09-29)
 
-[Docker Image]()
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281304075?tag=1.1.2)
 
 - Removed the file and folder icons, they were a bit too noisy imo.
 - Made the sidebar scrollable.
