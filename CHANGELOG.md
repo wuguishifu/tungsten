@@ -3,6 +3,14 @@
 [jump to latest](#version-113-2024-09-29)<br>
 [jump to stable](#version-113-2024-09-29)
 
+## Version 1.1.5 (2024-09-29)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281310791?tag=1.1.5)
+
+This patch includes:
+
+- Changed the alignment of folder name and dropdown icon in the sidebar
+
 ## Version 1.1.3 (2024-09-29)
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281305305?tag=1.1.3)
