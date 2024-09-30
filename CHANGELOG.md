@@ -5,7 +5,7 @@
 
 ## Version 1.1.1 (2024-09-29)
 
-[Docker Image]()
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281248276?tag=1.1.1)
 
 This patch includes:
 
