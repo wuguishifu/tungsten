@@ -38,6 +38,14 @@ export default function EditorSettingsView() {
             </>
           )}
         </SettingRow>
+        <SettingRow accessorKey='showSidebar'>
+          {({ enabled }) => (
+            <>
+              <Switch checked={enabled} />
+              <h6 className='text-primary text-sm'>Show Sidebar</h6>
+            </>
+          )}
+        </SettingRow>
       </div>
     </div>
   );

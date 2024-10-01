@@ -1,7 +1,7 @@
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
-import { Settings } from 'lucide-react';
+import { Menu, Settings } from 'lucide-react';
 import { useRef } from 'react';
 import Loading from '../suspense/loading';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
@@ -20,7 +20,11 @@ export default function Editor() {
   return (
     <div className='h-full w-full flex flex-col pr-4 gap-4'>
       <div className='flex flex-row items-center justify-between p-4 bg-neutral-900 rounded-md'>
-        <div className='flex flex-row items-center relative'>
+        <div className='flex flex-row items-center relative gap-2'>
+          <Menu
+            className='cursor-pointer'
+            onClick={() => updateEditorSettings('showSidebar', !editorSettings.showSidebar)}
+          />
           <h1 className='text-xl font-bold text-primary'>{filename}</h1>
           {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>

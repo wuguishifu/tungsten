@@ -10,6 +10,15 @@ export type EditorSettings = {
   saveOnBlur?: boolean;
   showPreview?: boolean;
   showEditor?: boolean;
+  showSidebar?: boolean;
+}
+
+const defaults: EditorSettings = {
+  vimEnabled: false,
+  saveOnBlur: true,
+  showPreview: true,
+  showEditor: true,
+  showSidebar: true,
 }
 
 const SettingsContext = createContext({} as SettingsContextProps);
@@ -24,6 +33,7 @@ export function SettingsProvider({ children }: { children: Readonly<React.ReactN
     saveOnBlur: true,
     showPreview: true,
     showEditor: true,
+    showSidebar: true,
   });
 
   function updateEditorSettings<T extends keyof EditorSettings>(key: T, value: EditorSettings[T]) {
@@ -35,7 +45,13 @@ export function SettingsProvider({ children }: { children: Readonly<React.ReactN
   useEffect(() => {
     const storedSettings = localStorage.getItem('editorSettings');
     if (storedSettings) {
-      setEditorSettings(JSON.parse(storedSettings));
+      const parsedSettings = JSON.parse(storedSettings);
+      for (const key in defaults) {
+        if (!(key in parsedSettings)) {
+          parsedSettings[key] = defaults[key as keyof EditorSettings];
+        }
+      }
+      setEditorSettings(parsedSettings);
     }
   }, []);
 
