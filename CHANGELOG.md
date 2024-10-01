@@ -1,7 +1,16 @@
 # Change Log
 
-[jump to latest](#version-120-2024-09-30)<br>
-[jump to stable](#version-120-2024-09-30)
+[jump to latest](#version-121-2024-10-01)<br>
+[jump to stable](#version-121-2024-10-01)
+
+## Version 1.2.1 (2024-10-01)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282079236?tag=1.2.1)
+
+This patch includes:
+
+- Search results will now highlight the part that matches the query
+- Search also checks the directory path
 
 ## Version 1.2.0 (2024-09-30)
 
@@ -36,9 +45,9 @@ This patch includes:
 
 This patch includes:
 
-- Removed the file and folder icons, they were a bit too noisy imo.
-- Made the sidebar scrollable.
-- Made file/folder names ellipsis if required.
+- Removed the file and folder icons, they were a bit too noisy imo
+- Made the sidebar scrollable
+- Made file/folder names ellipsis if required
 
 ## Version 1.1.1 (2024-09-29)
 
