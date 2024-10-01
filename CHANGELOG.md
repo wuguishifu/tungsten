@@ -3,6 +3,14 @@
 [jump to latest](#version-121-2024-10-01)<br>
 [jump to stable](#version-121-2024-10-01)
 
+## Version 1.3.0 (2024-10-01)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282125111?tag=1.3.0)
+
+This minor update includes:
+
+- Pressing shift-shift anywhere in the editor brings up the file search (fully keyboard accessible)
+
 ## Version 1.2.1 (2024-10-01)
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282079236?tag=1.2.1)
