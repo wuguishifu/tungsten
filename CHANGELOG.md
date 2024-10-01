@@ -1,7 +1,18 @@
 # Change Log
 
-[jump to latest](#version-113-2024-09-29)<br>
-[jump to stable](#version-113-2024-09-29)
+[jump to latest](#version-120-2024-09-30)<br>
+[jump to stable](#version-120-2024-09-30)
+
+## Version 1.2.0 (2024-09-30)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282016484?tag=1.2.0)
+
+This minor update includes:
+
+- Search bar for files
+- GitHub link and version below the recently deleted tab
+- Option to hide/show the sidebar
+- Folders collapse by default
 
 ## Version 1.1.5 (2024-09-29)
 
