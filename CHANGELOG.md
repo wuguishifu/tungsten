@@ -3,6 +3,14 @@
 [jump to latest](#version-121-2024-10-01)<br>
 [jump to stable](#version-121-2024-10-01)
 
+## Version 1.3.1 (2024-10-01)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282135101?tag=1.3.1)
+
+This patch includes:
+
+- Remove the warning message caused by radix UI trying to control how I write my code
+
 ## Version 1.3.0 (2024-10-01)
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282125111?tag=1.3.0)
