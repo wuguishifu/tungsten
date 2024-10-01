@@ -4,8 +4,9 @@ import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Menu, Settings } from 'lucide-react';
 import { useRef } from 'react';
 import Loading from '../suspense/loading';
+import { buttonVariants } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
-import { Switch } from '../ui/switch';
+import { Toggle } from '../ui/toggle';
 import CodeArea from './code-area';
 import CodePreview from './code-preview';
 import EditorSettingsView from './editor-settings';
@@ -22,11 +23,11 @@ export default function Editor() {
       <div className='flex flex-row items-center justify-between px-4 py-2 bg-neutral-900 rounded-md'>
         <div className='flex flex-row items-center relative gap-2'>
           <Menu
-            className='cursor-pointer text-primary'
+            className='cursor-pointer text-neutral-400'
             onClick={() => updateEditorSettings('showSidebar', !editorSettings.showSidebar)}
           />
           <div className='space-y-1'>
-            <h1 className='text-lg font-bold text-primary leading-4'>
+            <h1 className='text-lg font-bold text-neutral-200 leading-4'>
               {filename}
             </h1>
             <p className='text-xs text-neutral-600'>
@@ -35,31 +36,27 @@ export default function Editor() {
           </div>
           {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>
-        <div className='flex flex-row items-center gap-4'>
-          <div
-            className='flex flex-row items-center gap-2 cursor-pointer'
-            onClick={() => updateEditorSettings('showEditor', !editorSettings.showEditor)}
+        <div className='flex flex-row items-center gap-2'>
+          <Toggle
+            pressed={editorSettings.showEditor}
+            onPressedChange={(pressed) => updateEditorSettings('showEditor', pressed)}
+            className='text-neutral-400 data-[state=on]:text-neutral-200'
           >
-            <h6 className='text-primary text-sm'>
-              Editor
-            </h6>
-            <Switch checked={editorSettings.showEditor} />
-          </div>
-          <div
-            className='flex flex-row items-center gap-2 cursor-pointer'
-            onClick={() => updateEditorSettings('showPreview', !editorSettings.showPreview)}
+            Editor
+          </Toggle>
+          <Toggle
+            pressed={editorSettings.showPreview}
+            onPressedChange={(pressed) => updateEditorSettings('showPreview', pressed)}
+            className='text-neutral-400 data-[state=on]:text-neutral-200'
           >
-            <h6 className='text-primary text-sm'>
-              Preview
-            </h6>
-            <Switch checked={editorSettings.showPreview} />
-          </div>
+            Preview
+          </Toggle>
           <Dialog
             onOpenChange={(focused) => {
               if (!focused) editor.current?.view?.contentDOM.focus();
             }}
           >
-            <DialogTrigger>
+            <DialogTrigger className={buttonVariants({ variant: 'ghost' })}>
               <Settings className='size-4 cursor-pointer text-primary' />
             </DialogTrigger>
             <DialogContent
