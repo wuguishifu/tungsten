@@ -1,7 +1,7 @@
 # Change Log
 
-[jump to latest](#version-121-2024-10-01)<br>
-[jump to stable](#version-121-2024-10-01)
+[jump to latest](#version-131-2024-10-01)<br>
+[jump to stable](#version-131-2024-10-01)
 
 ## Version 1.3.1 (2024-10-01)
 
