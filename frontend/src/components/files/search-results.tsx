@@ -1,7 +1,8 @@
 import { getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
-import { DataLeaf, useData } from '@/providers/data/provider';
-import { useCallback, useMemo } from 'react';
+import { DataLeaf } from '@/providers/data/provider';
+import useSearch from '@/providers/data/use-search';
+import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type SearchResultsProps = {
@@ -10,34 +11,9 @@ type SearchResultsProps = {
 
 export default function SearchResults(props: SearchResultsProps) {
   const { search } = props;
-  const { files } = useData();
   const { username } = useAuth();
+  const searchResults = useSearch(search)
   const navigate = useNavigate();
-
-
-  const searchResults = useMemo(() => {
-    const searchQuery = search.toLowerCase();
-    const results: DataLeaf[] = [];
-
-    const searchFiles = (leaf: DataLeaf) => {
-      if (leaf.type === 'file') {
-        if (
-          leaf.name.toLowerCase().includes(searchQuery) ||
-          leaf.dirPath.toLowerCase().includes(searchQuery)
-        ) {
-          results.push(leaf);
-        }
-      } else {
-        leaf.children.forEach(searchFiles);
-      }
-    };
-
-    if (files?.type === 'directory') {
-      files?.children.forEach(searchFiles);
-    }
-
-    return results;
-  }, [search, files]);
 
   const selectFile = useCallback((path: string) => {
     navigate(`/${username}/${path}`.replace(/\/\//g, '/'));
@@ -47,6 +23,7 @@ export default function SearchResults(props: SearchResultsProps) {
     <div className='flex-1 scrollable overflow-x-hidden w-64 max-w-72 pr-2'>
       {searchResults.map(result => (
         <SearchResult
+          key={result.path}
           result={result}
           query={search}
           onClick={() => selectFile(result.path)}

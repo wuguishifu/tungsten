@@ -26,6 +26,7 @@
     "@uiw/react-codemirror": "^4.23.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "cmdk": "^1.0.0",
     "highlight.js": "^11.10.0",
     "lucide-react": "^0.441.0",
     "markdown-it": "^14.1.0",
