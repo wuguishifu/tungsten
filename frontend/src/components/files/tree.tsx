@@ -146,7 +146,7 @@ function TreeLeaf(props: TreeLeafProps) {
   } = useContext(TreeContext);
 
   const {
-    collapsed,
+    expanded,
     collapse,
     expand,
   } = useData();
@@ -194,7 +194,7 @@ function TreeLeaf(props: TreeLeafProps) {
     }
   }
 
-  const isCollapsed = collapsed.has(leaf.path);
+  const isExpanded = expanded.has(leaf.path);
 
   return (
     <div
@@ -224,18 +224,18 @@ function TreeLeaf(props: TreeLeafProps) {
                 onClick={leaf.type === 'file'
                   ? () => selectFile(leaf.path)
                   : () => {
-                    if (isCollapsed) {
-                      expand(leaf.path);
-                    } else {
+                    if (isExpanded) {
                       collapse(leaf.path);
+                    } else {
+                      expand(leaf.path);
                     }
                   }
                 }
               >
                 {leaf.type === 'directory' && (
-                  isCollapsed
-                    ? <ChevronRight size={16} className='min-w-4 min-h-4' />
-                    : <ChevronDown size={16} className='min-w-4 min-h-4' />
+                  isExpanded
+                    ? <ChevronDown size={16} className='min-w-4 min-h-4' />
+                    : <ChevronRight size={16} className='min-w-4 min-h-4' />
                 )}
                 <p
                   className='data-[type=file]:pl-4 truncate'
@@ -278,19 +278,19 @@ function TreeLeaf(props: TreeLeafProps) {
                   className='select-none'
                   onClick={e => {
                     e.stopPropagation();
-                    if (isCollapsed) {
-                      expand(leaf.path);
-                    } else {
+                    if (isExpanded) {
                       collapse(leaf.path);
+                    } else {
+                      expand(leaf.path);
                     }
                   }}
                 >
-                  {collapsed.has(leaf.path)
+                  {expanded.has(leaf.path)
                     ? <FolderPlus size={16} strokeWidth={2} />
                     : <FolderMinus size={16} strokeWidth={2} />
                   }
                   <span className='ml-2'>
-                    {isCollapsed ? 'expand' : 'collapse'}
+                    {isExpanded ? 'collapse' : 'expand'}
                   </span>
                 </ContextMenuItem>
               )}
@@ -349,7 +349,7 @@ function TreeLeaf(props: TreeLeafProps) {
           stopEditing={() => setAddingItem(false)}
         />
       )}
-      {(leaf.type === 'directory' && !isCollapsed) && (
+      {(leaf.type === 'directory' && (isExpanded || root)) && (
         leaf.children
           .sort((a, b) => {
             if (a.type === 'directory' && b.type === 'file') return -1;

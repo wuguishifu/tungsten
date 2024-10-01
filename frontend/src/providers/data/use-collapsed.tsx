@@ -1,31 +1,31 @@
 import { useEffect, useState } from 'react';
 
-export default function useCollapsed() {
-  const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
+export default function useExpanded() {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const storedCollapsed = localStorage.getItem('collapsed');
+    const storedCollapsed = localStorage.getItem('expanded');
     if (storedCollapsed) {
-      setCollapsed(new Set(JSON.parse(storedCollapsed)));
+      setExpanded(new Set(JSON.parse(storedCollapsed)));
     }
   }, []);
 
-  function collapse(path: string) {
-    const newCollapsed = new Set(collapsed);
+  function expand(path: string) {
+    const newCollapsed = new Set(expanded);
     newCollapsed.add(path);
-    setCollapsed(newCollapsed);
-    localStorage.setItem('collapsed', JSON.stringify(Array.from(newCollapsed)));
+    setExpanded(newCollapsed);
+    localStorage.setItem('expanded', JSON.stringify(Array.from(newCollapsed)));
   }
 
-  function expand(path: string) {
-    const newCollapsed = new Set(collapsed);
+  function collapse(path: string) {
+    const newCollapsed = new Set(expanded);
     newCollapsed.delete(path);
-    setCollapsed(newCollapsed);
-    localStorage.setItem('collapsed', JSON.stringify(Array.from(newCollapsed)));
+    setExpanded(newCollapsed);
+    localStorage.setItem('expanded', JSON.stringify(Array.from(newCollapsed)));
   }
 
   return {
-    collapsed,
+    expanded,
     collapse,
     expand,
   };

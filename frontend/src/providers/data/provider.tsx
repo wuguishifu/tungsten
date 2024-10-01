@@ -2,12 +2,12 @@ import endpoints, { withQueryParams } from '@/lib/endpoints';
 import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useAuth } from '../auth-provider';
-import useCollapsed from './use-collapsed';
+import useExpanded from './use-collapsed';
 
 type DataContextProps = {
   files: DataLeaf | null;
   deleted: string[] | null;
-  collapsed: Set<string>;
+  expanded: Set<string>;
   collapse: (path: string) => void;
   expand: (path: string) => void;
   setFiles: Dispatch<SetStateAction<DataLeaf | null>>;
@@ -48,7 +48,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
 
   const [files, setFiles] = useState<DataLeaf | null>(null);
   const [deleted, setDeleted] = useState<string[] | null>(null);
-  const { collapsed, collapse, expand } = useCollapsed();
+  const { expanded, collapse, expand } = useExpanded();
 
   const updateFiles = useCallback((files: DataLeaf | null) => {
     if (files) {
@@ -279,7 +279,7 @@ export function DataProvider({ children }: { children: Readonly<React.ReactNode>
   const value = {
     files,
     deleted,
-    collapsed,
+    expanded,
     collapse,
     expand,
     setFiles,
