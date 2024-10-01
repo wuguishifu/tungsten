@@ -1,7 +1,15 @@
 # Change Log
 
-[jump to latest](#version-131-2024-10-01)<br>
-[jump to stable](#version-131-2024-10-01)
+[jump to latest](#version-132-2024-10-01)<br>
+[jump to stable](#version-132-2024-10-01)
+
+## Version 1.3.2 (2024-10-01)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282149269?tag=1.3.2)
+
+This patch includes:
+
+- Added the file path to the title area of the editor
 
 ## Version 1.3.1 (2024-10-01)
 
