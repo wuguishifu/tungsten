@@ -3,6 +3,14 @@
 [jump to latest](#version-132-2024-10-01)<br>
 [jump to stable](#version-132-2024-10-01)
 
+## Version 1.3.3 (2024-10-01)
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282161492?tag=1.3.3)
+
+This patch includes:
+
+- Changed the toggle switches to toggle buttons for showing/hiding the editor and the preview planes
+
 ## Version 1.3.2 (2024-10-01)
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282149269?tag=1.3.2)
