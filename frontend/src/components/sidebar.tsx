@@ -83,9 +83,15 @@ export default function Sidebar() {
           </span>
           <GitHubLogoIcon className='ml-2' />
         </a>
-        <p className='text-xs text-neutral-700'>
-          Version 1.2.0
-        </p>
+        <a
+          href='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-130-2024-10-01'
+          className='text-xs text-neutral-700 flex flex-row items-center'
+          target='_blank'
+        >
+          <span>
+            Version 1.3.0
+          </span>
+        </a>
       </div>
     </div>
   );
