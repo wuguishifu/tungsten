@@ -110,3 +110,5 @@ Alright, that's all for setup. If anyone has questions, feel free to reach out t
 Visit the [Trello Kanban](https://trello.com/b/wL2Bg5XN/tungsten) to see the status of the project!
 
 Contributions are always welcome, just submit a PR. If you have any feature requests and DON'T want to build them, submit an issue or reach out to me on discord (@wuguishifu)!
+
+For information on how to set up the developer environment, check out [this document](https://github.com/wuguishifu/tungsten/blob/master/DEVELOPER%20SETUP.md).
