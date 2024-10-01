@@ -10,6 +10,7 @@
 This minor update includes:
 
 - Pressing shift-shift anywhere in the editor brings up the file search (fully keyboard accessible)
+- Clicking on the version number brings up the changelog
 
 ## Version 1.2.1 (2024-10-01)
 
