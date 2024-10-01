@@ -11,6 +11,7 @@ type EditorContextProps = {
   filename: string;
   ext: string | null;
   file: string | null;
+  filePath: string | null;
   dirty: boolean;
   loading: boolean;
   setFile: (data: string) => void;
@@ -113,6 +114,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     filename,
     ext,
     file,
+    filePath: filePath ?? null,
     dirty,
     loading,
     setFile: (data: string) => {

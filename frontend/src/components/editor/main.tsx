@@ -11,7 +11,7 @@ import CodePreview from './code-preview';
 import EditorSettingsView from './editor-settings';
 
 export default function Editor() {
-  const { filename, loading, dirty } = useEditor();
+  const { filename, filePath, loading, dirty } = useEditor();
 
   const { editorSettings, updateEditorSettings } = useSettings();
 
@@ -19,13 +19,20 @@ export default function Editor() {
 
   return (
     <div className='h-full w-full flex flex-col pr-4 gap-4'>
-      <div className='flex flex-row items-center justify-between p-4 bg-neutral-900 rounded-md'>
+      <div className='flex flex-row items-center justify-between px-4 py-2 bg-neutral-900 rounded-md'>
         <div className='flex flex-row items-center relative gap-2'>
           <Menu
-            className='cursor-pointer'
+            className='cursor-pointer text-primary'
             onClick={() => updateEditorSettings('showSidebar', !editorSettings.showSidebar)}
           />
-          <h1 className='text-xl font-bold text-primary'>{filename}</h1>
+          <div className='space-y-1'>
+            <h1 className='text-lg font-bold text-primary leading-4'>
+              {filename}
+            </h1>
+            <p className='text-xs text-neutral-600'>
+              /{filePath}
+            </p>
+          </div>
           {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>
         <div className='flex flex-row items-center gap-4'>
