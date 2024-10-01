@@ -1,3 +1,4 @@
+import { getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf, useData } from '@/providers/data/provider';
 import { useCallback, useMemo } from 'react';
@@ -65,10 +66,10 @@ function SearchResult(props: SearchResultProps) {
       onClick={onClick}
     >
       <p className='m-0 p-0 truncate text-sm text-neutral-400 group-hover:text-neutral-100'>
-        {result.name}
+        {getName(result.name)}
       </p>
       <p className='m-0 p-0 truncate text-xs text-neutral-600 group-hover:text-neutral-500'>
-        {result.path}
+        {result.dirPath || '.'}/
       </p>
     </div>
   );
