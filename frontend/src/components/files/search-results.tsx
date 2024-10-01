@@ -20,11 +20,14 @@ export default function SearchResults(props: SearchResultsProps) {
     const results: DataLeaf[] = [];
 
     const searchFiles = (leaf: DataLeaf) => {
-      if (leaf.name.toLowerCase().includes(searchQuery) && leaf.type === 'file') {
-        results.push(leaf);
-      }
-
-      if (leaf.type === 'directory') {
+      if (leaf.type === 'file') {
+        if (
+          leaf.name.toLowerCase().includes(searchQuery) ||
+          leaf.dirPath.toLowerCase().includes(searchQuery)
+        ) {
+          results.push(leaf);
+        }
+      } else {
         leaf.children.forEach(searchFiles);
       }
     };
@@ -45,6 +48,7 @@ export default function SearchResults(props: SearchResultsProps) {
       {searchResults.map(result => (
         <SearchResult
           result={result}
+          query={search}
           onClick={() => selectFile(result.path)}
         />
       ))}
@@ -54,11 +58,20 @@ export default function SearchResults(props: SearchResultsProps) {
 
 type SearchResultProps = {
   result: DataLeaf;
+  query: string;
   onClick: () => void;
 };
 
 function SearchResult(props: SearchResultProps) {
-  const { result, onClick } = props;
+  const { result, onClick, query } = props;
+
+  const queryRegex = new RegExp(`(${query})`, 'gi');
+
+  const name = getName(result.name);
+  const parts = name.split(queryRegex);
+  const dirParts = result.dirPath
+    ? result.dirPath.split(queryRegex)
+    : ['./'];
 
   return (
     <div
@@ -66,10 +79,31 @@ function SearchResult(props: SearchResultProps) {
       onClick={onClick}
     >
       <p className='m-0 p-0 truncate text-sm text-neutral-400 group-hover:text-neutral-100'>
-        {getName(result.name)}
+        {parts
+          .filter(part => part.length)
+          .map((part, index) => (
+            <span
+              data-match={part.toLowerCase() === query.toLowerCase()}
+              key={index}
+              className='data-[match=true]:underline underline-offset-2'
+            >
+              {part}
+            </span>
+          ))}
       </p>
       <p className='m-0 p-0 truncate text-xs text-neutral-600 group-hover:text-neutral-500'>
-        {result.dirPath || '.'}/
+        {dirParts
+          .filter(part => part.length)
+          .map((part, index) => (
+            <span
+              data-match={part.toLowerCase() === query.toLowerCase()}
+              key={index}
+              className='data-[match=true]:underline underline-offset-2'
+            >
+              {part}
+            </span>
+          ))
+        }
       </p>
     </div>
   );
