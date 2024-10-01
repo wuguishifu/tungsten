@@ -1,7 +1,6 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { getName } from '@/lib/file-utils';
 import { useData } from '@/providers/data/provider';
-import { File } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { toast } from 'sonner';
 import { buttonVariants } from '../ui/button';
@@ -140,12 +139,11 @@ function RecentlyDeletedItem(props: RecentlyDeletedItemProps) {
     >
       <ContextMenu>
         <ContextMenuTrigger>
-          <div className='flex flex-row items-center cursor-pointer hover:bg-neutral-800 pr-2 py-1 gap-1 rounded-sm mt-0.5 hover:text-neutral-100 text-neutral-400'>
-            <File size={16} />
-            <span>
+          <div className='max-w-64 overflow-hidden flex px-2 cursor-pointer hover:bg-neutral-800 py-1 rounded-sm mt-0.5 hover:text-neutral-100 text-neutral-400'>
+            <p className='truncate'>
               {/* this is kinda stupid but it's cuz the file is always file.md.identifier */}
               {getName(getName(name))}
-            </span>
+            </p>
           </div>
         </ContextMenuTrigger>
         <ContextMenuContent onCloseAutoFocus={e => e.preventDefault()}>

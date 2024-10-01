@@ -1,10 +1,13 @@
 import { EditorSettings, useSettings } from '@/providers/settings-provider';
 import { Switch } from '../ui/switch';
+import { DialogTitle } from '../ui/dialog';
 
 export default function EditorSettingsView() {
   return (
     <div>
-      <h1 className='text-primary text-xl'>Editor Settings</h1>
+      <DialogTitle>
+        <span className='text-primary text-xl'>Editor Settings</span>
+      </DialogTitle>
       <div className='space-y-4 mt-8'>
         <SettingRow accessorKey='vimEnabled'>
           {({ enabled }) => (

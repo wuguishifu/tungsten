@@ -55,7 +55,11 @@ export default function Editor() {
             <DialogTrigger>
               <Settings className='size-4 cursor-pointer text-primary' />
             </DialogTrigger>
-            <DialogContent onCloseAutoFocus={e => e.preventDefault()}>
+            <DialogContent
+              onCloseAutoFocus={e => e.preventDefault()}
+              aria-description='Editor Settings'
+              aria-describedby={undefined}
+            >
               <EditorSettingsView />
             </DialogContent>
           </Dialog>
