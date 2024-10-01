@@ -17,9 +17,7 @@ const md = new markdownIt({
   highlight: (str, lang) => {
     if (lang && hljs.getLanguage(lang)) {
       try {
-        const val = hljs.highlight(str, { language: lang }).value;
-        console.log(val)
-        return val;
+        return hljs.highlight(str, { language: lang }).value;
         // eslint-disable-next-line no-empty
       } catch { }
     }

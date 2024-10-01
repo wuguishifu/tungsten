@@ -1,3 +1,4 @@
+import { Root as VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import useShiftShift from '@/hooks/use-shiftshift';
 import { getName } from '@/lib/file-utils';
@@ -6,6 +7,7 @@ import { DataLeaf } from '@/providers/data/provider';
 import useSearch from '@/providers/data/use-search';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { DialogTitle } from '../ui/dialog';
 
 export default function ShiftShift() {
   const { username } = useAuth();
@@ -24,6 +26,11 @@ export default function ShiftShift() {
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
+      <VisuallyHidden>
+        <DialogTitle>
+          File Search
+        </DialogTitle>
+      </VisuallyHidden>
       <Command loop shouldFilter={false}>
         <CommandInput
           placeholder='Search for a file...'

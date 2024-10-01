@@ -21,6 +21,7 @@
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-switch": "^1.1.0",
+    "@radix-ui/react-visually-hidden": "^1.1.0",
     "@replit/codemirror-vim": "^6.2.1",
     "@types/markdown-it": "^14.1.2",
     "@uiw/react-codemirror": "^4.23.2",
