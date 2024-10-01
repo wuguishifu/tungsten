@@ -108,3 +108,5 @@ Alright, that's all for setup. If anyone has questions, feel free to reach out t
 ## Development
 
 Visit the [Trello Kanban](https://trello.com/b/wL2Bg5XN/tungsten) to see the status of the project!
+
+Contributions are always welcome, just submit a PR. If you have any feature requests and DON'T want to build them, submit an issue or reach out to me on discord (@wuguishifu)!
