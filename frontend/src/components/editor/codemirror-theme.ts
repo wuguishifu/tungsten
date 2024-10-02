@@ -27,6 +27,15 @@ const EditorTheme = Prec.highest(
       backgroundColor: '#202020',
       padding: '0.2em 0.4em',
       borderRadius: '0.4em',
+      position: 'fixed',
+      bottom: '2em !important',
+      left: '10em',
+      right: '10em',
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+    },
+    '.cm-editor': {
+      position: 'absolute',
+      top: 0,
     },
     // vim fatty cursor
     '.cm-fat-cursor': {
