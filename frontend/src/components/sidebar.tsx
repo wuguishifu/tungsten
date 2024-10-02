@@ -6,7 +6,8 @@ import { useRef, useState } from 'react';
 import RecentlyDeleted from './files/recently-deleted';
 import SearchResults from './files/search-results';
 import Tree from './files/tree';
-import { Button } from './ui/button';
+import { Button, buttonVariants } from './ui/button';
+import { cn } from '@/lib/utils';
 
 export default function Sidebar() {
   const [addingItem, setAddingItem] = useState<DataType | false>(false);
@@ -75,7 +76,7 @@ export default function Sidebar() {
       <div className='flex flex-row items-centered justify-between pt-4'>
         <a
           href='https://github.com/wuguishifu/tungsten'
-          className='text-xs text-neutral-700 flex flex-row items-center'
+          className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-xs flex flex-row items-center text-neutral-400 hover:text-neutral-400')}
           target='_blank'
         >
           <span>
@@ -85,7 +86,7 @@ export default function Sidebar() {
         </a>
         <a
           href='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-134'
-          className='text-xs text-neutral-700 flex flex-row items-center'
+          className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-xs flex flex-row items-center text-neutral-400 hover:text-neutral-400')}
           target='_blank'
         >
           <span>
