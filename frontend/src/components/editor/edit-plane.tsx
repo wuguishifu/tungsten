@@ -3,10 +3,10 @@ import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { markdown } from '@codemirror/lang-markdown';
 import { Vim, vim } from '@replit/codemirror-vim';
-import ReactCodeMirror, { EditorView, ReactCodeMirrorRef } from '@uiw/react-codemirror';
-import { forwardRef, useEffect } from 'react';
+import ReactCodeMirror, { EditorView, Prec, ReactCodeMirrorRef } from '@uiw/react-codemirror';
+import { forwardRef, useEffect, useMemo } from 'react';
 
-const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
+const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const { editorSettings } = useSettings();
   const { file, dirty, setFile, onSave } = useEditor();
 
@@ -26,6 +26,20 @@ const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
     };
   }, [onSave]);
 
+  const extensions = useMemo(() => {
+    const extensions = [
+      markdown(),
+      EditorTheme,
+      EditorView.lineWrapping,
+    ];
+
+    if (editorSettings.vimEnabled) {
+      extensions.push(Prec.high(vim()));
+    }
+
+    return extensions;
+  }, [editorSettings]);
+
   return (
     <div
       className='h-full pt-2'
@@ -43,16 +57,11 @@ const CodeArea = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
         theme='dark'
         placeholder='start typing...'
         value={file ?? ''}
-        extensions={[
-          markdown(),
-          EditorTheme,
-          ...(editorSettings.vimEnabled ? [vim()] : []),
-          EditorView.lineWrapping,
-        ]}
+        extensions={extensions}
         onChange={value => setFile(value)}
       />
     </div>
   );
 });
 
-export default CodeArea;
+export default EditPlane;

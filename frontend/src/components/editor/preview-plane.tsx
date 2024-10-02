@@ -1,7 +1,7 @@
 import { useEditor } from '@/providers/editor-provider';
 import md from './remarkable';
 
-export default function CodePreview() {
+export default function PreviewPlane() {
   const { file } = useEditor();
 
   return (

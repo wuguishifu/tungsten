@@ -7,9 +7,9 @@ import Loading from '../suspense/loading';
 import { buttonVariants } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Toggle } from '../ui/toggle';
-import CodeArea from './code-area';
-import CodePreview from './code-preview';
+import EditPlane from './edit-plane';
 import EditorSettingsView from './editor-settings';
+import PreviewPlane from './preview-plane';
 
 export default function Editor() {
   const { filename, filePath, loading, dirty } = useEditor();
@@ -75,12 +75,12 @@ export default function Editor() {
         <div className='flex-1 flex gap-4 overflow-hidden'>
           {editorSettings.showEditor && (
             <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
-              <CodeArea ref={editor} />
+              <EditPlane ref={editor} />
             </div>
           )}
           {editorSettings.showPreview && (
             <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
-              <CodePreview />
+              <PreviewPlane />
             </div>
           )}
         </div>
