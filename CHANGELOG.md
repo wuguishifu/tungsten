@@ -1,7 +1,18 @@
 # Change Log
 
-[jump to latest](#version-133)<br>
-[jump to stable](#version-133)
+[jump to latest](#version-134)<br>
+[jump to stable](#version-134)
+
+## Version 1.3.4
+
+Release date: 2024-10-01
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282660691?tag=1.3.4)
+
+This patch includes:
+
+- Fixed bug preventing `<c-u>` and `<c-d>` from working
+- Moved the vim command panel to fixed at bottom of the screen
 
 ## Version 1.3.3
 
