@@ -1,9 +1,11 @@
 # Change Log
 
-[jump to latest](#version-132-2024-10-01)<br>
-[jump to stable](#version-132-2024-10-01)
+[jump to latest](#version-133)<br>
+[jump to stable](#version-133)
 
-## Version 1.3.3 (2024-10-01)
+## Version 1.3.3
+
+Release date: 2024-10-01
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282161492?tag=1.3.3)
 
@@ -11,7 +13,9 @@ This patch includes:
 
 - Changed the toggle switches to toggle buttons for showing/hiding the editor and the preview planes
 
-## Version 1.3.2 (2024-10-01)
+## Version 1.3.2
+
+Release date: 2024-10-01
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282149269?tag=1.3.2)
 
@@ -19,7 +23,9 @@ This patch includes:
 
 - Added the file path to the title area of the editor
 
-## Version 1.3.1 (2024-10-01)
+## Version 1.3.1
+
+Release date: 2024-10-01
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282135101?tag=1.3.1)
 
@@ -27,7 +33,9 @@ This patch includes:
 
 - Remove the warning message caused by radix UI trying to control how I write my code
 
-## Version 1.3.0 (2024-10-01)
+## Version 1.3.0
+
+Release date: 2024-10-01
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282125111?tag=1.3.0)
 
@@ -36,7 +44,9 @@ This minor update includes:
 - Pressing shift-shift anywhere in the editor brings up the file search (fully keyboard accessible)
 - Clicking on the version number brings up the changelog
 
-## Version 1.2.1 (2024-10-01)
+## Version 1.2.1
+
+Release date: 2024-10-01
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282079236?tag=1.2.1)
 
@@ -45,7 +55,9 @@ This patch includes:
 - Search results will now highlight the part that matches the query
 - Search also checks the directory path
 
-## Version 1.2.0 (2024-09-30)
+## Version 1.2.0
+
+Release date: 2024-09-30
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282016484?tag=1.2.0)
 
@@ -56,7 +68,9 @@ This minor update includes:
 - Option to hide/show the sidebar
 - Folders collapse by default
 
-## Version 1.1.5 (2024-09-29)
+## Version 1.1.5
+
+Release date: 2024-09-29
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281310791?tag=1.1.5)
 
@@ -64,7 +78,9 @@ This patch includes:
 
 - Changed the alignment of folder name and dropdown icon in the sidebar
 
-## Version 1.1.3 (2024-09-29)
+## Version 1.1.3
+
+Release date: 2024-09-29
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281305305?tag=1.1.3)
 
@@ -72,7 +88,9 @@ This patch includes:
 
 - Added a toggle for show/hide the editor in the settings modal
 
-## Version 1.1.2 (2024-09-29)
+## Version 1.1.2
+
+Release date: 2024-09-29
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281304075?tag=1.1.2)
 
@@ -82,7 +100,9 @@ This patch includes:
 - Made the sidebar scrollable
 - Made file/folder names ellipsis if required
 
-## Version 1.1.1 (2024-09-29)
+## Version 1.1.1
+
+Release date: 2024-09-29
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281248276?tag=1.1.1)
 
@@ -90,7 +110,9 @@ This patch includes:
 
 - Any `.git` folders are no longer included in the file structure in the frontend. If you want to back up your files with git (in a user's directory), you will no longer see the git folder.
 
-## Version 1.1.0 (2024-09-29)
+## Version 1.1.0
+
+Release date: 2024-09-29
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281214000?tag=1.1.0)
 
@@ -103,7 +125,9 @@ This minor update includes:
 
 \*This may cause the editor to be hidden by default if you update from a previous version because of a limitation with cookies. I'm going to fix this in the future so that new settings that should be default on won't be defaulted to off.
 
-## Version 1.0.1 (2024-09-29)
+## Version 1.0.1
+
+Release date: 2024-09-29
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281106134?tag=1.0.1)
 
@@ -112,7 +136,9 @@ This patch includes:
 - Changes to the tab header
 - Installation instructions in the README
 
-## Version 1.0.0 (2024-09-28)
+## Version 1.0.0
+
+Release date: 2024-09-28
 
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/280922869?tag=1.0.0)
 

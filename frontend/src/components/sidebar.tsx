@@ -84,12 +84,12 @@ export default function Sidebar() {
           <GitHubLogoIcon className='ml-2' />
         </a>
         <a
-          href='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-133-2024-10-01'
+          href='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-134'
           className='text-xs text-neutral-700 flex flex-row items-center'
           target='_blank'
         >
           <span>
-            Version 1.3.3
+            Version 1.3.4
           </span>
         </a>
       </div>
