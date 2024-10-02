@@ -3,6 +3,14 @@
 [jump to latest](#version-134)<br>
 [jump to stable](#version-134)
 
+## Version 1.3.5
+
+Release date: TBD
+
+This patch includes:
+
+- Updated the style of the GitHub links
+
 ## Version 1.3.4
 
 Release date: 2024-10-01
