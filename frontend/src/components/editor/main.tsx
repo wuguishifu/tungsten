@@ -9,7 +9,7 @@ import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Toggle } from '../ui/toggle';
 import EditPlane from './edit-plane';
 import EditorSettingsView from './editor-settings';
-import PreviewPlane from './preview-plane';
+import PreviewPlane from './markdown/preview-plane';
 
 export default function Editor() {
   const { filename, filePath, loading, dirty } = useEditor();

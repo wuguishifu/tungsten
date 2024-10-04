@@ -1,5 +1,5 @@
 import { useEditor } from '@/providers/editor-provider';
-import md from './remarkable';
+import MarkdownRenderer from './markdown-renderer';
 
 export default function PreviewPlane() {
   const { file } = useEditor();
@@ -7,9 +7,8 @@ export default function PreviewPlane() {
   return (
     <div className='flex-1'>
       {file && (
-        <div
-          className='md-preview'
-          dangerouslySetInnerHTML={{ __html: md.render(file) }}
+        <MarkdownRenderer
+          content={file}
         />
       )}
     </div>

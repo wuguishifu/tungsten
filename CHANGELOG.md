@@ -3,6 +3,18 @@
 [jump to latest](#version-134)<br>
 [jump to stable](#version-134)
 
+## Version 2.0.0
+
+Release date: TBD
+
+This major update includes:
+
+- Rendering is now done through [`react-markdown`](https://github.com/remarkjs/react-markdown), so performance should be a lot better
+- A few things have been removed and will be added later. This includes:
+  - Tags
+  - Named code blocks
+- Documents can now be linked to other documents via Obsidian syntax: `[[/path/to/document]]`
+
 ## Version 1.3.5
 
 Release date: 2024-10-04
