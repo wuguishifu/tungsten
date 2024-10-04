@@ -10,6 +10,7 @@ Release date: TBD
 This patch includes:
 
 - Updated the style of the GitHub links
+- Updated search to match the full path of the file
 
 ## Version 1.3.4
 

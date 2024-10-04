@@ -46,9 +46,12 @@ function SearchResult(props: SearchResultProps) {
 
   const name = getName(result.name);
   const parts = name.split(queryRegex);
-  const dirParts = result.dirPath
-    ? result.dirPath.split(queryRegex)
+  const dirParts = result.path
+    ? result.path.split(queryRegex)
     : ['./'];
+
+  const lastIndex = dirParts[dirParts.length - 1].lastIndexOf('.md');
+  dirParts[dirParts.length - 1] = dirParts[dirParts.length - 1].slice(0, lastIndex);
 
   return (
     <div

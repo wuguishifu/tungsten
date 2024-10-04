@@ -12,7 +12,7 @@ export default function useSearch(query: string) {
       if (leaf.type === 'file') {
         if (
           leaf.name.toLowerCase().includes(searchQuery) ||
-          leaf.dirPath.toLowerCase().includes(searchQuery)
+          leaf.path.toLowerCase().includes(searchQuery)
         ) {
           results.push(leaf);
         }

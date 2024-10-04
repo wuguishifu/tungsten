@@ -1,10 +1,10 @@
-import { Root as VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import useShiftShift from '@/hooks/use-shiftshift';
 import { getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf } from '@/providers/data/provider';
 import useSearch from '@/providers/data/use-search';
+import { Root as VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DialogTitle } from '../ui/dialog';
@@ -68,9 +68,12 @@ function SearchResult(props: SearchResultProps) {
 
   const name = getName(result.name);
   const parts = name.split(queryRegex);
-  const dirParts = result.dirPath
-    ? result.dirPath.split(queryRegex)
+  const dirParts = result.path
+    ? result.path.split(queryRegex)
     : ['./'];
+
+  const lastIndex = dirParts[dirParts.length - 1].lastIndexOf('.md');
+  dirParts[dirParts.length - 1] = dirParts[dirParts.length - 1].slice(0, lastIndex);
 
   return (
     <CommandItem
