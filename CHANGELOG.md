@@ -5,7 +5,7 @@
 
 ## Version 1.3.5
 
-Release date: TBD
+Release date: 2024-10-04
 
 This patch includes:
 
