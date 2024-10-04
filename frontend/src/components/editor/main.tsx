@@ -7,9 +7,9 @@ import Loading from '../suspense/loading';
 import { buttonVariants } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Toggle } from '../ui/toggle';
-import EditPlane from './edit-plane';
+import EditPlane from './code/edit-plane';
 import EditorSettingsView from './editor-settings';
-import PreviewPlane from './markdown/preview-plane';
+import PreviewPlane from './preview/preview-plane';
 
 export default function Editor() {
   const { filename, filePath, loading, dirty } = useEditor();

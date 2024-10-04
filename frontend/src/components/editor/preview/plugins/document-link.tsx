@@ -17,10 +17,16 @@ export function remarkLinkBrackets() {
           });
         }
 
+        const matchParts = match[1].split('|');
+        const url = matchParts[0] + '.md';
+
         nodes.push({
           type: 'link',
-          url: match[1] + '.md',
-          children: [{ type: 'text', value: match[1] }],
+          url,
+          children: [{
+            type: 'text',
+            value: matchParts[1] || matchParts[0],
+          }],
           data: {
             hProperties: {
               className: 'internal-document-link',

@@ -1,4 +1,4 @@
-import EditorTheme from '@/components/editor/codemirror-theme';
+import EditorTheme from '@/components/editor/code/codemirror-theme';
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { markdown } from '@codemirror/lang-markdown';
