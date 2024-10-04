@@ -3,10 +3,14 @@
 }
 
 .md-preview .katex-mathml {
+  padding: 0.1em 0.2em;
+}
+
+.md-preview .katex-mathml semantics {
   background-color: #282c34;
   color: #ABB2BF;
-  padding: 0.1em 0.2em;
   border-radius: 3px;
+  padding: 0.4em 0.8em;
 }
 
 .md-preview .katex-block {
