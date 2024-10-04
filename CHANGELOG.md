@@ -7,6 +7,8 @@
 
 Release date: 2024-10-04
 
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/284095496?tag=1.3.5)
+
 This patch includes:
 
 - Updated the style of the GitHub links
