@@ -13,7 +13,7 @@ This major update includes:
 - A few things have been removed and will be added later. This includes:
   - Tags
   - Named code blocks
-- Documents can now be linked to other documents via Obsidian syntax: `[[/path/to/document]]`
+- Documents can now be linked to other documents via the syntax `[[/path/to/document]]`
 
 ## Version 1.3.5
 
