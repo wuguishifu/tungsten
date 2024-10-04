@@ -1,13 +1,12 @@
 import { DataType, useData } from '@/providers/data/provider';
 import { RootAddItemContext } from '@/providers/root-add-item-context';
-import { GitHubLogoIcon } from '@radix-ui/react-icons';
 import { FilePlus, FolderPlus, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import RecentlyDeleted from './files/recently-deleted';
 import SearchResults from './files/search-results';
 import Tree from './files/tree';
-import { Button, buttonVariants } from './ui/button';
-import { cn } from '@/lib/utils';
+import VersionInfo from './files/version-info';
+import { Button } from './ui/button';
 
 export default function Sidebar() {
   const [addingItem, setAddingItem] = useState<DataType | false>(false);
@@ -73,27 +72,7 @@ export default function Sidebar() {
         <div className='h-0.5 w-full bg-secondary rounded-full' />
       </div>
       {!!deleted?.length && <RecentlyDeleted />}
-      <div className='flex flex-row items-centered justify-between pt-4'>
-        <a
-          href='https://github.com/wuguishifu/tungsten'
-          className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-xs flex flex-row items-center text-neutral-400 hover:text-neutral-400')}
-          target='_blank'
-        >
-          <span>
-            View on GitHub
-          </span>
-          <GitHubLogoIcon className='ml-2' />
-        </a>
-        <a
-          href='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-134'
-          className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-xs flex flex-row items-center text-neutral-400 hover:text-neutral-400')}
-          target='_blank'
-        >
-          <span>
-            Version 1.3.4
-          </span>
-        </a>
-      </div>
+      <VersionInfo />
     </div>
   );
 }
