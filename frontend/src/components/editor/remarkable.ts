@@ -2,6 +2,7 @@ import hljs from 'highlight.js';
 import markdownIt from 'markdown-it';
 import MarkdownItLabel from 'markdown-it-label';
 import NamedCodeBlocks from 'markdown-it-named-code-blocks';
+import documentLinkPlugin from './document-link-plugin';
 
 // @ts-expect-error i have no type declaration file for this package :C
 import mk from '@iktakahiro/markdown-it-katex';
@@ -28,13 +29,16 @@ const md = new markdownIt({
 md.use(mk);
 md.use(NamedCodeBlocks)
 md.use(MarkdownItLabel);
+md.use(documentLinkPlugin);
 
 md.renderer.rules.link_open = (tokens, idx) => {
   const hrefIndex = tokens[idx].attrIndex('href');
-  const href = tokens[idx].attrs?.[hrefIndex][1] ?? '#';
-  return `<a href="${href}" target="_blank" rel="noopener noreferrer">
-      <span class="md-preview-link-text">`;
-}
+  const href = tokens[idx].attrs?.[hrefIndex]?.[1] ?? '#';
+  const targetIndex = tokens[idx].attrIndex('target');
+  const target = tokens[idx].attrs?.[targetIndex]?.[1] ?? '_blank';
+  return `<a href="${href}" target="${target}" rel="noopener noreferrer">
+    <span class="md-preview-link-text">`;
+};
 
 md.renderer.rules.link_close = () => {
   return (
@@ -58,6 +62,6 @@ md.renderer.rules.link_close = () => {
         </svg>
       </a>`
   );
-}
+};
 
 export default md;
