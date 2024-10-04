@@ -18,14 +18,25 @@ export function remarkLinkBrackets() {
         }
 
         const matchParts = match[1].split('|');
-        const url = matchParts[0] + '.md';
+        let url = matchParts[0] + '.md';
+        if (url.startsWith('/')) {
+          url = url.slice(1);
+        }
+
+        let label;
+        if (matchParts[1]) {
+          label = matchParts[1];
+        } else {
+          const parts = matchParts[0].split('/');
+          label = parts[parts.length - 1];
+        }
 
         nodes.push({
           type: 'link',
           url,
           children: [{
             type: 'text',
-            value: matchParts[1] || matchParts[0],
+            value: label,
           }],
           data: {
             hProperties: {
