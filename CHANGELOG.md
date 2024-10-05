@@ -5,7 +5,7 @@
 
 ## Version 2.0.0
 
-Release date: TBD
+Release date: 2024-10-05
 
 This major update includes:
 
@@ -13,7 +13,7 @@ This major update includes:
 - A few things have been removed and will be added later. This includes:
   - Tags
   - Named code blocks
-- Documents can now be linked to other documents via the syntax `[[/path/to/document]]`
+- Documents can now be linked to other documents via the syntax `[[/path/to/document|optional name]]`
 
 ## Version 1.3.5
 
