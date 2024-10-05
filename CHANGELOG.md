@@ -7,6 +7,8 @@
 
 Release date: 2024-10-05
 
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/284563412?tag=2.0.0)
+
 This major update includes:
 
 - Rendering is now done through [`react-markdown`](https://github.com/remarkjs/react-markdown), so performance should be a lot better
