@@ -1,6 +1,8 @@
 import EditorTheme from '@/components/editor/code/codemirror-theme';
+import useCompletions from '@/hooks/use-completions';
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
+import { autocompletion } from '@codemirror/autocomplete';
 import { markdown } from '@codemirror/lang-markdown';
 import { Vim, vim } from '@replit/codemirror-vim';
 import ReactCodeMirror, { EditorView, Prec, ReactCodeMirrorRef } from '@uiw/react-codemirror';
@@ -9,6 +11,8 @@ import { forwardRef, useEffect, useMemo } from 'react';
 const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const { editorSettings } = useSettings();
   const { file, dirty, setFile, onSave } = useEditor();
+
+  const fileCompletions = useCompletions();
 
   useEffect(() => {
     Vim.defineEx('write', 'w', onSave);
@@ -30,6 +34,11 @@ const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
     const extensions = [
       markdown(),
       EditorTheme,
+      autocompletion({
+        override: [fileCompletions],
+        closeOnBlur: false,
+        icons: false,
+      }),
       EditorView.lineWrapping,
     ];
 
@@ -38,7 +47,7 @@ const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
     }
 
     return extensions;
-  }, [editorSettings]);
+  }, [editorSettings, fileCompletions]);
 
   return (
     <div

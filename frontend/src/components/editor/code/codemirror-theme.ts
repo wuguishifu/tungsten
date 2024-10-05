@@ -50,6 +50,60 @@ const EditorTheme = Prec.highest(
       outline: 'solid 1px #5E33F6',
       color: 'transparent !important',
     },
+    // autocomplete tooltip
+    '.cm-tooltip-autocomplete': {
+      backgroundColor: 'rgb(23 23 23)',
+      boxShadow: '0 0 16px rgba(0, 0, 0, 0.8)',
+      padding: '8px',
+      borderRadius: '8px'
+    },
+    '.cm-tooltip-autocomplete ul li': {
+      padding: '8px 8px !important',
+      borderRadius: '4px',
+      color: 'rgb(163 163 163)',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    '.cm-tooltip-autocomplete ul li[aria-selected]': {
+      backgroundColor: '#404040',
+      color: 'rgb(245 245 245)'
+      // backgroundColor: 'rgb(23 23 23)',
+      // color: 'rgb(163 163 163)',
+    },
+    '.cm-tooltip-autocomplete ul li:hover': {
+      backgroundColor: '#404040',
+      color: 'rgb(245 245 245)'
+    },
+    '.cm-completionLabel': {
+      fontSize: '1.1em',
+    },
+    '.cm-completionDetail': {
+      marginLeft: 0,
+      fontSize: '0.9em',
+      color: 'rgb(123 123 123)',
+      fontStyle: 'normal',
+    },
+    // scrollbar for tooltips
+    '.cm-tooltip-autocomplete>ul': {
+      paddingRight: '8px !important',
+      maxWidth: 'min(900px, 95vw) !important',
+      maxHeight: '20em !important',
+    },
+    '.cm-tooltip-autocomplete ul::-webkit-scrollbar': {
+      backgroundColor: 'transparent',
+      width: '8px',
+    },
+    '.cm-tooltip-autocomplete ul::-webkit-scrollbar-track': {
+      backgroundColor: 'transparent',
+    },
+    '.cm-tooltip-autocomplete ul::-webkit-scrollbar-thumb': {
+      borderRadius: '4px',
+      backgroundColor: '#404040',
+    },
+    '.cm-tooltip-autocomplete ul::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: '#545454',
+      cursor: 'pointer',
+    },
   }),
 );
 
