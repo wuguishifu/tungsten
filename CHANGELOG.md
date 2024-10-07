@@ -1,11 +1,13 @@
 # Change Log
 
-[jump to latest](#version-200)<br>
-[jump to stable](#version-200)
+[jump to latest](#version-210)<br>
+[jump to stable](#version-210)
 
 ## Version 2.1.0
 
-Release date: TBD
+Release date: 2024-10-06
+
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/284955974?tag=2.1.0)
 
 This minor update includes:
 
