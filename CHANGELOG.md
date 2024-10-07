@@ -3,11 +3,11 @@
 [jump to latest](#version-200)<br>
 [jump to stable](#version-200)
 
-## Version 2.0.1
+## Version 2.1.0
 
 Release date: TBD
 
-This patch includes:
+This minor update includes:
 
 - Fixed issue where renaming the file you're currently editing would not navigate you to the new file
 - Fixed weird behavior with creating a new file sending you to the wrong place
