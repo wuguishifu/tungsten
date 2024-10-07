@@ -1,4 +1,4 @@
-import { getName } from '@/lib/file-utils';
+import { cleanPath, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf } from '@/providers/data/provider';
 import useSearch from '@/providers/data/use-search';
@@ -16,7 +16,7 @@ export default function SearchResults(props: SearchResultsProps) {
   const navigate = useNavigate();
 
   const selectFile = useCallback((path: string) => {
-    navigate(`/${username}/${path}`.replace(/\/\//g, '/'));
+    navigate(cleanPath(`/${username}/${path}`));
   }, [navigate, username]);
 
   return (

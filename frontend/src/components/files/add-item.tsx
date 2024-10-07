@@ -1,3 +1,4 @@
+import { cleanPath } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { useData } from '@/providers/data/provider';
 import { File, Folder } from 'lucide-react';
@@ -72,7 +73,7 @@ export default function AddItem(props: AddItemProps) {
     try {
       if (itemType === 'file') {
         await createFile(`${dirPath}/${value}.md`);
-        navigate(`/${username}/${dirPath}/${value}.md`.replace(/\/\//g, '/'));
+        navigate(cleanPath(`/${username}/${dirPath}/${value}.md`));
       } else {
         await createDirectory(`${dirPath}/${value}`);
       }

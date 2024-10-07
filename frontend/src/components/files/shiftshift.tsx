@@ -1,6 +1,6 @@
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import useShiftShift from '@/hooks/use-shiftshift';
-import { getName } from '@/lib/file-utils';
+import { cleanPath, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf } from '@/providers/data/provider';
 import useSearch from '@/providers/data/use-search';
@@ -21,7 +21,7 @@ export default function ShiftShift() {
 
   const onSelect = useCallback((result: DataLeaf) => {
     setOpen(false);
-    navigate(`/${username}/${result.path}`.replace(/\/\//g, '/'));
+    navigate(cleanPath(`/${username}/${result.path}`));
   }, [navigate, username]);
 
   return (

@@ -1,3 +1,4 @@
+import { cleanPath } from '@/lib/file-utils';
 import { DataLeaf, useData } from '@/providers/data/provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -51,7 +52,7 @@ export default function RenameItem(props: RenameItemProps) {
       }
 
       if (leaf.type === 'directory' || !filePath || leaf.path !== filePath) return stopEditing();
-      return navigate(`/${username}/${newPath}`.replace(/\/\//g, '/'));
+      return navigate(cleanPath(`/${username}/${newPath}`));
 
     } catch (error) {
       console.error(error);

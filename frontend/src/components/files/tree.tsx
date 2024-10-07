@@ -1,5 +1,5 @@
 import { ItemTypes } from '@/lib/drag';
-import { fileExists, getName } from '@/lib/file-utils';
+import { cleanPath, fileExists, getName } from '@/lib/file-utils';
 import { useAuth } from '@/providers/auth-provider';
 import { DataLeaf, DataType, useData } from '@/providers/data/provider';
 import { ChevronDown, ChevronRight, FilePlus, FolderInput, FolderMinus, FolderPlus, Pencil, Trash2 } from 'lucide-react';
@@ -35,7 +35,7 @@ export default function Tree() {
   } = useParams();
 
   const selectFile = useCallback((path: string) => {
-    navigate(`/${username}/${path}`.replace(/\/\//g, '/'));
+    navigate(cleanPath(`/${username}/${path}`));
   }, [navigate, username]);
 
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
@@ -72,7 +72,7 @@ export default function Tree() {
       if (originalItem.type === 'file') {
         await moveFile(originalItem.path, newPath);
         if (selectedFile === originalItem.path) {
-          navigate(`/${username}/${newPath}`.replace(/\/\//g, '/'));
+          navigate(cleanPath(`/${username}/${newPath}`));
         }
       } else {
         await moveDirectory(originalItem.path, newPath);

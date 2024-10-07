@@ -16,6 +16,10 @@ export function getExtension(filename: string): string | null {
   return filename.substring(lastDotIndex + 1);
 }
 
+export function cleanPath(path: string): string {
+  return path.replace(/\/+/g, '/');
+}
+
 // shitty o(n) implementation
 export function fileExists(path: string, files: DataLeaf) {
   if (!files) return false;

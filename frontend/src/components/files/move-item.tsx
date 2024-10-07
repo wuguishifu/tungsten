@@ -1,4 +1,4 @@
-import { fileExists, getDataLeaf, getName } from '@/lib/file-utils';
+import { cleanPath, fileExists, getDataLeaf, getName } from '@/lib/file-utils';
 import { DataLeaf, useData } from '@/providers/data/provider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -74,7 +74,7 @@ export default function MoveItemDialog(props: MoveItemDialogProps) {
         if (item.type === 'file') {
           await moveFile(item.path, newPath);
           if (selectedFile === item.path) {
-            navigate(`/${username}/${newPath}`.replace(/\/\//g, '/'));
+            navigate(cleanPath(`/${username}/${newPath}`));
           }
         } else {
           await moveDirectory(item.path, newPath);
