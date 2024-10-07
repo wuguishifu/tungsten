@@ -50,12 +50,9 @@ export default function RenameItem(props: RenameItemProps) {
         await renameDirectory(oldPath, newPath);
       }
 
-      if (!filePath) return;
-      if (leaf.type === 'file' && filePath === leaf.path) {
-        return navigate(`/${username}`)
-      }
+      if (leaf.type === 'directory' || !filePath || leaf.path !== filePath) return stopEditing();
+      return navigate(`/${username}/${newPath}`.replace(/\/\//g, '/'));
 
-      stopEditing();
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
