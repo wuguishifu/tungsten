@@ -5,8 +5,15 @@ import { useSettings } from '@/providers/settings-provider';
 import { autocompletion } from '@codemirror/autocomplete';
 import { markdown } from '@codemirror/lang-markdown';
 import { Vim, vim } from '@replit/codemirror-vim';
-import ReactCodeMirror, { EditorView, Prec, ReactCodeMirrorRef } from '@uiw/react-codemirror';
+import ReactCodeMirror, { EditorView, keymap, Prec, ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { forwardRef, useEffect, useMemo } from 'react';
+import surround from './extensions/surround';
+
+const keybinds = keymap.of([
+  { key: 'Ctrl-b', run: view => surround(view, { mark: '**', remove: /^\*\*(.*)\*\*$/ }) },
+  { key: 'Ctrl-i', run: view => surround(view, { mark: '*', remove: /^(?<!\*)(\*{1}|\*{3})(?!\*)(.*)(?<!\*)\1(?!\*)$/ }) },
+  { key: 'Ctrl-u', run: view => surround(view, { startMark: '<u>', endMark: '</u>', remove: /^<u>(.*)<\/u>$/ }) },
+]);
 
 const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const { editorSettings } = useSettings();
@@ -44,6 +51,8 @@ const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
 
     if (editorSettings.vimEnabled) {
       extensions.push(Prec.high(vim()));
+    } else {
+      extensions.push(Prec.highest(keybinds))
     }
 
     return extensions;

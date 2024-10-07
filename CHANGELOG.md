@@ -11,6 +11,7 @@ This patch includes:
 
 - Fixed issue where renaming the file you're currently editing would not navigate you to the new file
 - Fixed weird behavior with creating a new file sending you to the wrong place
+- Added `Ctrl-u`, `Ctrl-i`, and `Ctrl-b` commands when not in vim mode for underline, italic, and bold
 
 ## Version 2.0.0
 
@@ -46,7 +47,7 @@ Release date: 2024-10-01
 
 This patch includes:
 
-- Fixed bug preventing `<c-u>` and `<c-d>` from working
+- Fixed bug preventing `<c-u>` and `<c-d>` from working in vim mode
 - Moved the vim command panel to fixed at bottom of the screen
 
 ## Version 1.3.3
