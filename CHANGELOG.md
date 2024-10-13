@@ -7,6 +7,8 @@
 
 Release date: 2024-10-13
 
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288417029?tag=2.1.3)
+
 This patch includes:
 
 - Fixed a bug where environmental variables set as "true" were not correctly parsed as booleans
