@@ -30,8 +30,8 @@ services:
     environment:
       JWT_SECRET: your-jwt-secret
       JWT_TTL: 60m
-      HTTPS: false
-      ENABLE_USER_SIGNUP: false
+      HTTPS: false # any value other than "true" is false
+      ENABLE_USER_SIGNUP: false # any value other than "true" is false
     ports:
       - 4370:4370
 ```

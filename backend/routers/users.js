@@ -11,8 +11,8 @@ const USERS_FILE_PATH = process.env.USERS_FILE_PATH;
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_TTL = process.env.JWT_TTL;
 const DATA_PATH = process.env.DATA_PATH;
-const IS_HTTPS = process.env.HTTPS;
-const ENABLE_USER_SIGNUP = process.env.ENABLE_USER_SIGNUP;
+const IS_HTTPS = process.env.HTTPS === 'true';
+const ENABLE_USER_SIGNUP = process.env.ENABLE_USER_SIGNUP === 'true';
 
 const SALT_ROUNDS = 10;
 
