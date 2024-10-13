@@ -1,7 +1,15 @@
 # Change Log
 
-[jump to latest](#version-210)<br>
-[jump to stable](#version-210)
+[jump to latest](#version-211)<br>
+[jump to stable](#version-211)
+
+## Version 2.1.1
+
+Release date: 2024-10-12
+
+This patch includes:
+
+- Fixed a security vulnerability where users could make usernames like `.` and `/` and obtain access to the filesystem [credit](https://github.com/willsunnn)
 
 ## Version 2.1.0
 
