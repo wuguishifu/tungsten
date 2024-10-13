@@ -1,5 +1,5 @@
 import endpoints, { withQueryParams } from '@/lib/endpoints';
-import { getExtension, getName } from '@/lib/file-utils';
+import { cleanPath, getExtension, getName } from '@/lib/file-utils';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ type EditorContextProps = {
   loading: boolean;
   setFile: (data: string) => void;
   onSave: () => Promise<void>;
+  selectFile: (filePath: string | null) => void;
 }
 
 const EditorContext = createContext({} as EditorContextProps);
@@ -37,6 +38,14 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   const originalFilename = filePath?.split('/').pop() ?? 'Untitled.md';
   const filename = getName(originalFilename);
   const ext = getExtension(originalFilename);
+
+  function selectFile(filePath: string | null) {
+    if (filePath) {
+      navigate(cleanPath(`/${username}/${filePath}`));
+    } else {
+      navigate(cleanPath(`/${username}`));
+    }
+  }
 
   async function onSave() {
     if (!file) return;
@@ -122,6 +131,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       setDirty(true);
     },
     onSave,
+    selectFile,
   };
 
   return (

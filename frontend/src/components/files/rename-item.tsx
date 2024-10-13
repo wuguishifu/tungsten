@@ -1,8 +1,7 @@
-import { cleanPath } from '@/lib/file-utils';
 import { DataLeaf, useData } from '@/providers/data/provider';
+import { useEditor } from '@/providers/editor-provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 
 type RenameItemProps = {
@@ -20,9 +19,8 @@ export default function RenameItem(props: RenameItemProps) {
     stopEditing,
   } = props;
 
-  const { '*': filePath, username } = useParams();
   const { renameFile, renameDirectory } = useData();
-  const navigate = useNavigate();
+  const { filePath, selectFile } = useEditor();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
@@ -52,7 +50,7 @@ export default function RenameItem(props: RenameItemProps) {
       }
 
       if (leaf.type === 'directory' || !filePath || leaf.path !== filePath) return stopEditing();
-      return navigate(cleanPath(`/${username}/${newPath}`));
+      return selectFile(newPath);
 
     } catch (error) {
       console.error(error);

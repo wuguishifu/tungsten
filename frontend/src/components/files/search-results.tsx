@@ -1,9 +1,7 @@
-import { cleanPath, getName } from '@/lib/file-utils';
-import { useAuth } from '@/providers/auth-provider';
+import { getName } from '@/lib/file-utils';
 import { DataLeaf } from '@/providers/data/provider';
 import useSearch from '@/providers/data/use-search';
-import { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEditor } from '@/providers/editor-provider';
 
 type SearchResultsProps = {
   search: string;
@@ -11,13 +9,8 @@ type SearchResultsProps = {
 
 export default function SearchResults(props: SearchResultsProps) {
   const { search } = props;
-  const { username } = useAuth();
   const searchResults = useSearch(search)
-  const navigate = useNavigate();
-
-  const selectFile = useCallback((path: string) => {
-    navigate(cleanPath(`/${username}/${path}`));
-  }, [navigate, username]);
+  const { selectFile } = useEditor();
 
   return (
     <div className='flex-1 scrollable overflow-x-hidden w-64 max-w-72 pr-2'>
