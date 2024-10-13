@@ -30,6 +30,8 @@ const generateAccessToken = (username) => jwt.sign({ username }, JWT_SECRET, { e
 router.post('/register', async (req, res) => {
     if (!ENABLE_USER_SIGNUP) return res.status(403).send('User registration is disabled');
     const { username, password } = req.body;
+    if (username.length > 128) return res.status(400).send('Invalid username');
+    if (/[^a-zA-Z0-9]/.test(username)) return res.status(400).send('Invalid username');
     if (!username) return res.status(400).send('Missing username');
     if (!password) return res.status(400).send('Missing password');
     if (reservedKeywords.includes(username)) return res.status(400).send('Invalid username');

@@ -12,7 +12,9 @@ import z from 'zod';
 
 const formSchema = z.object({
   username: z.string()
-    .min(1, { message: 'username required.' }),
+    .min(1, { message: 'username required.' })
+    .max(128, { message: 'username too long.' })
+    .regex(/^[a-zA-Z0-9_]+$/, { message: 'username must be alphanumeric.' }),
   password: z.string()
     .min(1, { message: 'password required.' }),
   passwordConfirm: z.string()
