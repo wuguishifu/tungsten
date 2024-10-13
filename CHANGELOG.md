@@ -1,7 +1,15 @@
 # Change Log
 
-[jump to latest](#version-212)<br>
-[jump to stable](#version-212)
+[jump to latest](#version-213)<br>
+[jump to stable](#version-213)
+
+## Version 2.1.3
+
+Release date: 2024-10-13
+
+This patch includes:
+
+- Fixed a bug where environmental variables set as "true" were not correctly parsed as booleans
 
 ## Version 2.1.2
 
