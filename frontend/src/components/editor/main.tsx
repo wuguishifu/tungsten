@@ -70,7 +70,9 @@ export default function Editor() {
         </div>
       </div>
       {loading ? (
-        <Loading />
+        <div className='w-full h-full bg-neutral-900 px-4 rounded-md'>
+          <Loading />
+        </div>
       ) : (
         <div className='flex-1 flex gap-4 overflow-hidden'>
           {editorSettings.showEditor && (

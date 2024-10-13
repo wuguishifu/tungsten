@@ -18,7 +18,7 @@ export default function useCompletions() {
         tagOptions.push({
           label: `[[${leaf.path}]]`,
           type: 'keyword',
-          apply: '[[' + getName(leaf.path),
+          apply: '[[' + leaf.path,
           detail: leaf.dirPath,
           displayLabel: getName(leaf.name),
         });

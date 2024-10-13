@@ -1,7 +1,16 @@
 # Change Log
 
-[jump to latest](#version-211)<br>
-[jump to stable](#version-211)
+[jump to latest](#version-212)<br>
+[jump to stable](#version-212)
+
+## Version 2.1.2
+
+Release date: 2024-10-13
+
+This patch includes:
+
+- Various UI improvements
+- Updated how document links are parsed and displayed (preparation for supporting different file types)
 
 ## Version 2.1.1
 

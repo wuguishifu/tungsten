@@ -18,7 +18,7 @@ export function remarkLinkBrackets() {
         }
 
         const matchParts = match[1].split('|');
-        let url = matchParts[0] + '.md';
+        let url = matchParts[0];
         if (url.startsWith('/')) {
           url = url.slice(1);
         }
