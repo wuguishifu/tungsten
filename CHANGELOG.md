@@ -3,6 +3,14 @@
 [jump to latest](#version-213)<br>
 [jump to stable](#version-213)
 
+## Version TBD
+
+Release date: TBD
+
+This patch includes:
+
+- Added a check to make sure the user is not trying to move a folder into one of its subfolders
+
 ## Version 2.1.3
 
 Release date: 2024-10-13

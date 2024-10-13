@@ -57,6 +57,10 @@ router.post('/move', (req, res) => {
     newPath = path.join(req.homeDirectory, newPath);
     if (!fs.existsSync(oldPath)) return res.status(404).send('Folder not found');
     if (fs.existsSync(newPath)) return res.status(400).send('Folder already exists');
+    const relativePath = path.relative(oldPath, newPath);
+    if (!relativePath.startsWith('..') && relativePath !== '') {
+        return res.status(400).send('Cannot move a folder into one of its subfolders');
+    }
     const dir = path.dirname(newPath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     fs.renameSync(oldPath, newPath);
