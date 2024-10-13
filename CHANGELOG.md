@@ -7,6 +7,8 @@
 
 Release date: 2024-10-12
 
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288404327?tag=2.1.1)
+
 This patch includes:
 
 - Fixed a security vulnerability where users could make usernames like `.` and `/` and obtain access to the filesystem [credit](https://github.com/willsunnn)
