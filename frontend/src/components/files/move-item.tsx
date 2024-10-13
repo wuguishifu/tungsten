@@ -32,7 +32,7 @@ export default function MoveItemDialog(props: MoveItemDialogProps) {
   } = props;
 
   const { files, moveFile, moveDirectory } = useData();
-  const { selectFile, filePath } = useEditor();
+  const { selectFile, activeFile } = useEditor();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -70,13 +70,13 @@ export default function MoveItemDialog(props: MoveItemDialogProps) {
       try {
         if (item.type === 'file') {
           await moveFile(item.path, newPath);
-          if (filePath === item.path) {
+          if (activeFile === item.path) {
             selectFile(newPath);
           }
         } else {
           await moveDirectory(item.path, newPath);
-          if (!filePath) return;
-          if (fileExists(filePath, item)) {
+          if (!activeFile) return;
+          if (fileExists(activeFile, item)) {
             selectFile(null);
           }
         }

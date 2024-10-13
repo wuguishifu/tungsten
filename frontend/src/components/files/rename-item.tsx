@@ -20,7 +20,7 @@ export default function RenameItem(props: RenameItemProps) {
   } = props;
 
   const { renameFile, renameDirectory } = useData();
-  const { filePath, selectFile } = useEditor();
+  const { activeFile, selectFile } = useEditor();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
@@ -49,7 +49,7 @@ export default function RenameItem(props: RenameItemProps) {
         await renameDirectory(oldPath, newPath);
       }
 
-      if (leaf.type === 'directory' || !filePath || leaf.path !== filePath) return stopEditing();
+      if (leaf.type === 'directory' || !activeFile || leaf.path !== activeFile) return stopEditing();
       return selectFile(newPath);
 
     } catch (error) {

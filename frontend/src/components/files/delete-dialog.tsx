@@ -25,7 +25,7 @@ export default function DeleteDialog(props: DeleteDialogProps) {
   } = props;
 
   const { deleteFile, deleteDirectory, permanentlyDeleteFile } = useData();
-  const { selectFile, filePath } = useEditor();
+  const { selectFile, activeFile } = useEditor();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -61,8 +61,8 @@ export default function DeleteDialog(props: DeleteDialogProps) {
                 } else {
                   newFiles = await deleteDirectory(path);
                 }
-                if (!newFiles || !filePath) return;
-                if (!fileExists(filePath, newFiles)) {
+                if (!newFiles || !activeFile) return;
+                if (!fileExists(activeFile, newFiles)) {
                   selectFile(null);
                 }
               } catch (error) {

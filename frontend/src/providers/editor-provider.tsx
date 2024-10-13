@@ -11,6 +11,7 @@ type EditorContextProps = {
   filename: string;
   ext: string | null;
   file: string | null;
+  activeFile: string | null;
   filePath: string | null;
   dirty: boolean;
   loading: boolean;
@@ -28,9 +29,10 @@ export function useEditor() {
 export function EditorProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   const navigate = useNavigate();
   const { username } = useAuth();
-  const { '*': filePath } = useParams();
+  const { '*': filePath = null } = useParams();
   const { files, setFiles } = useData();
 
+  const [activeFile, setActiveFile] = useState<string | null>(null);
   const [file, setFile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -49,9 +51,9 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
 
   async function onSave() {
     if (!file) return;
-    if (filePath) {
+    if (activeFile) {
       try {
-        const { updated, files } = await saveFile(filePath, file);
+        const { updated, files } = await saveFile(activeFile, file);
         if (!updated) throw new Error('The file could not be saved. Please try again.');
         if (files) setFiles(files);
         setDirty(false);
@@ -109,6 +111,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     loadFile(filePath)
       .then(data => {
         setFile(data);
+        setActiveFile(filePath);
       })
       .catch(error => {
         toast.error(error.message);
@@ -123,7 +126,8 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     filename,
     ext,
     file,
-    filePath: filePath ?? null,
+    activeFile,
+    filePath,
     dirty,
     loading,
     setFile: (data: string) => {
@@ -145,6 +149,7 @@ async function loadFile(filePath: string): Promise<string> {
   const response = await fetch(withQueryParams(endpoints.files.index, { filePath }), {
     credentials: 'include',
   });
+  // await new Promise(resolve => setTimeout(resolve, 1000));
   const data = await response.text();
   if (!response.ok) throw new Error(data);
   return data;

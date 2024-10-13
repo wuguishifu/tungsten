@@ -1,3 +1,4 @@
+import { getName } from '@/lib/file-utils';
 import { visit } from 'unist-util-visit';
 
 export function remarkLinkBrackets() {
@@ -36,11 +37,11 @@ export function remarkLinkBrackets() {
           url,
           children: [{
             type: 'text',
-            value: label,
+            value: getName(label),
           }],
           data: {
             hProperties: {
-              className: 'internal-document-link',
+              className: `internal-document-link ${url.endsWith('.md') ? 'document-text' : 'document-drawing'}`,
             },
           },
         });
