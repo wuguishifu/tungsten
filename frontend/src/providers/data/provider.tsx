@@ -36,6 +36,7 @@ export type DataLeaf = {
 });
 
 export type DataType = 'file' | 'directory';
+export type ItemType = 'text' | 'drawing' | 'directory';
 
 const DataContext = createContext({} as DataContextProps);
 

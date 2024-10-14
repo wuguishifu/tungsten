@@ -12,6 +12,7 @@
   "dependencies": {
     "@codemirror/autocomplete": "^6.18.1",
     "@codemirror/lang-markdown": "^6.2.5",
+    "@excalidraw/excalidraw": "^0.17.6",
     "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-context-menu": "^2.2.1",

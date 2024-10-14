@@ -16,6 +16,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.LoadingMessage,
+.LoadingMessage--dark {
+  display: none !important;
+}
+
 @layer base {
   :root {
     --brand: 253 92% 58%;

@@ -1,12 +1,12 @@
-import { useData } from '@/providers/data/provider';
+import { ItemType, useData } from '@/providers/data/provider';
 import { useEditor } from '@/providers/editor-provider';
-import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
+import ItemIcon from './item-icon';
 
 type AddItemProps = {
   dirPath: string;
-  itemType: 'file' | 'directory';
+  itemType: ItemType;
   indentation: number;
   stopEditing: () => void;
 }
@@ -67,9 +67,14 @@ export default function AddItem(props: AddItemProps) {
     }
 
     try {
-      if (itemType === 'file') {
-        await createFile(`${dirPath}/${value}.md`);
-        selectFile(`${dirPath}/${value}.md`);
+      if (itemType === 'text') {
+        const newFile = `${dirPath}/${value}.excalidraw`;
+        await createFile(newFile);
+        selectFile(newFile);
+      } else if (itemType === 'drawing') {
+        const newFile = `${dirPath}/${value}.excalidraw`;
+        await createFile(newFile);
+        selectFile(newFile);
       } else {
         await createDirectory(`${dirPath}/${value}`);
       }
@@ -91,10 +96,7 @@ export default function AddItem(props: AddItemProps) {
       className='flex flex-row items-center gap-1 py-1 mt-0.5'
       style={{ paddingLeft: indentation * 16 + 8 }}
     >
-      {itemType === 'file'
-        ? <File size={16} className='min-w-4' />
-        : <Folder size={16} className='min-w-4' />
-      }
+      <ItemIcon type={itemType} />
       <form onSubmit={onSubmit}>
         <input
           ref={inputRef}

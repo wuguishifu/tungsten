@@ -1,8 +1,8 @@
 import { ItemTypes } from '@/lib/drag';
 import { fileExists, getName } from '@/lib/file-utils';
-import { DataLeaf, DataType, useData } from '@/providers/data/provider';
+import { DataLeaf, DataType, ItemType, useData } from '@/providers/data/provider';
 import { useEditor } from '@/providers/editor-provider';
-import { ChevronDown, ChevronRight, FilePlus, FolderInput, FolderMinus, FolderPlus, Pencil, Trash2 } from 'lucide-react';
+import { ChevronDown, ChevronRight, FilePlus, FolderInput, FolderMinus, FolderPlus, ImagePlus, Pencil, Trash2 } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useParams } from 'react-router-dom';
@@ -145,7 +145,7 @@ function TreeLeaf(props: TreeLeafProps) {
     expand,
   } = useData();
 
-  const [addingItem, setAddingItem] = useState<false | 'file' | 'directory'>(false);
+  const [addingItem, setAddingItem] = useState<false | ItemType>(false);
   const [renaming, setRenaming] = useState(false);
 
   const formattedName = leaf.type === 'file' ? getName(leaf.name) : leaf.name;
@@ -294,11 +294,23 @@ function TreeLeaf(props: TreeLeafProps) {
                 className='select-none'
                 onClick={e => {
                   e.stopPropagation();
-                  setAddingItem('file');
+                  setAddingItem('text');
                 }}>
                 <FilePlus size={16} strokeWidth={2} />
                 <span className='ml-2'>
                   new file
+                </span>
+              </ContextMenuItem>
+              <ContextMenuItem
+                autoFocus={false}
+                className='select-none'
+                onClick={e => {
+                  e.stopPropagation();
+                  setAddingItem('drawing');
+                }}>
+                <ImagePlus size={16} strokeWidth={2} />
+                <span className='ml-2'>
+                  new drawing
                 </span>
               </ContextMenuItem>
               <ContextMenuItem

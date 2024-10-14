@@ -8,11 +8,12 @@ import { buttonVariants } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Toggle } from '../ui/toggle';
 import EditPlane from './code/edit-plane';
+import DrawingPlane from './drawing/drawing-plane';
 import EditorSettingsView from './editor-settings';
 import PreviewPlane from './preview/preview-plane';
 
 export default function Editor() {
-  const { filename, filePath, loading, dirty } = useEditor();
+  const { filename, activeFile, filePath, loading, dirty } = useEditor();
 
   const { editorSettings, updateEditorSettings } = useSettings();
 
@@ -74,18 +75,24 @@ export default function Editor() {
           <Loading />
         </div>
       ) : (
-        <div className='flex-1 flex gap-4 overflow-hidden'>
-          {editorSettings.showEditor && (
-            <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
-              <EditPlane ref={editor} />
-            </div>
-          )}
-          {editorSettings.showPreview && (
-            <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
-              <PreviewPlane />
-            </div>
-          )}
-        </div>
+        activeFile?.endsWith('.excalidraw') ? (
+          <div className='w-full h-full overflow-hidden rounded-md bg-neutral-900'>
+            <DrawingPlane />
+          </div>
+        ) : (
+          <div className='flex-1 flex gap-4 overflow-hidden'>
+            {editorSettings.showEditor && (
+              <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
+                <EditPlane ref={editor} />
+              </div>
+            )}
+            {editorSettings.showPreview && (
+              <div className='flex-1 bg-neutral-900 px-4 rounded-md w-1/2 scrollable'>
+                <PreviewPlane />
+              </div>
+            )}
+          </div>
+        )
       )}
     </div>
   );
