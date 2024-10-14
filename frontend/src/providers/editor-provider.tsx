@@ -108,6 +108,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   useEffect(() => {
     if (!filePath) {
       setFile(null);
+      setActiveFile(null);
       return;
     };
 

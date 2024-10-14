@@ -68,7 +68,7 @@ export default function AddItem(props: AddItemProps) {
 
     try {
       if (itemType === 'text') {
-        const newFile = `${dirPath}/${value}.excalidraw`;
+        const newFile = `${dirPath}/${value}.md`;
         await createFile(newFile);
         selectFile(newFile);
       } else if (itemType === 'drawing') {

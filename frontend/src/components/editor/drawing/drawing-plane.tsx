@@ -1,7 +1,7 @@
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { Excalidraw } from '@excalidraw/excalidraw';
-import { ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { AppState, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export default function DrawingPlane() {
@@ -22,8 +22,6 @@ export default function DrawingPlane() {
       console.log(error);
     }
 
-    delete appState.collaborators;
-
     return { elements, appState };
   }, [file]);
 
@@ -36,11 +34,14 @@ export default function DrawingPlane() {
     }
   }, [api, onSave]);
 
-  const handleMouseEvents = useCallback((event: MouseEvent) => {
+  const handleMouseEvents = useCallback(() => {
     let newContent: string | null = null;
     let isDirty = false;
     if (api) {
-      const appStateString = JSON.stringify({ elements: api.getSceneElements(), appState: api.getAppState() }, null, 2);
+      const appStateString = JSON.stringify({
+        elements: api.getSceneElements(),
+        appState: extractPositionalState(api.getAppState())
+      }, null, 2);
       if (appStateString !== file) {
         newContent = appStateString;
         setFile(newContent, { ignoreDirtyCheck: editorSettings.saveOnBlur ?? false });
@@ -48,19 +49,19 @@ export default function DrawingPlane() {
       }
     }
 
-    if (event.button === 0) {
-      if (editorSettings.saveOnBlur && isDirty) {
-        onSave(newContent);
-      }
+    if (editorSettings.saveOnBlur && isDirty) {
+      onSave(newContent);
     }
   }, [editorSettings, api, file, onSave, setFile]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyboardEvents);
+    window.addEventListener('auxclick', handleMouseEvents);
     window.addEventListener('mouseup', handleMouseEvents)
 
     return () => {
       window.removeEventListener('keydown', handleKeyboardEvents);
+      window.removeEventListener('auxclick', handleMouseEvents);
       window.removeEventListener('mouseup', handleMouseEvents);
     }
   }, [handleKeyboardEvents, handleMouseEvents]);
@@ -79,4 +80,16 @@ export default function DrawingPlane() {
       }}
     />
   );
+}
+
+function extractPositionalState(appState: AppState) {
+  return {
+    scrollX: appState.scrollX,
+    scrollY: appState.scrollY,
+    zoom: appState.zoom,
+    offsetLeft: appState.offsetLeft,
+    offsetTop: appState.offsetTop,
+    width: appState.width,
+    height: appState.height,
+  };
 }
