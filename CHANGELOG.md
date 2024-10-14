@@ -6,11 +6,12 @@
 ## Version 3.0.1
 
 Release date: 2024-10-13  
-[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288648092?tag=3.0.1)
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288650200?tag=3.0.1)
 
 This patch includes:
 
 - fixed bug with renaming excalidraw files
+- fixed bug with search not showing the last character of the file extension
 
 ## Version 3.0.0
 
