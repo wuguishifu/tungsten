@@ -20,7 +20,7 @@ export default function VersionInfo() {
         target='_blank'
       >
         <span>
-          Version 3.0.0
+          Version 3.0.1
         </span>
       </Link>
     </div>
