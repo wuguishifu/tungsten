@@ -70,9 +70,6 @@ function SearchResult(props: SearchResultProps) {
     ? result.path.split(queryRegex)
     : ['./'];
 
-  const lastIndex = dirParts[dirParts.length - 1].lastIndexOf('.md');
-  dirParts[dirParts.length - 1] = dirParts[dirParts.length - 1].slice(0, lastIndex);
-
   return (
     <CommandItem
       className='cursor-pointer'

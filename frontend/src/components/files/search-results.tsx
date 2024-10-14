@@ -43,9 +43,6 @@ function SearchResult(props: SearchResultProps) {
     ? result.path.split(queryRegex)
     : ['./'];
 
-  const lastIndex = dirParts[dirParts.length - 1].lastIndexOf('.md');
-  dirParts[dirParts.length - 1] = dirParts[dirParts.length - 1].slice(0, lastIndex);
-
   return (
     <div
       className='rounded-sm group hover:bg-neutral-800 px-2 py-1 cursor-pointer mt-0.5'
