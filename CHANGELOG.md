@@ -1,7 +1,16 @@
 # Change Log
 
-[jump to latest](#version-300)<br>
-[jump to stable](#version-300)
+[jump to latest](#version-301)<br>
+[jump to stable](#version-301)
+
+## Version 3.0.1
+
+Release date: 2024-10-13  
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288648092?tag=3.0.1)
+
+This patch includes:
+
+- fixed bug with renaming excalidraw files
 
 ## Version 3.0.0
 
