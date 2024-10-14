@@ -7,7 +7,7 @@
 
 Release date: 2024-10-13
 
-[Docker Image]()
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288635835?tag=3.0.0)
 
 This major update includes:
 
