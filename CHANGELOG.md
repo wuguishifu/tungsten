@@ -1,7 +1,18 @@
 # Change Log
 
-[jump to latest](#version-301)<br>
-[jump to stable](#version-301)
+[jump to latest](#version-302)<br>
+[jump to stable](#version-302)
+
+## Version 3.0.2
+
+Release date: 2024-10-14  
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288681236?tag=3.0.2)
+
+This patch includes:
+
+- Fixed a bug where navigating away from a drawing using the notebook button would clear the drawing
+- Fixed a bug where the adding a new text file would actually add a drawing file
+- Reduced the amount of Excalidraw app state that's saved, reducing the amount of saves
 
 ## Version 3.0.1
 
