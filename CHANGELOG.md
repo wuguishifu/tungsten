@@ -1,14 +1,15 @@
 # Change Log
 
-[jump to latest](#version-213)<br>
-[jump to stable](#version-213)
+[jump to latest](#version-300)<br>
+[jump to stable](#version-300)
 
-## Version TBD
+## Version 3.0.0
 
-Release date: TBD
+Release date: 2024-10-13
 
-This patch includes:
+This major update includes:
 
+- Added an Excalidraw integration so you can make drawings
 - Added a check to make sure the user is not trying to move a folder into one of its subfolders
 - Updated the look of links
 - Updated how navigating to different documents is handled internally which should improve the UI and reduce potential flashing

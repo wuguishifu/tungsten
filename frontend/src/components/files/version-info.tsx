@@ -15,12 +15,12 @@ export default function VersionInfo() {
         <GitHubLogoIcon className='ml-2' />
       </Link>
       <Link
-        to='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-213'
+        to='https://github.com/wuguishifu/tungsten/blob/master/CHANGELOG.md#version-300'
         className='text-xs flex flex-row items-center text-neutral-400 hover:text-neutral-400 hover:underline underline-offset-4'
         target='_blank'
       >
         <span>
-          Version 2.1.3
+          Version 3.0.0
         </span>
       </Link>
     </div>
