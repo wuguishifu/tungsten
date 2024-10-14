@@ -1,9 +1,7 @@
-import { cleanPath } from '@/lib/file-utils';
-import { useAuth } from '@/providers/auth-provider';
 import { useData } from '@/providers/data/provider';
+import { useEditor } from '@/providers/editor-provider';
 import { File, Folder } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 type AddItemProps = {
@@ -21,10 +19,8 @@ export default function AddItem(props: AddItemProps) {
     stopEditing,
   } = props;
 
-  const { username } = useAuth();
-  const navigate = useNavigate();
-
   const { createFile, createDirectory } = useData();
+  const { selectFile } = useEditor();
 
   const [value, setValue] = useState('');
 
@@ -73,7 +69,7 @@ export default function AddItem(props: AddItemProps) {
     try {
       if (itemType === 'file') {
         await createFile(`${dirPath}/${value}.md`);
-        navigate(cleanPath(`/${username}/${dirPath}/${value}.md`));
+        selectFile(`${dirPath}/${value}.md`);
       } else {
         await createDirectory(`${dirPath}/${value}`);
       }

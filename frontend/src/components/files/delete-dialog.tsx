@@ -1,6 +1,6 @@
 import { fileExists } from '@/lib/file-utils';
 import { DataLeaf, DataType, useData } from '@/providers/data/provider';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEditor } from '@/providers/editor-provider';
 import { toast } from 'sonner';
 import { buttonVariants } from '../ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle } from '../ui/dialog';
@@ -25,8 +25,7 @@ export default function DeleteDialog(props: DeleteDialogProps) {
   } = props;
 
   const { deleteFile, deleteDirectory, permanentlyDeleteFile } = useData();
-  const { '*': filepath, username } = useParams();
-  const navigate = useNavigate();
+  const { selectFile, activeFile } = useEditor();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -62,9 +61,9 @@ export default function DeleteDialog(props: DeleteDialogProps) {
                 } else {
                   newFiles = await deleteDirectory(path);
                 }
-                if (!newFiles || !filepath) return;
-                if (!fileExists(filepath, newFiles)) {
-                  navigate(`/${username}`);
+                if (!newFiles || !activeFile) return;
+                if (!fileExists(activeFile, newFiles)) {
+                  selectFile(null);
                 }
               } catch (error) {
                 console.error(error);

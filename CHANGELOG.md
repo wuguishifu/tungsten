@@ -10,6 +10,8 @@ Release date: TBD
 This patch includes:
 
 - Added a check to make sure the user is not trying to move a folder into one of its subfolders
+- Updated the look of links
+- Updated how navigating to different documents is handled internally which should improve the UI and reduce potential flashing
 
 ## Version 2.1.3
 

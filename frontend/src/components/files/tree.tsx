@@ -1,11 +1,11 @@
 import { ItemTypes } from '@/lib/drag';
-import { cleanPath, fileExists, getName } from '@/lib/file-utils';
-import { useAuth } from '@/providers/auth-provider';
+import { fileExists, getName } from '@/lib/file-utils';
 import { DataLeaf, DataType, useData } from '@/providers/data/provider';
+import { useEditor } from '@/providers/editor-provider';
 import { ChevronDown, ChevronRight, FilePlus, FolderInput, FolderMinus, FolderPlus, Pencil, Trash2 } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuTrigger } from '../ui/context-menu';
 import AddItem from './add-item';
@@ -26,17 +26,11 @@ const TreeContext = createContext({} as TreeContextProps);
 
 export default function Tree() {
   const { files, moveFile, moveDirectory } = useData();
-  const { username } = useAuth();
-
-  const navigate = useNavigate();
+  const { selectFile } = useEditor();
 
   const {
     '*': selectedFile = null,
   } = useParams();
-
-  const selectFile = useCallback((path: string) => {
-    navigate(cleanPath(`/${username}/${path}`));
-  }, [navigate, username]);
 
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [deleteItem, setDeleteItem] = useState<{ path: string, type: DataType, name: string } | null>(null);
@@ -72,13 +66,13 @@ export default function Tree() {
       if (originalItem.type === 'file') {
         await moveFile(originalItem.path, newPath);
         if (selectedFile === originalItem.path) {
-          navigate(cleanPath(`/${username}/${newPath}`));
+          selectFile(newPath);
         }
       } else {
         await moveDirectory(originalItem.path, newPath);
         if (!selectedFile) return true;
         if (fileExists(selectedFile, originalItem)) {
-          navigate(`/${username}`);
+          selectFile(null);
         }
       }
       return true;
@@ -91,7 +85,7 @@ export default function Tree() {
       }
       return false;
     }
-  }, [username, selectedFile, moveFile, moveDirectory, navigate]);
+  }, [selectedFile, moveFile, moveDirectory, selectFile]);
 
   const value = {
     selectedFile,

@@ -1,17 +1,15 @@
 import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import useShiftShift from '@/hooks/use-shiftshift';
-import { cleanPath, getName } from '@/lib/file-utils';
-import { useAuth } from '@/providers/auth-provider';
+import { getName } from '@/lib/file-utils';
 import { DataLeaf } from '@/providers/data/provider';
 import useSearch from '@/providers/data/use-search';
+import { useEditor } from '@/providers/editor-provider';
 import { Root as VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { DialogTitle } from '../ui/dialog';
 
 export default function ShiftShift() {
-  const { username } = useAuth();
-  const navigate = useNavigate();
+  const { selectFile } = useEditor();
 
   const [open, setOpen] = useState(false);
   useShiftShift(() => setOpen(o => !o));
@@ -21,8 +19,8 @@ export default function ShiftShift() {
 
   const onSelect = useCallback((result: DataLeaf) => {
     setOpen(false);
-    navigate(cleanPath(`/${username}/${result.path}`));
-  }, [navigate, username]);
+    selectFile(result.path);
+  }, [selectFile]);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>

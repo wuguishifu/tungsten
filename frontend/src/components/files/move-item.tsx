@@ -1,8 +1,8 @@
-import { cleanPath, fileExists, getDataLeaf, getName } from '@/lib/file-utils';
+import { fileExists, getDataLeaf, getName } from '@/lib/file-utils';
 import { DataLeaf, useData } from '@/providers/data/provider';
+import { useEditor } from '@/providers/editor-provider';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { Button, buttonVariants } from '../ui/button';
@@ -32,10 +32,7 @@ export default function MoveItemDialog(props: MoveItemDialogProps) {
   } = props;
 
   const { files, moveFile, moveDirectory } = useData();
-
-  const { username, '*': selectedFile } = useParams();
-
-  const navigate = useNavigate();
+  const { selectFile, activeFile } = useEditor();
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -73,14 +70,14 @@ export default function MoveItemDialog(props: MoveItemDialogProps) {
       try {
         if (item.type === 'file') {
           await moveFile(item.path, newPath);
-          if (selectedFile === item.path) {
-            navigate(cleanPath(`/${username}/${newPath}`));
+          if (activeFile === item.path) {
+            selectFile(newPath);
           }
         } else {
           await moveDirectory(item.path, newPath);
-          if (!selectedFile) return;
-          if (fileExists(selectedFile, item)) {
-            navigate(`/${username}`);
+          if (!activeFile) return;
+          if (fileExists(activeFile, item)) {
+            selectFile(null);
           }
         }
         close();
