@@ -1,6 +1,6 @@
-import { DataType, useData } from '@/providers/data/provider';
+import { ItemType, useData } from '@/providers/data/provider';
 import { RootAddItemContext } from '@/providers/root-add-item-context';
-import { FilePlus, FolderPlus, X } from 'lucide-react';
+import { FilePlus, FolderPlus, ImagePlus, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import RecentlyDeleted from './files/recently-deleted';
 import SearchResults from './files/search-results';
@@ -9,7 +9,7 @@ import VersionInfo from './files/version-info';
 import { Button } from './ui/button';
 
 export default function Sidebar() {
-  const [addingItem, setAddingItem] = useState<DataType | false>(false);
+  const [addingItem, setAddingItem] = useState<ItemType | false>(false);
   const [search, setSearch] = useState('');
   const { deleted } = useData();
 
@@ -55,11 +55,18 @@ export default function Sidebar() {
       >
         <div className='flex flex-row items-center gap-2'>
           <Button
-            onClick={() => setAddingItem('file')}
+            onClick={() => setAddingItem('text')}
             variant='secondary'
             className='flex-1'
           >
             <FilePlus size={16} strokeWidth={2} />
+          </Button>
+          <Button
+            onClick={() => setAddingItem('drawing')}
+            variant='secondary'
+            className='flex-1'
+          >
+            <ImagePlus size={16} strokeWidth={2} />
           </Button>
           <Button
             onClick={() => setAddingItem('directory')}

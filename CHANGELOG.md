@@ -7,6 +7,8 @@
 
 Release date: 2024-10-13
 
+[Docker Image]()
+
 This major update includes:
 
 - Added an Excalidraw integration so you can make drawings
