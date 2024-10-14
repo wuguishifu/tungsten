@@ -5,8 +5,7 @@
 
 ## Version 3.0.0
 
-Release date: 2024-10-13
-
+Release date: 2024-10-13  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288635835?tag=3.0.0)
 
 This major update includes:
@@ -18,8 +17,7 @@ This major update includes:
 
 ## Version 2.1.3
 
-Release date: 2024-10-13
-
+Release date: 2024-10-13  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288417029?tag=2.1.3)
 
 This patch includes:
@@ -28,8 +26,7 @@ This patch includes:
 
 ## Version 2.1.2
 
-Release date: 2024-10-13
-
+Release date: 2024-10-13  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288415649?tag=2.1.2)
 
 This patch includes:
@@ -39,8 +36,7 @@ This patch includes:
 
 ## Version 2.1.1
 
-Release date: 2024-10-12
-
+Release date: 2024-10-12  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/288404327?tag=2.1.1)
 
 This patch includes:
@@ -49,8 +45,7 @@ This patch includes:
 
 ## Version 2.1.0
 
-Release date: 2024-10-06
-
+Release date: 2024-10-06  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/284955974?tag=2.1.0)
 
 This minor update includes:
@@ -61,8 +56,7 @@ This minor update includes:
 
 ## Version 2.0.0
 
-Release date: 2024-10-05
-
+Release date: 2024-10-05  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/284563412?tag=2.0.0)
 
 This major update includes:
@@ -75,8 +69,7 @@ This major update includes:
 
 ## Version 1.3.5
 
-Release date: 2024-10-04
-
+Release date: 2024-10-04  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/284095496?tag=1.3.5)
 
 This patch includes:
@@ -87,8 +80,7 @@ This patch includes:
 
 ## Version 1.3.4
 
-Release date: 2024-10-01
-
+Release date: 2024-10-01  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282660691?tag=1.3.4)
 
 This patch includes:
@@ -98,8 +90,7 @@ This patch includes:
 
 ## Version 1.3.3
 
-Release date: 2024-10-01
-
+Release date: 2024-10-01  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282161492?tag=1.3.3)
 
 This patch includes:
@@ -108,8 +99,7 @@ This patch includes:
 
 ## Version 1.3.2
 
-Release date: 2024-10-01
-
+Release date: 2024-10-01  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282149269?tag=1.3.2)
 
 This patch includes:
@@ -118,8 +108,7 @@ This patch includes:
 
 ## Version 1.3.1
 
-Release date: 2024-10-01
-
+Release date: 2024-10-01  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282135101?tag=1.3.1)
 
 This patch includes:
@@ -128,8 +117,7 @@ This patch includes:
 
 ## Version 1.3.0
 
-Release date: 2024-10-01
-
+Release date: 2024-10-01  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282125111?tag=1.3.0)
 
 This minor update includes:
@@ -139,8 +127,7 @@ This minor update includes:
 
 ## Version 1.2.1
 
-Release date: 2024-10-01
-
+Release date: 2024-10-01  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282079236?tag=1.2.1)
 
 This patch includes:
@@ -150,8 +137,7 @@ This patch includes:
 
 ## Version 1.2.0
 
-Release date: 2024-09-30
-
+Release date: 2024-09-30  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/282016484?tag=1.2.0)
 
 This minor update includes:
@@ -163,8 +149,7 @@ This minor update includes:
 
 ## Version 1.1.5
 
-Release date: 2024-09-29
-
+Release date: 2024-09-29  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281310791?tag=1.1.5)
 
 This patch includes:
@@ -173,8 +158,7 @@ This patch includes:
 
 ## Version 1.1.3
 
-Release date: 2024-09-29
-
+Release date: 2024-09-29  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281305305?tag=1.1.3)
 
 This patch includes:
@@ -183,8 +167,7 @@ This patch includes:
 
 ## Version 1.1.2
 
-Release date: 2024-09-29
-
+Release date: 2024-09-29  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281304075?tag=1.1.2)
 
 This patch includes:
@@ -195,8 +178,7 @@ This patch includes:
 
 ## Version 1.1.1
 
-Release date: 2024-09-29
-
+Release date: 2024-09-29  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281248276?tag=1.1.1)
 
 This patch includes:
@@ -205,8 +187,7 @@ This patch includes:
 
 ## Version 1.1.0
 
-Release date: 2024-09-29
-
+Release date: 2024-09-29  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281214000?tag=1.1.0)
 
 This minor update includes:
@@ -220,8 +201,7 @@ This minor update includes:
 
 ## Version 1.0.1
 
-Release date: 2024-09-29
-
+Release date: 2024-09-29  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/281106134?tag=1.0.1)
 
 This patch includes:
@@ -231,8 +211,7 @@ This patch includes:
 
 ## Version 1.0.0
 
-Release date: 2024-09-28
-
+Release date: 2024-09-28  
 [Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/280922869?tag=1.0.0)
 
 Initial release! This release includes:
