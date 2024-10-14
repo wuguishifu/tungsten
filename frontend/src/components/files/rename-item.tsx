@@ -39,7 +39,11 @@ export default function RenameItem(props: RenameItemProps) {
       let newPath = value;
       if (leaf.type === 'file') {
         const oldPath = leaf.path;
-        newPath = `${leaf.dirPath}/${value}.md`;
+        if (leaf.path.endsWith('.md')) {
+          newPath = `${leaf.dirPath}/${value}.md`;
+        } else {
+          newPath = `${leaf.dirPath}/${value}.excalidraw`;
+        }
         await renameFile(oldPath, newPath);
       } else {
         const oldPath = leaf.path;
