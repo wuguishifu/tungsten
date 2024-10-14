@@ -48,7 +48,7 @@ router.put('/', (req, res) => {
     if (!filePath) return res.status(400).send('Invalid file path');
     filePath = path.join(req.homeDirectory, filePath);
     const data = req.body;
-    if (!data) return res.status(400).send('Missing data');
+    if (data == null) return res.status(400).send('Missing data');
     if (typeof data !== 'string') return res.status(400).send('Invalid data');
     const exists = fs.existsSync(filePath);
     if (exists && fs.statSync(filePath).isDirectory()) return res.status(400).send('Cannot write to directory');

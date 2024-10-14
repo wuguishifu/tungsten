@@ -15,7 +15,8 @@ export default {
 			colors: {
 				brand: 'hsl(var(--brand))',
 				neutral: {
-					'850': '#202020'
+					'850': '#202020',
+					'900': '#121212',
 				},
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
