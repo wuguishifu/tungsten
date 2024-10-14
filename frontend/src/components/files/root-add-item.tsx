@@ -1,5 +1,5 @@
 import { RootAddItemContext } from '@/providers/root-add-item-context';
-import { FilePlus, FolderPlus } from 'lucide-react';
+import { FilePlus, FolderPlus, ImagePlus } from 'lucide-react';
 import { useContext } from 'react';
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '../ui/context-menu';
 import AddItem from './add-item';
@@ -25,12 +25,25 @@ export default function RootAddItem() {
             className='select-none'
             onClick={e => {
               e.stopPropagation();
-              setAddingItem('file');
+              setAddingItem('text');
             }}
           >
             <FilePlus size={16} strokeWidth={2} />
             <span className='ml-2'>
               new file
+            </span>
+          </ContextMenuItem>
+          <ContextMenuItem
+            autoFocus={false}
+            className='select-none'
+            onClick={e => {
+              e.stopPropagation();
+              setAddingItem('drawing');
+            }}
+          >
+            <ImagePlus size={16} strokeWidth={2} />
+            <span className='ml-2'>
+              new drawing
             </span>
           </ContextMenuItem>
           <ContextMenuItem

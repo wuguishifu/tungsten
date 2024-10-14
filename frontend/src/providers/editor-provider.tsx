@@ -15,8 +15,8 @@ type EditorContextProps = {
   filePath: string | null;
   dirty: boolean;
   loading: boolean;
-  setFile: (data: string) => void;
-  onSave: () => Promise<void>;
+  setFile: (data: string, options?: { ignoreDirtyCheck: boolean }) => void;
+  onSave: (newFileContent?: string | null) => Promise<void>;
   selectFile: (filePath: string | null) => void;
 }
 
@@ -45,15 +45,18 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     if (filePath) {
       navigate(cleanPath(`/${username}/${filePath}`));
     } else {
+      setActiveFile(null);
       navigate(cleanPath(`/${username}`));
     }
   }
 
-  async function onSave() {
-    if (!file) return;
+  async function onSave(newFileContent: string | null = null) {
+    const content = newFileContent ?? file;
+    if (content === null) return;
+    if (content !== null && content !== file) setFile(content)
     if (activeFile) {
       try {
-        const { updated, files } = await saveFile(activeFile, file);
+        const { updated, files } = await saveFile(activeFile, content);
         if (!updated) throw new Error('The file could not be saved. Please try again.');
         if (files) setFiles(files);
         setDirty(false);
@@ -85,7 +88,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       const newFileName = incremental ? `Untitled ${incremental}` : 'Untitled';
 
       try {
-        const { updated, files: newFiles } = await saveFile(`${newFileName}.md`, file);
+        const { updated, files: newFiles } = await saveFile(`${newFileName}.md`, content);
         if (!updated) throw new Error('The file could not be saved. Please try again.');
         navigate(`/${username}/${newFileName}.md`);
         if (newFiles) setFiles(newFiles);
@@ -107,18 +110,29 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       setFile(null);
       return;
     };
+
+    const controller = new AbortController();
+    const { signal } = controller;
+
     setLoading(true);
-    loadFile(filePath)
+    setDirty(false);
+    loadFile(filePath, signal)
       .then(data => {
         setFile(data);
         setActiveFile(filePath);
       })
       .catch(error => {
-        toast.error(error.message);
+        if (!error.message.includes('abort')) {
+          toast.error(error.message);
+        }
         setFile(null);
         navigate(`/${username}`);
       })
       .finally(() => setLoading(false));
+
+    return () => {
+      controller.abort();
+    }
   }, [filePath, navigate, username]);
 
   const value = {
@@ -130,9 +144,11 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     filePath,
     dirty,
     loading,
-    setFile: (data: string) => {
+    setFile: (data: string, options = defaultSetFileOptions) => {
       setFile(data);
-      setDirty(true);
+      if (!options.ignoreDirtyCheck) {
+        setDirty(true);
+      }
     },
     onSave,
     selectFile,
@@ -145,11 +161,11 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   );
 }
 
-async function loadFile(filePath: string): Promise<string> {
+async function loadFile(filePath: string, signal: AbortSignal): Promise<string> {
   const response = await fetch(withQueryParams(endpoints.files.index, { filePath }), {
     credentials: 'include',
+    signal,
   });
-  // await new Promise(resolve => setTimeout(resolve, 1000));
   const data = await response.text();
   if (!response.ok) throw new Error(data);
   return data;
@@ -169,3 +185,7 @@ async function saveFile(filePath: string, data: string): Promise<{ updated: bool
   }
   return await response.json();
 }
+
+const defaultSetFileOptions = {
+  ignoreDirtyCheck: false,
+};

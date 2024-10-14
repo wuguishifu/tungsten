@@ -1,9 +1,9 @@
 import { createContext } from 'react';
-import { DataType } from './data/provider';
+import { ItemType } from './data/provider';
 
 type RootAddItemContextProps = {
-  addingItem: DataType | false;
-  setAddingItem: (item: DataType | false) => void;
+  addingItem: ItemType | false;
+  setAddingItem: (item: ItemType | false) => void;
 }
 
 export const RootAddItemContext = createContext({} as RootAddItemContextProps);

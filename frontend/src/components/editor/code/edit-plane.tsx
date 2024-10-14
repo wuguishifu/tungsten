@@ -22,7 +22,7 @@ const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const fileCompletions = useCompletions();
 
   useEffect(() => {
-    Vim.defineEx('write', 'w', onSave);
+    Vim.defineEx('write', 'w', () => onSave());
 
     function handleKeyDown(event: KeyboardEvent) {
       if ((event.ctrlKey || event.metaKey) && event.key === 's') {
