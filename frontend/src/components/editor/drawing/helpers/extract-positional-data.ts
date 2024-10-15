@@ -1,6 +1,10 @@
 import { AppState } from '@excalidraw/excalidraw/types/types';
 
 export function extractPositionalState(appState: AppState) {
+  if (appState == null) {
+    return {};
+  }
+
   return {
     scrollX: appState.scrollX,
     scrollY: appState.scrollY,

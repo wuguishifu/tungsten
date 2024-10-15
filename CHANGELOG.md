@@ -11,6 +11,7 @@ Release date: 2024-10-15
 This patch includes:
 
 - Added support for Excalidraw [libraries](https://libraries.excalidraw.com/?target=_blank&referrer=http%3A%2F%2Flocalhost%3A5173%2Fwuguishifu%2Ftest-dir%2FDrawing+Test.excalidraw&useHash=true&token=ladBBXBnOCBDb5sbd6Lr-&theme=dark&version=2&sort=default)
+- Fixed bug where opening an Excalidraw file from a previous version would crash the app
 
 ## Version 3.0.2
 

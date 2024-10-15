@@ -23,7 +23,7 @@ export default function DrawingPlane() {
     try {
       const parsed = JSON.parse(file);
       data.elements = parsed.elements;
-      data.appState = parsed.appState;
+      data.appState = extractPositionalState(parsed.appState);
     } catch (error) {
       console.log(error);
     }
