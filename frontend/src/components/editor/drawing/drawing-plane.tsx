@@ -1,28 +1,34 @@
+import useLibrary from '@/hooks/use-library';
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { Excalidraw } from '@excalidraw/excalidraw';
-import { AppState, ExcalidrawImperativeAPI } from '@excalidraw/excalidraw/types/types';
+import { ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from '@excalidraw/excalidraw/types/types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { extractPositionalState } from './helpers/extract-positional-data';
 
 export default function DrawingPlane() {
   const [api, setApi] = useState<ExcalidrawImperativeAPI | null>(null);
   const { file, setFile, onSave } = useEditor();
   const { editorSettings } = useSettings();
 
-  const initialData = useMemo(() => {
-    if (!file?.length) return { elements: [] };
+  const { libraryItems, onLibraryChange } = useLibrary();
 
-    let elements = [];
-    let appState = undefined;
+  const initialData = useMemo(() => {
+    const data: ExcalidrawInitialDataState = {
+      elements: [],
+    }
+
+    if (!file?.length) return data;
+
     try {
       const parsed = JSON.parse(file);
-      elements = parsed.elements;
-      appState = parsed.appState;
+      data.elements = parsed.elements;
+      data.appState = parsed.appState;
     } catch (error) {
       console.log(error);
     }
 
-    return { elements, appState };
+    return data;
   }, [file]);
 
   const handleKeyboardEvents = useCallback((event: KeyboardEvent) => {
@@ -72,7 +78,12 @@ export default function DrawingPlane() {
     <Excalidraw
       excalidrawAPI={setApi}
       theme='dark'
-      initialData={initialData}
+      initialData={{
+        elements: initialData.elements,
+        appState: initialData.appState,
+        libraryItems,
+      }}
+      onLibraryChange={onLibraryChange}
       UIOptions={{
         canvasActions: {
           saveToActiveFile: false,
@@ -80,16 +91,4 @@ export default function DrawingPlane() {
       }}
     />
   );
-}
-
-function extractPositionalState(appState: AppState) {
-  return {
-    scrollX: appState.scrollX,
-    scrollY: appState.scrollY,
-    zoom: appState.zoom,
-    offsetLeft: appState.offsetLeft,
-    offsetTop: appState.offsetTop,
-    width: appState.width,
-    height: appState.height,
-  };
 }
