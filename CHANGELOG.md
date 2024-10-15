@@ -1,7 +1,16 @@
 # Change Log
 
-[jump to latest](#version-302)<br>
-[jump to stable](#version-302)
+[jump to latest](#version-303)<br>
+[jump to stable](#version-303)
+
+## Version 3.0.3
+
+Release date: 2024-10-15
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/289757439?tag=3.0.3)
+
+This patch includes:
+
+- Added support for Excalidraw [libraries](https://libraries.excalidraw.com/?target=_blank&referrer=http%3A%2F%2Flocalhost%3A5173%2Fwuguishifu%2Ftest-dir%2FDrawing+Test.excalidraw&useHash=true&token=ladBBXBnOCBDb5sbd6Lr-&theme=dark&version=2&sort=default)
 
 ## Version 3.0.2
 
