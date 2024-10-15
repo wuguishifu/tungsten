@@ -6,7 +6,7 @@
 ## Version 3.0.3
 
 Release date: 2024-10-15
-[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/289757439?tag=3.0.3)
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/289764222?tag=3.0.3)
 
 This patch includes:
 
