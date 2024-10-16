@@ -25,9 +25,5 @@ export default function useMod() {
     };
   }, [handleKeyDown, handleKeyUp]);
 
-  useEffect(() => {
-    console.log('mod pressed:', modPressed);
-  }, [modPressed]);
-
   return modPressed;
 }
