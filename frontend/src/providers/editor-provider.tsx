@@ -1,6 +1,6 @@
 import endpoints, { withQueryParams } from '@/lib/endpoints';
 import { cleanPath, getExtension, getName } from '@/lib/file-utils';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
@@ -15,8 +15,9 @@ type EditorContextProps = {
   filePath: string | null;
   dirty: boolean;
   loading: boolean;
-  setFile: (data: string, options?: { ignoreDirtyCheck: boolean }) => void;
-  onSave: (newFileContent?: string | null) => Promise<void>;
+  setFile: (data: string) => void;
+  onSave: () => Promise<void>;
+  saveImmediately: () => Promise<void>;
   selectFile: (filePath: string | null) => void;
 }
 
@@ -50,10 +51,9 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     }
   }
 
-  async function onSave(newFileContent: string | null = null) {
-    const content = newFileContent ?? file;
+  const onSave = useCallback(async () => {
+    const content = file;
     if (content === null) return;
-    if (content !== null && content !== file) setFile(content)
     if (activeFile) {
       try {
         const { updated, files } = await saveFile(activeFile, content);
@@ -103,7 +103,13 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
         }
       }
     }
-  }
+  }, [activeFile, file, files, username, navigate, setFiles]);
+
+  const saveRef = useRef(onSave);
+
+  useEffect(() => {
+    saveRef.current = onSave;
+  }, [onSave]);
 
   useEffect(() => {
     if (!filePath) {
@@ -145,13 +151,12 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     filePath,
     dirty,
     loading,
-    setFile: (data: string, options = defaultSetFileOptions) => {
+    setFile: (data: string) => {
       setFile(data);
-      if (!options.ignoreDirtyCheck) {
-        setDirty(true);
-      }
+      setDirty(true);
     },
     onSave,
+    saveImmediately: saveRef.current,
     selectFile,
   };
 
@@ -186,7 +191,3 @@ async function saveFile(filePath: string, data: string): Promise<{ updated: bool
   }
   return await response.json();
 }
-
-const defaultSetFileOptions = {
-  ignoreDirtyCheck: false,
-};

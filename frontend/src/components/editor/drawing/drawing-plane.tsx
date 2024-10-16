@@ -1,17 +1,20 @@
+import ClickWithin from '@/components/click-within';
 import useLibrary from '@/hooks/use-library';
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { Excalidraw } from '@excalidraw/excalidraw';
 import { ExcalidrawImperativeAPI, ExcalidrawInitialDataState } from '@excalidraw/excalidraw/types/types';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { extractPositionalState } from './helpers/extract-positional-data';
 
 export default function DrawingPlane() {
   const [api, setApi] = useState<ExcalidrawImperativeAPI | null>(null);
-  const { file, setFile, onSave } = useEditor();
+  const { file, setFile, onSave, saveImmediately } = useEditor();
   const { editorSettings } = useSettings();
 
   const { libraryItems, onLibraryChange } = useLibrary();
+  const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+  const shouldStartTimeout = useRef(false);
 
   const initialData = useMemo(() => {
     const data: ExcalidrawInitialDataState = {
@@ -37,58 +40,67 @@ export default function DrawingPlane() {
     if (event.key === 's' && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
       onSave();
+      if (saveTimeout.current) clearTimeout(saveTimeout.current);
     }
-  }, [api, onSave]);
+  }, [api]);
 
-  const handleMouseEvents = useCallback(() => {
-    let newContent: string | null = null;
-    let isDirty = false;
+  const handleMouseDown = useCallback((_: MouseEvent, inside: boolean) => {
+    if (saveTimeout.current) clearTimeout(saveTimeout.current);
+    shouldStartTimeout.current = inside;
+    if (!inside) onSave();
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
     if (api) {
       const appStateString = JSON.stringify({
         elements: api.getSceneElements(),
-        appState: extractPositionalState(api.getAppState())
+        appState: extractPositionalState(api.getAppState()),
       }, null, 2);
       if (appStateString !== file) {
-        newContent = appStateString;
-        setFile(newContent, { ignoreDirtyCheck: editorSettings.saveOnBlur ?? false });
-        isDirty = true;
+        setFile(appStateString);
       }
     }
 
-    if (editorSettings.saveOnBlur && isDirty) {
-      onSave(newContent);
+    if (!shouldStartTimeout.current) return;
+    if (editorSettings.saveOnBlur) {
+      if (saveTimeout.current) clearTimeout(saveTimeout.current);
+      saveTimeout.current = setTimeout(() => {
+        saveImmediately();
+      }, 2000);
     }
-  }, [editorSettings, api, file, onSave, setFile]);
+  }, [api, editorSettings, file, setFile]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyboardEvents);
-    window.addEventListener('auxclick', handleMouseEvents);
-    window.addEventListener('mouseup', handleMouseEvents)
 
     return () => {
       window.removeEventListener('keydown', handleKeyboardEvents);
-      window.removeEventListener('auxclick', handleMouseEvents);
-      window.removeEventListener('mouseup', handleMouseEvents);
     }
-  }, [handleKeyboardEvents, handleMouseEvents]);
+  }, [handleKeyboardEvents, handleMouseUp]);
 
   if (file == null) return null;
 
   return (
-    <Excalidraw
-      excalidrawAPI={setApi}
-      theme='dark'
-      initialData={{
-        elements: initialData.elements,
-        appState: initialData.appState,
-        libraryItems,
-      }}
-      onLibraryChange={onLibraryChange}
-      UIOptions={{
-        canvasActions: {
-          saveToActiveFile: false,
-        }
-      }}
-    />
+    <ClickWithin
+      className='w-full h-full'
+      onClick={handleMouseDown}
+      onRelease={handleMouseUp}
+    >
+      <Excalidraw
+        excalidrawAPI={setApi}
+        theme='dark'
+        initialData={{
+          elements: initialData.elements,
+          appState: initialData.appState,
+          libraryItems,
+        }}
+        onLibraryChange={onLibraryChange}
+        UIOptions={{
+          canvasActions: {
+            saveToActiveFile: false,
+          }
+        }}
+      />
+    </ClickWithin>
   );
 }
