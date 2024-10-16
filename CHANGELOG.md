@@ -3,6 +3,17 @@
 [jump to latest](#version-320)<br>
 [jump to stable](#version-320)
 
+## Version 3.2.1
+
+Release date: 2024-10-16  
+[Docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/290416408?tag=3.2.1)
+
+This patch includes:
+
+- Fixed a bug where you couldn't collapse a folder if you were viewing a file that existed within the folder
+  - This isn't necessarily a bug but it's annoying so I fixed it
+- Removed a debug statement that was spamming the console
+
 ## Version 3.2.0
 
 Release date: 2024-10-16  
