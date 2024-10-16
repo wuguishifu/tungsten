@@ -22,4 +22,9 @@ export default defineConfig({
   define: {
     'process.env': {},
   },
+  optimizeDeps: {
+    exclude: [
+      'node_modules/.cache',
+    ],
+  },
 });
