@@ -8,6 +8,8 @@ type TreeContextProps = {
   collapse: (path: string) => void;
   expandAll: (leaf: DataLeaf) => void;
   collapseAll: (leaf: DataLeaf) => void;
+  expandSet: (paths: Set<string>) => void;
+  collapseSet: (paths: Set<string>) => void;
 }
 
 const TreeContext = createContext({} as TreeContextProps);
@@ -17,15 +19,11 @@ export function useTree() {
 }
 
 export function TreeProvider({ children }: Readonly<{ children: React.ReactNode }>) {
-  const { expanded, expand, collapse, expandAll, collapseAll } = useExpanded();
+  const expanded = useExpanded();
 
   const value = {
-    expanded,
-    expand,
-    expandAll,
-    collapse,
-    collapseAll,
-  }
+    ...expanded,
+  };
 
   return (
     <TreeContext.Provider value={value}>

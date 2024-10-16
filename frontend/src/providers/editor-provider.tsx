@@ -1,10 +1,11 @@
 import endpoints, { withQueryParams } from '@/lib/endpoints';
-import { cleanPath, getExtension, getName } from '@/lib/file-utils';
+import { cleanPath, getAllPathsToFile, getExtension, getName } from '@/lib/file-utils';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
 import { DataLeaf, useData } from './data/provider';
+import { useTree } from './tree/provider';
 
 type EditorContextProps = {
   originalFilename: string;
@@ -32,6 +33,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   const { username } = useAuth();
   const { '*': filePath = null } = useParams();
   const { files, setFiles } = useData();
+  const { expandSet } = useTree();
 
   const [activeFile, setActiveFile] = useState<string | null>(null);
   const [currentFile, setCurrentFile] = useState<string | null>(null);
@@ -144,6 +146,12 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       controller.abort();
     }
   }, [filePath, navigate, username]);
+
+  useEffect(() => {
+    if (files && filePath) {
+      expandSet(getAllPathsToFile(files, filePath));
+    }
+  }, [filePath, files, expandSet]);
 
   const value = {
     originalFilename,

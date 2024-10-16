@@ -73,3 +73,27 @@ export function getAllDirectoryPaths(root: DataLeaf): Set<string> {
 
   return paths;
 }
+
+export function getAllPathsToFile(root: DataLeaf, targetPath: string): Set<string> {
+  const path: string[] = [];
+
+  function findPath(node: DataLeaf, targetPath: string, path: string[]): boolean {
+    if (node.path === targetPath) return true;
+    if (node.type === 'directory') {
+      for (const child of node.children) {
+        if (findPath(child, targetPath, path)) {
+          path.push(node.path);
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  if (findPath(root, targetPath, path)) {
+    path.reverse();
+    return new Set(path);
+  } else {
+    return new Set();
+  }
+}

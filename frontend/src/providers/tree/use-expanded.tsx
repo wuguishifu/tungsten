@@ -27,19 +27,6 @@ export default function useExpanded() {
     saveExpanded(newExpanded);
   }
 
-  function collapseAll(leaf?: DataLeaf) {
-    if (leaf) {
-      const newExpanded = new Set(expanded);
-      const paths = getAllDirectoryPaths(leaf);
-      paths.forEach(path => newExpanded.delete(path));
-      setExpanded(newExpanded);
-      saveExpanded(newExpanded);
-    } else {
-      setExpanded(new Set());
-      saveExpanded(new Set());
-    }
-  }
-
   function expandAll(leaf?: DataLeaf) {
     if (leaf) {
       const newExpanded = new Set(expanded);
@@ -56,16 +43,45 @@ export default function useExpanded() {
     }
   }
 
+  function collapseAll(leaf?: DataLeaf) {
+    if (leaf) {
+      const newExpanded = new Set(expanded);
+      const paths = getAllDirectoryPaths(leaf);
+      paths.forEach(path => newExpanded.delete(path));
+      setExpanded(newExpanded);
+      saveExpanded(newExpanded);
+    } else {
+      setExpanded(new Set());
+      saveExpanded(new Set());
+    }
+  }
+
+  function expandSet(paths: Set<string>) {
+    const newExpanded = new Set(expanded);
+    paths.forEach(path => newExpanded.add(path));
+    setExpanded(newExpanded);
+    saveExpanded(newExpanded);
+  }
+
+  function collapseSet(paths: Set<string>) {
+    const newExpanded = new Set(expanded);
+    paths.forEach(path => newExpanded.delete(path));
+    setExpanded(newExpanded);
+    saveExpanded(newExpanded);
+  }
+
   useEffect(() => {
     console.log(expanded);
   }, [expanded]);
 
   return {
     expanded,
+    expand,
+    expandAll,
+    expandSet,
     collapse,
     collapseAll,
-    expandAll,
-    expand,
+    collapseSet,
   };
 }
 
