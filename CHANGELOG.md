@@ -1,7 +1,17 @@
 # Change Log
 
-[jump to latest](#version-310)<br>
-[jump to stable](#version-310)
+[jump to latest](#version-320)<br>
+[jump to stable](#version-320)
+
+## Version 3.2.0
+
+Release date: 2024-10-16  
+[Docker image]()
+
+This minor update includes:
+
+- Added functionality to expand/collapse all subdirectories when clicking if you hold `alt` (Windows) or `option` (Mac)
+- Added functionality to automatically expand the path of directories when navigating to a file (using search or a link)
 
 ## Version 3.1.0
 
