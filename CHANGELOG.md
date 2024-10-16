@@ -1,7 +1,7 @@
 # Change Log
 
-[jump to latest](#version-303)<br>
-[jump to stable](#version-303)
+[jump to latest](#version-310)<br>
+[jump to stable](#version-310)
 
 ## Version 3.1.0
 
