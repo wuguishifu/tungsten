@@ -6,11 +6,11 @@
 ## Version 3.0.4
 
 Release date: 2024-10-15  
-[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/289909834?tag=3.0.4)
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/289910793?tag=3.0.4)
 
 This patch includes:
 
-- Reduced the amount of autosaving that occurs when editing Excalidraw files
+- Reduced the amount of autosaving that occurs when editing Excalidraw files ([credit](https://github.com/cindyxli))
   - Autosaves now happen 2 seconds after a user stops editing OR immediately if they click outside the main editor
 
 ## Version 3.0.3
@@ -82,7 +82,7 @@ Release date: 2024-10-12
 
 This patch includes:
 
-- Fixed a security vulnerability where users could make usernames like `.` and `/` and obtain access to the filesystem [credit](https://github.com/willsunnn)
+- Fixed a security vulnerability where users could make usernames like `.` and `/` and obtain access to the filesystem ([credit](https://github.com/willsunnn))
 
 ## Version 2.1.0
 
