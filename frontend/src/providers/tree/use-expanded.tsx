@@ -1,35 +1,36 @@
 import { getAllDirectoryPaths } from '@/lib/file-utils';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DataLeaf, useData } from '../data/provider';
 
 export default function useExpanded() {
   const { files } = useData();
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const expandedRef = useRef(expanded);
+  useEffect(() => {
+    expandedRef.current = expanded;
+  }, [expanded]);
 
   useEffect(() => {
-    const storedCollapsed = localStorage.getItem('expanded');
-    if (storedCollapsed) {
-      setExpanded(new Set(JSON.parse(storedCollapsed)));
-    }
+    setExpanded(getExpanded());
   }, []);
 
-  function expand(path: string) {
-    const newExpanded = new Set(expanded);
+  const expand = useCallback((path: string) => {
+    const newExpanded = new Set(expandedRef.current);
     newExpanded.add(path);
     setExpanded(newExpanded);
     saveExpanded(newExpanded);
-  }
+  }, []);
 
-  function collapse(path: string) {
-    const newExpanded = new Set(expanded);
+  const collapse = useCallback((path: string) => {
+    const newExpanded = new Set(expandedRef.current);
     newExpanded.delete(path);
     setExpanded(newExpanded);
     saveExpanded(newExpanded);
-  }
+  }, []);
 
-  function expandAll(leaf?: DataLeaf) {
+  const expandAll = useCallback((leaf?: DataLeaf) => {
     if (leaf) {
-      const newExpanded = new Set(expanded);
+      const newExpanded = new Set(expandedRef.current);
       const paths = getAllDirectoryPaths(leaf);
       paths.forEach(path => newExpanded.add(path));
       setExpanded(newExpanded);
@@ -41,11 +42,11 @@ export default function useExpanded() {
         saveExpanded(newExpanded);
       }
     }
-  }
+  }, [files]);
 
-  function collapseAll(leaf?: DataLeaf) {
+  const collapseAll = useCallback((leaf?: DataLeaf) => {
     if (leaf) {
-      const newExpanded = new Set(expanded);
+      const newExpanded = new Set(expandedRef.current);
       const paths = getAllDirectoryPaths(leaf);
       paths.forEach(path => newExpanded.delete(path));
       setExpanded(newExpanded);
@@ -54,25 +55,21 @@ export default function useExpanded() {
       setExpanded(new Set());
       saveExpanded(new Set());
     }
-  }
+  }, []);
 
-  function expandSet(paths: Set<string>) {
-    const newExpanded = new Set(expanded);
+  const expandSet = useCallback((paths: Set<string>) => {
+    const newExpanded = new Set(expandedRef.current);
     paths.forEach(path => newExpanded.add(path));
     setExpanded(newExpanded);
     saveExpanded(newExpanded);
-  }
+  }, []);
 
-  function collapseSet(paths: Set<string>) {
-    const newExpanded = new Set(expanded);
+  const collapseSet = useCallback((paths: Set<string>) => {
+    const newExpanded = new Set(expandedRef.current);
     paths.forEach(path => newExpanded.delete(path));
     setExpanded(newExpanded);
     saveExpanded(newExpanded);
-  }
-
-  useEffect(() => {
-    console.log(expanded);
-  }, [expanded]);
+  }, []);
 
   return {
     expanded,
@@ -87,4 +84,9 @@ export default function useExpanded() {
 
 function saveExpanded(expanded: Set<string>) {
   localStorage.setItem('expanded', JSON.stringify(Array.from(expanded)));
+}
+
+function getExpanded(): Set<string> {
+  const stored = localStorage.getItem('expanded');
+  return stored ? new Set(JSON.parse(stored)) : new Set();
 }
