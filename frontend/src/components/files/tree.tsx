@@ -1,7 +1,9 @@
+import useMod from '@/hooks/use-mod';
 import { ItemTypes } from '@/lib/drag';
 import { fileExists, getName } from '@/lib/file-utils';
 import { DataLeaf, DataType, ItemType, useData } from '@/providers/data/provider';
 import { useEditor } from '@/providers/editor-provider';
+import { useTree } from '@/providers/tree/provider';
 import { ChevronDown, ChevronRight, FilePlus, FolderInput, FolderMinus, FolderPlus, ImagePlus, Pencil, Trash2 } from 'lucide-react';
 import { createContext, useCallback, useContext, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
@@ -16,6 +18,7 @@ import RootAddItem from './root-add-item';
 
 type TreeContextProps = {
   selectedFile: string | null;
+  modPressed: boolean;
   selectFile: (path: string) => void;
   showDeleteDialog: (props: { path: string, type: DataType, name: string }) => void;
   moveItem: (props: { originalItem: DataLeaf, toDir: DataLeaf }) => Promise<boolean>;
@@ -28,9 +31,8 @@ export default function Tree() {
   const { files, moveFile, moveDirectory } = useData();
   const { selectFile } = useEditor();
 
-  const {
-    '*': selectedFile = null,
-  } = useParams();
+  const { '*': selectedFile = null } = useParams();
+  const modPressed = useMod();
 
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [deleteItem, setDeleteItem] = useState<{ path: string, type: DataType, name: string } | null>(null);
@@ -88,6 +90,7 @@ export default function Tree() {
   }, [selectedFile, moveFile, moveDirectory, selectFile]);
 
   const value = {
+    modPressed,
     selectedFile,
     selectFile,
     showDeleteDialog,
@@ -133,6 +136,7 @@ function TreeLeaf(props: TreeLeafProps) {
 
   const {
     selectedFile,
+    modPressed,
     selectFile,
     showDeleteDialog,
     moveItem,
@@ -141,9 +145,11 @@ function TreeLeaf(props: TreeLeafProps) {
 
   const {
     expanded,
-    collapse,
     expand,
-  } = useData();
+    expandAll,
+    collapse,
+    collapseAll,
+  } = useTree();
 
   const [addingItem, setAddingItem] = useState<false | ItemType>(false);
   const [renaming, setRenaming] = useState(false);
@@ -219,9 +225,17 @@ function TreeLeaf(props: TreeLeafProps) {
                   ? () => selectFile(leaf.path)
                   : () => {
                     if (isExpanded) {
-                      collapse(leaf.path);
+                      if (modPressed) {
+                        collapseAll(leaf);
+                      } else {
+                        collapse(leaf.path);
+                      }
                     } else {
-                      expand(leaf.path);
+                      if (modPressed) {
+                        expandAll(leaf);
+                      } else {
+                        expand(leaf.path);
+                      }
                     }
                   }
                 }

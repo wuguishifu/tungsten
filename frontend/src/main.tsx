@@ -8,6 +8,7 @@ import Toaster from './components/toaster.tsx';
 import { AuthProvider } from './providers/auth-provider.tsx';
 import { DataProvider } from './providers/data/provider.tsx';
 import { SettingsProvider } from './providers/settings-provider.tsx';
+import { TreeProvider } from './providers/tree/provider.tsx';
 
 import './editor.css';
 import './highlight.css';
@@ -19,9 +20,11 @@ createRoot(document.getElementById('root')!).render(
       <SettingsProvider>
         <AuthProvider>
           <DataProvider>
-            <DndProvider backend={HTML5Backend}>
-              <App />
-            </DndProvider>
+            <TreeProvider>
+              <DndProvider backend={HTML5Backend}>
+                <App />
+              </DndProvider>
+            </TreeProvider>
           </DataProvider>
         </AuthProvider>
       </SettingsProvider>

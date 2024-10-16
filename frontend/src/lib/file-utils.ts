@@ -58,3 +58,18 @@ export function getDataLeaf(path: string, root: DataLeaf): DataLeaf | null {
 
   return getLeaf(root);
 }
+
+export function getAllDirectoryPaths(root: DataLeaf): Set<string> {
+  const paths = new Set<string>();
+
+  function getPaths(leaf: DataLeaf) {
+    if (leaf.type === 'directory') {
+      paths.add(leaf.path);
+      leaf.children.forEach(getPaths);
+    }
+  }
+
+  getPaths(root);
+
+  return paths;
+}
