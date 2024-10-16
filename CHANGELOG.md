@@ -3,6 +3,18 @@
 [jump to latest](#version-303)<br>
 [jump to stable](#version-303)
 
+## Version 3.1.0
+
+Release date: 2024-10-16  
+[docker image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/290358564?tag=3.1.0)
+
+This minor update includes:
+
+- Added a download button for downloading the raw file
+- Fixed a bug where if you typed too fast the cursor would jump to the start of the editor
+- Updated the save code to work more reliably for drawings
+- Updated the save code to be more performant
+
 ## Version 3.0.4
 
 Release date: 2024-10-15  
