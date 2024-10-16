@@ -10,7 +10,8 @@ type EditorContextProps = {
   originalFilename: string;
   filename: string;
   ext: string | null;
-  file: string | null;
+  file: string | null; // the current file contents
+  currentFile: string | null; // the most recent saved file
   activeFile: string | null;
   filePath: string | null;
   dirty: boolean;
@@ -33,6 +34,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   const { files, setFiles } = useData();
 
   const [activeFile, setActiveFile] = useState<string | null>(null);
+  const [currentFile, setCurrentFile] = useState<string | null>(null);
   const [file, setFile] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [dirty, setDirty] = useState(false);
@@ -112,6 +114,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   useEffect(() => {
     if (!filePath) {
       setFile(null);
+      setCurrentFile(null);
       setActiveFile(null);
       return;
     };
@@ -124,6 +127,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     loadFile(filePath, signal)
       .then(data => {
         setFile(data);
+        setCurrentFile(data);
         setActiveFile(filePath);
       })
       .catch(error => {
@@ -131,6 +135,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
           toast.error(error.message);
         }
         setFile(null);
+        setCurrentFile(null);
         navigate(`/${username}`);
       })
       .finally(() => setLoading(false));
@@ -145,6 +150,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     filename,
     ext,
     file,
+    currentFile,
     activeFile,
     filePath,
     dirty,

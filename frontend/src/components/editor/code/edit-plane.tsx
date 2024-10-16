@@ -17,7 +17,7 @@ const keybinds = keymap.of([
 
 const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
   const { editorSettings } = useSettings();
-  const { file, dirty, setFile, onSave } = useEditor();
+  const { currentFile, dirty, setFile, onSave } = useEditor();
 
   const fileCompletions = useCompletions();
 
@@ -74,7 +74,7 @@ const EditPlane = forwardRef((_, ref: React.Ref<ReactCodeMirrorRef>) => {
         lang='md'
         theme='dark'
         placeholder='start typing...'
-        value={file ?? ''}
+        value={currentFile ?? ''}
         extensions={extensions}
         onChange={value => setFile(value)}
       />
