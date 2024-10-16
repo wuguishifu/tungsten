@@ -1,6 +1,6 @@
 import endpoints, { withQueryParams } from '@/lib/endpoints';
 import { cleanPath, getExtension, getName } from '@/lib/file-utils';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
@@ -41,6 +41,11 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   const filename = getName(originalFilename);
   const ext = getExtension(originalFilename);
 
+  const fileRef = useRef(file);
+  useEffect(() => {
+    fileRef.current = file;
+  }, [file]);
+
   function selectFile(filePath: string | null) {
     if (filePath) {
       navigate(cleanPath(`/${username}/${filePath}`));
@@ -51,7 +56,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
   }
 
   const onSave = useCallback(async () => {
-    const content = file;
+    const content = fileRef.current;
     if (content === null) return;
     if (activeFile) {
       try {
@@ -102,7 +107,7 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
         }
       }
     }
-  }, [activeFile, file, files, username, navigate, setFiles]);
+  }, [activeFile, files, username, navigate, setFiles]);
 
   useEffect(() => {
     if (!filePath) {
