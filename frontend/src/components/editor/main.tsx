@@ -35,7 +35,7 @@ export default function Editor() {
               /{filePath}
             </p>
           </div>
-          {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes {JSON.stringify({ dirty })}</div>}
+          {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>
         <div className='flex flex-row items-center gap-2'>
           <Toggle
