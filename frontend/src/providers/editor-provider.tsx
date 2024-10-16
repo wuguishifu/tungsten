@@ -1,6 +1,6 @@
 import endpoints, { withQueryParams } from '@/lib/endpoints';
 import { cleanPath, getExtension, getName } from '@/lib/file-utils';
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from './auth-provider';
@@ -17,7 +17,6 @@ type EditorContextProps = {
   loading: boolean;
   setFile: (data: string) => void;
   onSave: () => Promise<void>;
-  saveImmediately: () => Promise<void>;
   selectFile: (filePath: string | null) => void;
 }
 
@@ -105,12 +104,6 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
     }
   }, [activeFile, file, files, username, navigate, setFiles]);
 
-  const saveRef = useRef(onSave);
-
-  useEffect(() => {
-    saveRef.current = onSave;
-  }, [onSave]);
-
   useEffect(() => {
     if (!filePath) {
       setFile(null);
@@ -156,7 +149,6 @@ export function EditorProvider({ children }: Readonly<{ children: React.ReactNod
       setDirty(true);
     },
     onSave,
-    saveImmediately: saveRef.current,
     selectFile,
   };
 

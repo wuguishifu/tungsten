@@ -8,6 +8,7 @@ import { buttonVariants } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Toggle } from '../ui/toggle';
 import EditPlane from './code/edit-plane';
+import DownloadButton from './download-button';
 import DrawingPlane from './drawing/drawing-plane';
 import EditorSettingsView from './editor-settings';
 import PreviewPlane from './preview/preview-plane';
@@ -38,6 +39,7 @@ export default function Editor() {
           {dirty && <div className='text-xs text-neutral-600 ml-2'>unsaved changes</div>}
         </div>
         <div className='flex flex-row items-center gap-2'>
+          <DownloadButton />
           <Toggle
             pressed={editorSettings.showEditor}
             onPressedChange={(pressed) => updateEditorSettings('showEditor', pressed)}

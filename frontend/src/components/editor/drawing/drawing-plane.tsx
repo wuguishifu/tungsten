@@ -9,7 +9,7 @@ import { extractPositionalState } from './helpers/extract-positional-data';
 
 export default function DrawingPlane() {
   const [api, setApi] = useState<ExcalidrawImperativeAPI | null>(null);
-  const { file, setFile, onSave, saveImmediately } = useEditor();
+  const { file, setFile, onSave } = useEditor();
   const { editorSettings } = useSettings();
 
   const { libraryItems, onLibraryChange } = useLibrary();
@@ -42,13 +42,13 @@ export default function DrawingPlane() {
       onSave();
       if (saveTimeout.current) clearTimeout(saveTimeout.current);
     }
-  }, [api]);
+  }, [api, onSave]);
 
   const handleMouseDown = useCallback((_: MouseEvent, inside: boolean) => {
     if (saveTimeout.current) clearTimeout(saveTimeout.current);
     shouldStartTimeout.current = inside;
     if (!inside) onSave();
-  }, []);
+  }, [onSave]);
 
   const handleMouseUp = useCallback(() => {
     if (api) {
@@ -65,10 +65,10 @@ export default function DrawingPlane() {
     if (editorSettings.saveOnBlur) {
       if (saveTimeout.current) clearTimeout(saveTimeout.current);
       saveTimeout.current = setTimeout(() => {
-        saveImmediately();
+        onSave();
       }, 2000);
     }
-  }, [api, editorSettings, file, setFile]);
+  }, [api, editorSettings, file, setFile, onSave]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyboardEvents);
