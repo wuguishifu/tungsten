@@ -1,6 +1,7 @@
 import { useEditor } from '@/providers/editor-provider';
 import { Download } from 'lucide-react';
 import { Button } from '../ui/button';
+import { cn } from '@/lib/utils';
 
 type DownloadButtonProps = {
   className?: string;
@@ -16,13 +17,17 @@ export default function DownloadButton(props: DownloadButtonProps) {
   return (
     <Button
       variant='ghost'
-      className={className}
+      size='sm'
+      className={cn('h-9', className)}
       onClick={() => {
         if (!file || !originalFilename) return;
         downloadRaw(file, originalFilename);
       }}
     >
-      <Download size={16} />
+      <Download
+        size={16}
+        className='text-neutral-400'
+      />
     </Button>
   );
 }

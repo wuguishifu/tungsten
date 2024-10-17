@@ -1,10 +1,11 @@
+import { cn } from '@/lib/utils';
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
 import { Menu, Settings } from 'lucide-react';
 import { useRef } from 'react';
 import Loading from '../suspense/loading';
-import { buttonVariants } from '../ui/button';
+import { Button, buttonVariants } from '../ui/button';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import { Toggle } from '../ui/toggle';
 import EditPlane from './code/edit-plane';
@@ -23,11 +24,15 @@ export default function Editor() {
   return (
     <div className='h-full w-full flex flex-col pr-4 gap-4'>
       <div className='flex flex-row items-center justify-between px-4 py-2 bg-neutral-900 rounded-md'>
-        <div className='flex flex-row items-center relative gap-2'>
-          <Menu
-            className='cursor-pointer text-neutral-400'
+        <div className='flex flex-row items-center gap-2'>
+          <Button
+            variant='ghost'
+            size='sm'
+            className='h-9'
             onClick={() => updateEditorSettings('showSidebar', !editorSettings.showSidebar)}
-          />
+          >
+            <Menu className='text-neutral-400' size={16} />
+          </Button>
           <div className='space-y-1'>
             <h1 className='text-lg font-bold text-neutral-200 leading-4'>
               {filename}
@@ -59,7 +64,7 @@ export default function Editor() {
               if (!focused) editor.current?.view?.contentDOM.focus();
             }}
           >
-            <DialogTrigger className={buttonVariants({ variant: 'ghost' })}>
+            <DialogTrigger className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'h-9')}>
               <Settings className='size-4 cursor-pointer text-primary' />
             </DialogTrigger>
             <DialogContent
