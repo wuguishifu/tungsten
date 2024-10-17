@@ -3,6 +3,15 @@
 [jump to latest](#version-320)<br>
 [jump to stable](#version-320)
 
+## Version 3.2.2
+
+Release date: 2024-10-16  
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/290562074?tag=3.2.2)
+
+This patch includes:
+
+- Updated the style of the buttons in the top editor bar to match the rest of the UI elements
+
 ## Version 3.2.1
 
 Release date: 2024-10-16  
