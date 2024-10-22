@@ -9,7 +9,7 @@ export default function Notebook() {
   return (
     <>
       <ShiftShift />
-      <div className='flex flex-1 p-4 pr-0 gap-4 bg-neutral-950 overflow-hidden'>
+      <div className='flex flex-1 p-4 pt-2 pr-0 gap-4 bg-neutral-950 overflow-hidden'>
         {editorSettings.showSidebar && <Sidebar />}
         <Editor />
       </div>

@@ -7,7 +7,7 @@ export default function Navbar() {
   const { username, logout } = useAuth();
 
   return (
-    <nav className='flex flex-row items-center px-4 pt-4'>
+    <nav className='flex flex-row items-center px-4 pt-4 pb-2'>
       <Link to='/' className='flex flex-row items-center gap-2'>
         <img src='/logo.svg' alt='tungsten' className='h-8 w-8' />
         <h1 className='text-brand text-xl'>
