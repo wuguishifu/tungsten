@@ -1,7 +1,17 @@
 # Change Log
 
-[jump to latest](#version-322)<br>
-[jump to stable](#version-322)
+[jump to latest](#version-323)<br>
+[jump to stable](#version-323)
+
+## Version 3.2.3
+
+Release date: 2024-10-21  
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/292879043?tag=3.2.3)
+
+This patch includes:
+
+- Added a button to close the currently opened note
+- Fixed a bug where the outline of navbar buttons was hidden behind the main notebook area
 
 ## Version 3.2.2
 
