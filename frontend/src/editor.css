@@ -158,3 +158,30 @@
 .scrollable {
   overflow-y: scroll;
 }
+
+table {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  border: 2px solid #282c34 !important;
+  border-radius: 4px;
+}
+
+td, th {
+  padding: 10px 20px;
+  border: none;
+  border-right: 2px solid #282c34;
+  border-bottom: 2px solid #282c34;
+}
+
+tr th:last-child,
+tr td:last-child {
+  border-right: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+td {
+  text-align: center;
+}

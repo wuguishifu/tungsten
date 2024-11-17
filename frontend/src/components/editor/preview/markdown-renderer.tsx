@@ -2,6 +2,7 @@ import ReactMarkdown from 'react-markdown';
 import rehypeHighlight from 'rehype-highlight';
 import rehypeKatex from 'rehype-katex';
 import rehypeRaw from 'rehype-raw';
+import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
 import Anchor from './blocks/anchor';
 import { remarkLinkBrackets } from './plugins/document-link';
@@ -14,6 +15,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
       remarkPlugins={[
         remarkMath,
         remarkLinkBrackets,
+        remarkGfm
       ]}
       rehypePlugins={[
         rehypeRaw,

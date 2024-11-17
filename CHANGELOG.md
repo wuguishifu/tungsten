@@ -1,7 +1,16 @@
 # Change Log
 
-[jump to latest](#version-322)<br>
-[jump to stable](#version-322)
+[jump to latest](#version-323)<br>
+[jump to stable](#version-323)
+
+## Version 3.2.3
+
+Release date: 2024-11-16  
+[Docker Image]()
+
+This patch includes:
+
+- Added support for tables and todo lists
 
 ## Version 3.2.2
 
