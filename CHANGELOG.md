@@ -1,9 +1,9 @@
 # Change Log
 
-[jump to latest](#version-323)<br>
-[jump to stable](#version-323)
+[jump to latest](#version-324)<br>
+[jump to stable](#version-324)
 
-## Version 3.2.3
+## Version 3.2.4
 
 Release date: 2024-11-16  
 [Docker Image]()
@@ -11,6 +11,16 @@ Release date: 2024-11-16
 This patch includes:
 
 - Added support for tables and todo lists
+
+## Version 3.2.3
+
+Release date: 2024-10-21  
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/292879043?tag=3.2.3)
+
+This patch includes:
+
+- Added a button to close the currently opened note
+- Fixed a bug where the outline of navbar buttons was hidden behind the main notebook area
 
 ## Version 3.2.2
 

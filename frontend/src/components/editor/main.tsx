@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { useEditor } from '@/providers/editor-provider';
 import { useSettings } from '@/providers/settings-provider';
 import { ReactCodeMirrorRef } from '@uiw/react-codemirror';
-import { Menu, Settings } from 'lucide-react';
+import { Menu, Settings, X } from 'lucide-react';
 import { useRef } from 'react';
 import Loading from '../suspense/loading';
 import { Button, buttonVariants } from '../ui/button';
@@ -15,7 +15,7 @@ import EditorSettingsView from './editor-settings';
 import PreviewPlane from './preview/preview-plane';
 
 export default function Editor() {
-  const { filename, activeFile, filePath, loading, dirty } = useEditor();
+  const { filename, activeFile, filePath, loading, dirty, selectFile } = useEditor();
 
   const { editorSettings, updateEditorSettings } = useSettings();
 
@@ -59,6 +59,17 @@ export default function Editor() {
           >
             Preview
           </Toggle>
+          <Button
+            variant='ghost'
+            size='sm'
+            className='h-9'
+            onClick={() => selectFile(null)}
+          >
+            <X
+              size={16}
+              className='text-neutral-400'
+            />
+          </Button>
           <Dialog
             onOpenChange={(focused) => {
               if (!focused) editor.current?.view?.contentDOM.focus();
