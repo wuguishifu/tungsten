@@ -1,33 +1,33 @@
 import { useEditor } from '@/providers/editor-provider';
-import { Download } from 'lucide-react';
+import { Check, Download } from 'lucide-react';
+import { useCallback, useState } from 'react';
+import { toast } from 'sonner';
 import { Button } from '../ui/button';
-import { cn } from '@/lib/utils';
 
-type DownloadButtonProps = {
-  className?: string;
-}
-
-export default function DownloadButton(props: DownloadButtonProps) {
-  const {
-    className,
-  } = props;
-
+export default function DownloadButton() {
   const { file, originalFilename } = useEditor();
+  const [downloaded, setDownloaded] = useState(false);
+
+  const handleDownload = useCallback(() => {
+    if (!file) return;
+    downloadRaw(file, originalFilename);
+    toast.success('downloaded');
+    setDownloaded(true);
+    setTimeout(() => setDownloaded(false), 2000);
+  }, [file, originalFilename]);
 
   return (
     <Button
       variant='ghost'
       size='sm'
-      className={cn('h-9', className)}
-      onClick={() => {
-        if (!file || !originalFilename) return;
-        downloadRaw(file, originalFilename);
-      }}
+      className='h-9 disabled:opacity-100'
+      onClick={handleDownload}
+      disabled={downloaded}
     >
-      <Download
-        size={16}
-        className='text-neutral-400'
-      />
+      {downloaded
+        ? <Check size={16} className='text-green-500' />
+        : <Download size={16} className='text-neutral-400' />
+      }
     </Button>
   );
 }

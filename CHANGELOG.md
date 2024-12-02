@@ -1,7 +1,18 @@
 # Change Log
 
-[jump to latest](#version-324)<br>
-[jump to stable](#version-324)
+[jump to latest](#version-325)<br>
+[jump to stable](#version-325)
+
+## Version 3.2.5
+
+Release date: 2024-12-01  
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/315024651?tag=3.2.5)
+
+This patch includes:
+
+- Added button for copying raw text content to clipboard
+- Updated UX for download button
+- Fixed bug where long strings would cause the text to overflow off the page (specifically base64 encoded strings)
 
 ## Version 3.2.4
 
