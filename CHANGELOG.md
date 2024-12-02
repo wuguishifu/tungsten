@@ -6,7 +6,7 @@
 ## Version 3.2.5
 
 Release date: 2024-12-01  
-[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/315024651?tag=3.2.5)
+[Docker Image](https://github.com/wuguishifu/tungsten/pkgs/container/tungsten/315027233?tag=3.2.5)
 
 This patch includes:
 
